@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'home.dart';
+import 'profile.dart';
 
 void main() => runApp(const MyApp());
 
@@ -27,20 +29,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
-  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -57,12 +45,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         backgroundColor: Colors.transparent,
       ),
       drawer: Drawer(
+        backgroundColor: Color.fromRGBO(239, 216, 255, 0.932),
         child: ListView(
           padding: EdgeInsets.zero,
           children: const <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blueGrey,
+                color: Color.fromRGBO(55, 0, 92, 0.941),
               ),
               child: Text(
                 'Chekrr',
@@ -87,58 +76,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           ],
         ),
       ),
-      body: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Flexible(
-              flex: 2,
-              fit: FlexFit.tight,
-              child: Container(
-                padding: EdgeInsets.all(20.0),
-                child: CircleAvatar(
-                  radius: 20.0,
-                  backgroundImage: AssetImage('images/clown.jpg'),
-                ),
-              ),
-            ),
-            Flexible(
-              flex: 3,
-              fit: FlexFit.tight,
-              child: Container(
-                padding: EdgeInsets.all(20.0),
-                child: Column(
-                  children: [
-                    Text(
-                      'Jaroslav Kraft',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontFamily: 'Nothing',
-                          fontSize: 45.0,
-                          shadows: <Shadow>[
-                            Shadow(
-                              offset: Offset(6.0, 6.0),
-                              blurRadius: 7.0,
-                              color: Color.fromRGBO(15, 1, 24, 1),
-                            ),
-                          ],
-                          color: Color.fromRGBO(203, 135, 235, 1)),
-                    ),
-                    Text(
-                      'Level 6',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 45.0,
-                          color: Color.fromRGBO(143, 85, 168, 1)),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      body: Homescreen(),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
