@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'globals.dart' as globals;
 import 'package:chekrr/drawer.dart';
 import 'bottomtab.dart';
 import 'home.dart';
@@ -14,6 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   @override
   Widget build(BuildContext context) {
+    //debugPrint(globals.globaltest);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Chekrr'),

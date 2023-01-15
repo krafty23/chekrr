@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'globals.dart' as globals;
 import 'loading_screen.dart';
 import 'home.dart';
 import 'myplan.dart';
 import 'profile.dart';
 import 'settings.dart';
-//import 'profile.dart';
+import 'challenges.dart';
 
+//import 'profile.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -20,6 +22,7 @@ class MyApp extends StatelessWidget {
         '/myplan': (context) => MyPlanScreen(),
         '/profile': (context) => ProfileScreen(),
         '/settings': (context) => SettingsScreen(),
+        '/challenges': (context) => ChallengesScreen(),
       },
     );
   }

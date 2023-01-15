@@ -22,7 +22,7 @@ class _BottomTabsState extends State<BottomTabs> {
           Navigator.pushReplacementNamed(context, '/myplan');
         }
         if (index == 1) {
-          Navigator.pushReplacementNamed(context, '/home');
+          Navigator.pushReplacementNamed(context, '/challenges');
         }
       });
     }
