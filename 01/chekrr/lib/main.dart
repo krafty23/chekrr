@@ -1,5 +1,26 @@
 import 'package:flutter/material.dart';
+import 'loading_screen.dart';
 import 'home.dart';
+import 'myplan.dart';
 import 'profile.dart';
+import 'settings.dart';
+//import 'profile.dart';
 
-void main() => runApp(const MyApp());
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData.dark(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => LoadingScreen(),
+        '/home': (context) => HomeScreen(),
+        '/myplan': (context) => MyPlanScreen(),
+        '/profile': (context) => ProfileScreen(),
+        '/settings': (context) => SettingsScreen(),
+      },
+    );
+  }
+}

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:chekrr/drawer.dart';
 import 'bottomtab.dart';
 
-class ProfileScreen extends StatefulWidget {
+class SettingsScreen extends StatefulWidget {
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  _SettingsScreenState createState() => _SettingsScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _SettingsScreenState extends State<SettingsScreen> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -19,12 +20,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: DrawerDraw(),
       body: Center(
         child: ElevatedButton(
           onPressed: () {
             //Get the current location
           },
-          child: Text('Profile'),
+          child: Text('settings'),
         ),
       ),
       bottomNavigationBar: BottomTabs(),
