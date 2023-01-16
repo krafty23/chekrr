@@ -50,6 +50,7 @@ class _LoginPage extends State<LoginPage> {
             globals.isLoggedIn = true;
             globals.uid = jsondata["uid"];
             globals.fullname = jsondata["fullname"];
+            globals.foto_filename = jsondata["foto_filename"];
           });
           //save the data returned from server
           //and navigate to home page
