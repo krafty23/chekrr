@@ -106,8 +106,8 @@ class _LoginPage extends State<LoginPage> {
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
             colors: [
-              Colors.deepPurple,
-              Colors.purple,
+              Color.fromRGBO(48, 48, 48, 1),
+              Color.fromRGBO(150, 150, 150, 1),
             ],
           ),
         ), //show linear gradient background of page
@@ -117,7 +117,7 @@ class _LoginPage extends State<LoginPage> {
           Container(
             margin: EdgeInsets.only(top: 80),
             child: Text(
-              "Sign Into System",
+              "Vítejte",
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 40,
@@ -127,7 +127,7 @@ class _LoginPage extends State<LoginPage> {
           Container(
             margin: EdgeInsets.only(top: 10),
             child: Text(
-              "Sign In using Email and Password",
+              "Přihlašte se do systému",
               style: TextStyle(color: Colors.white, fontSize: 15),
             ), //subtitle text
           ),
@@ -144,7 +144,8 @@ class _LoginPage extends State<LoginPage> {
             margin: EdgeInsets.only(top: 10),
             child: TextField(
               controller: _username, //set username controller
-              style: TextStyle(color: Colors.orange[100], fontSize: 20),
+              style: TextStyle(
+                  color: Color.fromARGB(255, 216, 216, 216), fontSize: 20),
               decoration: myInputDecoration(
                 label: "Username",
                 icon: Icons.person,
@@ -159,7 +160,8 @@ class _LoginPage extends State<LoginPage> {
             padding: EdgeInsets.all(10),
             child: TextField(
               controller: _password, //set password controller
-              style: TextStyle(color: Colors.orange[100], fontSize: 20),
+              style: TextStyle(
+                  color: Color.fromRGBO(218, 218, 218, 1), fontSize: 20),
               obscureText: true,
               decoration: myInputDecoration(
                 label: "Password",
@@ -190,9 +192,9 @@ class _LoginPage extends State<LoginPage> {
                         height: 30,
                         width: 30,
                         child: CircularProgressIndicator(
-                          backgroundColor: Colors.orange[100],
+                          backgroundColor: Color.fromRGBO(194, 194, 194, 0.658),
                           valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.deepOrangeAccent),
+                              Color.fromRGBO(95, 95, 95, 1)),
                         ),
                       )
                     : Text(
@@ -231,30 +233,32 @@ class _LoginPage extends State<LoginPage> {
       {required String label, required IconData icon}) {
     return InputDecoration(
       hintText: label, //show label as placeholder
-      hintStyle:
-          TextStyle(color: Colors.orange[100], fontSize: 20), //hint text style
+      hintStyle: TextStyle(
+          color: Color.fromRGBO(196, 196, 196, 1),
+          fontSize: 20), //hint text style
       prefixIcon: Padding(
           padding: EdgeInsets.only(left: 20, right: 10),
           child: Icon(
             icon,
-            color: Colors.orange[100],
+            color: Color.fromRGBO(255, 255, 255, 1),
           )
           //padding and icon for prefix
           ),
 
       contentPadding: EdgeInsets.fromLTRB(30, 20, 30, 20),
       enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(5),
           borderSide: BorderSide(
-              color: (Colors.orange[300])!,
+              color: (Color.fromRGBO(194, 194, 194, 1))!,
               width: 1)), //default border of input
 
       focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(5),
           borderSide: BorderSide(
-              color: (Colors.orange[200])!, width: 1)), //focus border
+              color: (Color.fromRGBO(207, 207, 207, 1))!,
+              width: 1)), //focus border
 
-      fillColor: Color.fromRGBO(251, 140, 0, 0.5),
+      fillColor: Color.fromRGBO(167, 167, 167, 0.342),
       filled: true, //set true if you want to show input background
     );
   }
@@ -265,9 +269,10 @@ class _LoginPage extends State<LoginPage> {
       padding: EdgeInsets.all(15.00),
       margin: EdgeInsets.only(bottom: 10.00),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          color: Colors.red,
-          border: Border.all(color: (Colors.red[300])!, width: 2)),
+          borderRadius: BorderRadius.circular(10),
+          color: Color.fromRGBO(244, 67, 54, 0.507),
+          border: Border.all(
+              color: (Color.fromRGBO(231, 50, 50, 0.575))!, width: 2)),
       child: Row(children: <Widget>[
         Container(
           margin: EdgeInsets.only(right: 6.00),

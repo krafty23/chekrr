@@ -118,7 +118,9 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                         child: Container(
                             color: Colors.green,
                             child: Center(
-                              child: Icon(Icons.check_circle),
+                              child: Icon(
+                                Icons.check,
+                              ),
                             )));
                   },
                   endSwipeActionsBuilder:
@@ -128,11 +130,16 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                           employeeDataSource._employeeDataGridRows
                               .removeAt(rowIndex);
                           employeeDataSource.updateDataGrid();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Označeno jako nesplněné'),
+                            ),
+                          );
                         },
                         child: Container(
                             color: Colors.redAccent,
                             child: Center(
-                              child: Icon(Icons.cancel),
+                              child: Icon(Icons.close),
                             )));
                   },
                   source: employeeDataSource,

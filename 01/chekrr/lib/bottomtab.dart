@@ -52,8 +52,8 @@ class _BottomTabsState extends State<BottomTabs> {
       ],
       currentIndex: _selectedIndex,
       selectedItemColor: Colors.white,
-      unselectedItemColor: Color.fromRGBO(203, 135, 235, 1),
-      backgroundColor: Color.fromRGBO(156, 23, 245, 0.151),
+      unselectedItemColor: Color(0xFF707070),
+      backgroundColor: Color.fromRGBO(238, 238, 238, 0.144),
       onTap: _onItemTapped,
     );
   }
