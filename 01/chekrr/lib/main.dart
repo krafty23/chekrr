@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mysql1/mysql1.dart';
 import 'globals.dart' as globals;
 import 'loading_screen.dart';
+import 'login.dart';
 import 'home.dart';
 import 'myplan.dart';
 import 'profile.dart';
@@ -17,7 +19,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark(),
       initialRoute: '/',
       routes: {
-        '/': (context) => LoadingScreen(),
+        //'/': (context) => LoadingScreen(),
+        '/': (context) => LoginPage(),
         '/home': (context) => HomeScreen(),
         '/myplan': (context) => MyPlanScreen(),
         '/profile': (context) => ProfileScreen(),

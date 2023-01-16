@@ -12,6 +12,11 @@ class _BottomTabsState extends State<BottomTabs> {
     dynamic cesta = ModalRoute.of(context)?.settings.name;
     if (cesta == '/home') {
       setState(() {
+        _selectedIndex = 0;
+      });
+    }
+    if (cesta == '/challenges') {
+      setState(() {
         _selectedIndex = 1;
       });
     }

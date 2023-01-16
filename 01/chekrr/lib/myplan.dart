@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'globals.dart' as globals;
 import 'package:chekrr/drawer.dart';
 import 'bottomtab.dart';
 
@@ -26,7 +27,7 @@ class _MyPlanScreenState extends State<MyPlanScreen> {
           onPressed: () {
             //Get the current location
           },
-          child: Text('myplan'),
+          child: Text('myplan' + globals.uid.toString()),
         ),
       ),
       bottomNavigationBar: BottomTabs(),
