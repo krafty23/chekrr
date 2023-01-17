@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'globals.dart' as globals;
+import 'package:mysql1/mysql1.dart';
 import 'bottomtab.dart';
 
 class AddTaskScreen extends StatefulWidget {
@@ -113,6 +117,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> with RestorationMixin {
     });
   }
 
+  final String test = 'Hovnajs';
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -123,9 +129,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> with RestorationMixin {
             icon: const Icon(Icons.save),
             tooltip: 'Uložit výzvu',
             onPressed: () {
+              AddTask();
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
+                SnackBar(
                   content: Text('Výzva vložena'),
+                  //content: Text(AddTask()),
                 ),
               );
               Navigator.pushNamed(context, '/myplan');
@@ -474,4 +482,11 @@ InputDecoration myInputDecoration(
     fillColor: Color.fromARGB(33, 167, 167, 167),
     filled: true, //set true if you want to show input background
   );
+}
+
+Future AddTask() async {
+  var conn = await MySqlConnection.connect(globals.dbSettings);
+  var result = await conn.query(
+      'insert into chekrr_tasks (user_id,name,author,last_editor,created,changed) values (23, "Jardovo task",23,23,NOW(),NOW())');
+  return 'Výzva vložena';
 }

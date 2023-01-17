@@ -10,9 +10,9 @@ int SelectedState = 1;
 var globalProtocol = 'https://';
 var globalURL = 'chekrr.cz';
 var dbSettings = new ConnectionSettings(
-  host: 'localhost',
+  host: 'chekrr.cz',
   port: 3306,
-  user: 'root',
+  user: 'krafty',
   password: 'kompucha',
-  db: 'kralovskamedialni',
+  db: 'chekrr',
 );
