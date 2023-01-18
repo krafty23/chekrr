@@ -38,6 +38,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: ^4.6.5
   get_storage: ^2.0.3
+  mysql1: ^0.20.0
+  http: ^0.13.5
 
 dev_dependencies:
   flutter_test:

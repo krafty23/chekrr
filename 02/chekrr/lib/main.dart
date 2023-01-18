@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/',
           page: () => HomeScreen(),
-          transition: Transition.leftToRightWithFade,
+          transition: Transition.fade,
         ),
         GetPage(
           name: '/add_task',
