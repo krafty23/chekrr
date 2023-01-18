@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
+import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
 import 'globals.dart' as globals;
 import 'package:chekrr/drawer.dart';
 import 'bottomtab.dart';
@@ -7,6 +9,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:property_change_notifier/property_change_notifier.dart';
 
 class MyPlanScreen extends StatefulWidget {
   const MyPlanScreen({Key? key}) : super(key: key);
@@ -20,12 +23,20 @@ class _MyPlanScreenState extends State<MyPlanScreen> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   late EmployeeDataSource employeeDataSource;
   late List<GridColumn> _columns;
-
+  Map<String, dynamic> body = {
+    'uid': globals.uid.toString(),
+  };
   Future<Object> generateEmployeeList() async {
     var url = Uri.parse(globals.globalProtocol +
         globals.globalURL +
-        '/api/index.php/users/list');
-    final response = await http.get(url);
+        '/api/index.php/task/list');
+    final response = await http.post(url,
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
+          //'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: body);
     var list = json.decode(response.body);
 
     // Convert the JSON to List collection.
@@ -55,6 +66,17 @@ class _MyPlanScreenState extends State<MyPlanScreen> {
           alignment: Alignment.center,
           child: Text(
             'Name',
+          ),
+        ),
+      ),
+      GridColumn(
+        columnName: 'status',
+        width: 0,
+        label: Container(
+          padding: EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: Text(
+            'Status',
           ),
         ),
       ),
@@ -95,6 +117,7 @@ class _MyPlanScreenState extends State<MyPlanScreen> {
         builder: (context, data) {
           return data.hasData
               ? SfDataGrid(
+                  allowPullToRefresh: true,
                   allowSwiping: true,
                   swipeMaxOffset: 100.0,
                   startSwipeActionsBuilder:
@@ -174,6 +197,7 @@ class EmployeeDataSource extends DataGridSource {
         .map<DataGridRow>((e) => DataGridRow(cells: [
               DataGridCell<int>(columnName: 'id', value: e.id),
               DataGridCell<String>(columnName: 'name', value: e.name),
+              DataGridCell<int>(columnName: 'status', value: e.status),
             ]))
         .toList();
   }
@@ -197,6 +221,13 @@ class EmployeeDataSource extends DataGridSource {
     }).toList());
   }
 
+  void updateDataGridSource({required RowColumnIndex rowColumnIndex}) {
+    notifyDataSourceListeners(rowColumnIndex: rowColumnIndex);
+  }
+
+  Map<String, dynamic> body = {
+    'uid': globals.uid.toString(),
+  };
   void updateDataGrid() {
     notifyListeners();
   }
@@ -205,16 +236,19 @@ class EmployeeDataSource extends DataGridSource {
 class Employee {
   int id;
   String name;
+  int status;
 
-  Employee({required this.id, required this.name});
+  Employee({required this.id, required this.name, required this.status});
 
   factory Employee.fromJson(Map<String, dynamic> json) {
     return Employee(
       id: int.parse(json['id']),
       name: json['name'] as String,
+      status: int.parse(json['status']),
     );
   }
 }
+
 /*
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -223,5 +257,4 @@ class MyHttpOverrides extends HttpOverrides {
       ..badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
   }
-}
-*/
+}*/

@@ -24,7 +24,7 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
   Future<Object> generateEmployeeList() async {
     var url = Uri.parse(globals.globalProtocol +
         globals.globalURL +
-        '/api/index.php/users/list');
+        '/api/index.php/user/list');
     final response = await http.get(url);
     var list = json.decode(response.body);
 
@@ -179,8 +179,7 @@ class EmployeeDataSource extends DataGridSource {
         .map<DataGridRow>((e) => DataGridRow(cells: [
               DataGridCell<int>(columnName: 'id', value: e.id),
               DataGridCell<String>(columnName: 'name', value: e.name),
-              DataGridCell<String>(columnName: 'username', value: e.username),
-              DataGridCell<int>(columnName: 'salary', value: 1),
+              DataGridCell<int>(columnName: 'status', value: e.status),
             ]))
         .toList();
   }
@@ -212,21 +211,20 @@ class EmployeeDataSource extends DataGridSource {
 class Employee {
   int id;
   String name;
-  String username;
-  int salary;
+  int status;
 
-  Employee(
-      {required this.id,
-      required this.name,
-      required this.username,
-      required this.salary});
+  Employee({
+    required this.id,
+    required this.name,
+    required this.status,
+  });
 
   factory Employee.fromJson(Map<String, dynamic> json) {
     return Employee(
-        id: int.parse(json['id']),
-        name: json['name'] as String,
-        username: json['username'] as String,
-        salary: int.parse('1'));
+      id: int.parse(json['id']),
+      name: json['name'] as String,
+      status: int.parse(json['status']),
+    );
   }
 }
 /*

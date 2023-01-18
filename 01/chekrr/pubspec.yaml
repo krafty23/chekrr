@@ -40,6 +40,8 @@ dependencies:
   syncfusion_flutter_datagrid: ^20.4.43
   http: ^0.13.5
   sqflite: ^2.2.3
+  property_change_notifier: ^0.3.0
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:

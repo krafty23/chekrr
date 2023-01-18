@@ -9,4 +9,3 @@ var foto_filename = '';
 int SelectedState = 1;
 var globalProtocol = 'https://';
 var globalURL = 'chekrr.cz';
-

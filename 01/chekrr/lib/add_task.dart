@@ -1,9 +1,16 @@
 import 'dart:async';
-
+import 'dart:ffi';
+import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 import 'globals.dart' as globals;
 import 'package:mysql1/mysql1.dart';
 import 'bottomtab.dart';
+import 'package:property_change_notifier/property_change_notifier.dart';
+//import 'dart:developer'
 
 class AddTaskScreen extends StatefulWidget {
   AddTaskScreen({super.key, this.restorationId});
@@ -13,6 +20,8 @@ class AddTaskScreen extends StatefulWidget {
 }
 
 class _AddTaskScreenState extends State<AddTaskScreen> with RestorationMixin {
+  final _formKey = GlobalKey<FormState>();
+  final myController = TextEditingController();
   String errormsg = '';
   bool isChecked = false;
   bool error = false, showprogress = false;
@@ -38,6 +47,17 @@ class _AddTaskScreenState extends State<AddTaskScreen> with RestorationMixin {
     '18',
     '19',
   ];
+  List<DropdownMenuItem<String>> get dropdownItems {
+    List<DropdownMenuItem<String>> menuItems = [
+      DropdownMenuItem(child: Text("dnů"), value: "1"),
+      DropdownMenuItem(child: Text("týdnů"), value: "2"),
+      DropdownMenuItem(child: Text("měsíců"), value: "3"),
+      DropdownMenuItem(child: Text("let"), value: "4"),
+    ];
+    return menuItems;
+  }
+
+  String selectedValue = "1";
   static const List<String> list = <String>['dnů', 'týdnů', 'měsíců', 'let'];
   String dropdownValue2 = timecount.first;
   String dropdownValue = list.first;
@@ -111,6 +131,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> with RestorationMixin {
     return null;
   }
 
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myController.dispose();
+    super.dispose();
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -129,14 +156,24 @@ class _AddTaskScreenState extends State<AddTaskScreen> with RestorationMixin {
             icon: const Icon(Icons.save),
             tooltip: 'Uložit výzvu',
             onPressed: () {
-              AddTask();
+              /*showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    // Retrieve the text the that user has entered by using the
+                    // TextEditingController.
+                    content: Text(myController.text),
+                  );
+                },
+              );*/
+              AddTask(myController.text, dropdownValue2, dropdownValue);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('Výzva vložena'),
                   //content: Text(AddTask()),
                 ),
               );
-              Navigator.pushNamed(context, '/myplan');
+              Navigator.pushReplacementNamed(context, '/myplan');
             },
           ),
         ],
@@ -156,7 +193,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> with RestorationMixin {
             padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
             margin: EdgeInsets.only(top: 0),
             child: TextField(
-              //controller: _username, //set username controller
+              controller: myController, //set username controller
               style: TextStyle(
                 //color: Color.fromARGB(255, 216, 216, 216),
                 fontSize: 20,
@@ -392,7 +429,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> with RestorationMixin {
                 Padding(
                   padding: EdgeInsets.all(10),
                   child: DropdownButton<String>(
-                    value: dropdownValue,
+                    items: dropdownItems,
+                    value: selectedValue,
                     icon: const Icon(Icons.arrow_downward),
                     elevation: 16,
                     style: const TextStyle(
@@ -409,12 +447,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> with RestorationMixin {
                         dropdownValue = value!;
                       });
                     },
-                    items: list.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
                   ),
                 ),
               ],
@@ -445,7 +477,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> with RestorationMixin {
           ),
         ],
       ),
-      bottomNavigationBar: BottomTabs(),
+      //bottomNavigationBar: BottomTabs(),
     );
   }
 }
@@ -484,9 +516,60 @@ InputDecoration myInputDecoration(
   );
 }
 
-Future AddTask() async {
+class TaskDetails {
+  String name;
+  int uid;
+  var schedule_count;
+  var schedule_unit;
+
+  TaskDetails(this.name, this.uid, this.schedule_count, this.schedule_unit);
+
+  @override
+  String toString() {
+    return '{ ${this.name}, ${this.uid} }';
+  }
+}
+
+Future<http.Response> AddTask(
+    String name, var schedule_count, var schedule_unit) async {
   var conn = await MySqlConnection.connect(globals.dbSettings);
-  var result = await conn.query(
-      'insert into chekrr_tasks (user_id,name,author,last_editor,created,changed) values (23, "Jardovo task",23,23,NOW(),NOW())');
-  return 'Výzva vložena';
+  final task = TaskDetails(name, globals.uid, schedule_count, schedule_unit);
+  /*Map<String, dynamic> body = {
+    'name': name,
+    'uid': 30,
+    'homeTeam': json.encode(
+      {'team': 'Team A'},
+    ),
+    'awayTeam': json.encode(
+      {'team': 'Team B'},
+    ),
+  };*/
+  Map<String, dynamic> body = {
+    'name': name,
+    'uid': globals.uid.toString(),
+    'schedule_count': schedule_count,
+    'schedule_unit': schedule_unit
+  };
+  //debugPrint(body.toString());
+  //final response = await http.get(url);
+  final response =
+      await http.post(Uri.parse('https://chekrr.cz/api/add_task.php'),
+          headers: <String, String>{
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+            //'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: body);
+  if (response.statusCode == 200) {
+    // if server response 200 / OK
+    //return jsonDecode(response.body);
+  } else {
+    // If the server did not return a 201 CREATED response,
+    // then throw an exception.
+    throw Exception('Failed to create task - ' +
+        response.body +
+        ' / ' +
+        response.statusCode.toString());
+  }
+  return response;
 }
