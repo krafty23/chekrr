@@ -173,7 +173,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> with RestorationMixin {
                   //content: Text(AddTask()),
                 ),
               );
-              Navigator.pushReplacementNamed(context, '/myplan');
+              Navigator.pop(context);
             },
           ),
         ],
