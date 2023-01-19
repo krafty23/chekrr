@@ -23,8 +23,8 @@ class HomeScreen extends StatelessWidget {
       drawer: DrawerDraw(),
       body: Container(
         child: Obx(
-          () => ListView.separated(
-            separatorBuilder: (_, __) => Divider(),
+          () => ListView.builder(
+            //separatorBuilder: (_, __) => Divider(),
             itemCount: taskController.tasks.length,
             itemBuilder: (context, index) => Dismissible(
               confirmDismiss: (direction) async {
@@ -59,6 +59,7 @@ class HomeScreen extends StatelessWidget {
                       duration: const Duration(seconds: 2),
                     ),
                   );
+                  return delete;
                 }
               },
               onDismissed: (_) {
@@ -96,6 +97,7 @@ class HomeScreen extends StatelessWidget {
               ),
               key: UniqueKey(),
               child: ListTile(
+                visualDensity: VisualDensity(vertical: 3),
                 title: Text(
                   taskController.tasks[index].name,
                   /*style: TextStyle(
@@ -107,13 +109,23 @@ class HomeScreen extends StatelessWidget {
                     index: index,
                   ));*/
                 },
-                leading: Icon(
-                  Icons.chevron_left,
-                  color: Colors.red,
+                leading: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      Icons.chevron_left,
+                      color: Colors.red,
+                    ),
+                  ],
                 ),
-                trailing: Icon(
-                  Icons.chevron_right,
-                  color: Colors.green,
+                trailing: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      Icons.chevron_right,
+                      color: Colors.green,
+                    ),
+                  ],
                 ),
               ),
             ),
