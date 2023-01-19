@@ -73,13 +73,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   /*final int index;
   AddTaskScreen({this.index});*/
   @override
+  TextEditingController textEditingController = TextEditingController();
   Widget build(BuildContext context) {
     String name = '';
     /*if (!this.index.isNull) {
       name = taskController.tasks[index].name;
     }*/
-    TextEditingController textEditingController =
-        TextEditingController(text: name);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Vložit výzvu'),
@@ -100,7 +100,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   fontSize: 25.0,
                 ),
                 keyboardType: TextInputType.multiline,
-                maxLines: 999,
+                maxLines: 100,
               ),
             ),
             Container(
@@ -404,7 +404,8 @@ Future<http.Response> AddTask(
   };*/
   Map<String, dynamic> body = {
     'name': name,
-    'uid': globals.uid.toString(),
+    //'uid': globals.uid.toString(),
+    'uid': 23,
     'schedule_count': schedule_count,
     'schedule_unit': schedule_unit
   };

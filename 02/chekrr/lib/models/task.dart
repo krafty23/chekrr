@@ -1,17 +1,28 @@
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+List<Task> TaskFromJson(String str) =>
+    List<Task>.from(json.decode(str).map((x) => Task.fromJson(x)));
+
+String TaskToJson(List<Task> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 class Task {
   String name;
   int status;
+  int id;
 
-  Task({this.name = '', this.status = 0});
-
+  Task({this.name = '', this.status = 0, this.id = 0});
   factory Task.fromJson(Map<String, dynamic> json) => Task(
-        name: json['name'],
-        status: json['status'],
+        name: json['name'] as String,
+        status: int.tryParse(json['status']) as int,
+        id: int.tryParse(json['id']) as int,
       );
 
   Map<String, dynamic> toJson() => {
         'name': name,
         'status': status,
+        'id': id,
       };
 }
 
