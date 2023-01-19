@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '/screens/HomeScreen.dart';
 import '/screens/add_task.dart';
+import '/screens/settings.dart';
 
 void main() async {
   await GetStorage.init();
@@ -25,6 +26,11 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/add_task',
           page: () => AddTaskScreen(),
+          transition: Transition.downToUp,
+        ),
+        GetPage(
+          name: '/settings',
+          page: () => SettingsScreen(),
           transition: Transition.downToUp,
         ),
       ],

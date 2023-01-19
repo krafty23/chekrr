@@ -27,6 +27,73 @@ class HomeScreen extends StatelessWidget {
             separatorBuilder: (_, __) => Divider(),
             itemCount: taskController.tasks.length,
             itemBuilder: (context, index) => Dismissible(
+              confirmDismiss: (direction) async {
+                bool delete = true;
+                if (direction == DismissDirection.startToEnd) {
+                  /*setState(() {
+                    flavors[index] =
+                        flavor.copyWith(isFavorite: !flavor.isFavorite);
+                  });*/
+                  Get.showSnackbar(
+                    GetSnackBar(
+                      title: 'Gratulace!',
+                      message: 'Výzva splněna',
+                      icon: const Icon(
+                        Icons.check,
+                        color: Colors.green,
+                      ),
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                  return delete;
+                } else {
+                  bool delete = true;
+                  Get.showSnackbar(
+                    GetSnackBar(
+                      title: 'Příště to vyjde!',
+                      message: 'Výzva nesplněna',
+                      icon: const Icon(
+                        Icons.cancel,
+                        color: Colors.red,
+                      ),
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                }
+              },
+              onDismissed: (_) {
+                Get.showSnackbar(
+                  GetSnackBar(
+                    title: 'Hovno!',
+                    message: 'Ser na to',
+                    icon: const Icon(
+                      Icons.percent,
+                      color: Colors.green,
+                    ),
+                    duration: const Duration(seconds: 2),
+                  ),
+                );
+              },
+              background: Container(
+                color: Colors.green,
+                child: Align(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16),
+                    child: Icon(Icons.check_circle),
+                  ),
+                  alignment: Alignment.centerLeft,
+                ),
+              ),
+              secondaryBackground: Container(
+                color: Colors.red,
+                child: Align(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 16),
+                    child: Icon(Icons.cancel),
+                  ),
+                  alignment: Alignment.centerRight,
+                ),
+              ),
               key: UniqueKey(),
               child: ListTile(
                 title: Text(
@@ -40,15 +107,14 @@ class HomeScreen extends StatelessWidget {
                     index: index,
                   ));*/
                 },
-                leading: Checkbox(
-                  value: true,
-                  onChanged: (v) {
-                    var changed = taskController.tasks[index];
-                    //changed.status = v;
-                    taskController.tasks[index] = changed;
-                  },
+                leading: Icon(
+                  Icons.chevron_left,
+                  color: Colors.red,
                 ),
-                trailing: Icon(Icons.chevron_right),
+                trailing: Icon(
+                  Icons.chevron_right,
+                  color: Colors.green,
+                ),
               ),
             ),
           ),
