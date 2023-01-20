@@ -94,138 +94,141 @@ class _LoginPage extends State<LoginPage> {
             ));
     return Scaffold(
       body: SingleChildScrollView(
-          child: Container(
-        constraints:
-            BoxConstraints(minHeight: MediaQuery.of(context).size.height
-                //set minimum height equal to 100% of VH
-                ),
-        width: MediaQuery.of(context).size.width,
-        //make width of outer wrapper to 100%
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Color.fromRGBO(48, 48, 48, 1),
-              Color.fromRGBO(150, 150, 150, 1),
-            ],
-          ),
-        ), //show linear gradient background of page
+        child: Container(
+          constraints:
+              BoxConstraints(minHeight: MediaQuery.of(context).size.height
+                  //set minimum height equal to 100% of VH
+                  ),
+          width: MediaQuery.of(context).size.width,
+          //make width of outer wrapper to 100%
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [
+                Color.fromRGBO(48, 48, 48, 1),
+                Color.fromRGBO(150, 150, 150, 1),
+              ],
+            ),
+          ), //show linear gradient background of page
 
-        padding: EdgeInsets.all(20),
-        child: Column(children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(top: 80),
-            child: Text(
-              "Vítejte",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold),
-            ), //title text
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 10),
-            child: Text(
-              "Přihlašte se do systému",
-              style: TextStyle(color: Colors.white, fontSize: 15),
-            ), //subtitle text
-          ),
-          Container(
-            //show error message here
-            margin: EdgeInsets.only(top: 30),
-            padding: EdgeInsets.all(10),
-            child: error ? errmsg(errormsg) : Container(),
-            //if error == true then show error message
-            //else set empty container as child
-          ),
-          Container(
-            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-            margin: EdgeInsets.only(top: 10),
-            child: TextField(
-              controller: _username, //set username controller
-              style: TextStyle(
-                  color: Color.fromARGB(255, 216, 216, 216), fontSize: 20),
-              decoration: myInputDecoration(
-                label: "Username",
-                icon: Icons.person,
-              ),
-              onChanged: (value) {
-                //set username  text on change
-                username = value;
-              },
+          padding: EdgeInsets.all(20),
+          child: Column(children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(top: 80),
+              child: Text(
+                "Vítejte",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold),
+              ), //title text
             ),
-          ),
-          Container(
-            padding: EdgeInsets.all(10),
-            child: TextField(
-              controller: _password, //set password controller
-              style: TextStyle(
-                  color: Color.fromRGBO(218, 218, 218, 1), fontSize: 20),
-              obscureText: true,
-              decoration: myInputDecoration(
-                label: "Password",
-                icon: Icons.lock,
-              ),
-              onChanged: (value) {
-                // change password text
-                password = value;
-              },
+            Container(
+              margin: EdgeInsets.only(top: 10),
+              child: Text(
+                "Přihlašte se do systému",
+                style: TextStyle(color: Colors.white, fontSize: 15),
+              ), //subtitle text
             ),
-          ),
-          Container(
-            padding: EdgeInsets.all(10),
-            margin: EdgeInsets.only(top: 20),
-            child: SizedBox(
-              height: 60,
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    //show progress indicator on click
-                    showprogress = true;
-                  });
-                  startLogin();
+            Container(
+              //show error message here
+              margin: EdgeInsets.only(top: 30),
+              padding: EdgeInsets.all(10),
+              child: error ? errmsg(errormsg) : Container(),
+              //if error == true then show error message
+              //else set empty container as child
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+              margin: EdgeInsets.only(top: 10),
+              child: TextField(
+                controller: _username, //set username controller
+                style: TextStyle(
+                    color: Color.fromARGB(255, 216, 216, 216), fontSize: 20),
+                decoration: myInputDecoration(
+                  label: "Username",
+                  icon: Icons.person,
+                ),
+                onChanged: (value) {
+                  //set username  text on change
+                  username = value;
                 },
-                child: showprogress
-                    ? SizedBox(
-                        height: 30,
-                        width: 30,
-                        child: CircularProgressIndicator(
-                          backgroundColor: Color.fromRGBO(194, 194, 194, 0.658),
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              Color.fromRGBO(95, 95, 95, 1)),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(10),
+              child: TextField(
+                controller: _password, //set password controller
+                style: TextStyle(
+                    color: Color.fromRGBO(218, 218, 218, 1), fontSize: 20),
+                obscureText: true,
+                decoration: myInputDecoration(
+                  label: "Password",
+                  icon: Icons.lock,
+                ),
+                onChanged: (value) {
+                  // change password text
+                  password = value;
+                },
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(10),
+              margin: EdgeInsets.only(top: 20),
+              child: SizedBox(
+                height: 60,
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      //show progress indicator on click
+                      showprogress = true;
+                    });
+                    startLogin();
+                  },
+                  child: showprogress
+                      ? SizedBox(
+                          height: 30,
+                          width: 30,
+                          child: CircularProgressIndicator(
+                            backgroundColor:
+                                Color.fromRGBO(194, 194, 194, 0.658),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Color.fromRGBO(95, 95, 95, 1)),
+                          ),
+                        )
+                      : Text(
+                          "LOGIN NOW",
+                          style: TextStyle(fontSize: 20),
                         ),
-                      )
-                    : Text(
-                        "LOGIN NOW",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                // if showprogress == true then show progress indicator
-                // else show "LOGIN NOW" text
-                //colorBrightness: Brightness.dark,
-                //color: Colors.orange,
-                /*shape: RoundedRectangleBorder(
+                  // if showprogress == true then show progress indicator
+                  // else show "LOGIN NOW" text
+                  //colorBrightness: Brightness.dark,
+                  //color: Colors.orange,
+                  /*shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30)
                     //button corner radius
                     ),*/
+                ),
               ),
             ),
-          ),
-          Container(
-            padding: EdgeInsets.all(10),
-            margin: EdgeInsets.only(top: 20),
-            child: InkResponse(
+            Container(
+              padding: EdgeInsets.all(10),
+              margin: EdgeInsets.only(top: 20),
+              child: InkResponse(
                 onTap: () {
                   //action on tap
                 },
                 child: Text(
                   "Forgot Password? Troubleshoot",
                   style: TextStyle(color: Colors.white, fontSize: 18),
-                )),
-          )
-        ]),
-      )),
+                ),
+              ),
+            )
+          ]),
+        ),
+      ),
     );
   }
 

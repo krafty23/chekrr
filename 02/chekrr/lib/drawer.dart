@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'globals.dart' as globals;
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class DrawerDraw extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final box = GetStorage();
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -31,10 +33,40 @@ class DrawerDraw extends StatelessWidget {
             ),
           ),
           ListTile(
+            leading: Icon(Icons.check),
+            title: Text('Můj plán dne'),
+            onTap: () {
+              //Navigator.pushReplacementNamed(context, '/settings');
+              Get.toNamed('/home');
+            },
+          ),
+          ListTile(
             leading: Icon(Icons.list),
             title: Text('Výzvy'),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.people),
+            title: Text('Lidé'),
+            onTap: () {
+              Get.toNamed('/history');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.person),
+            title: Text('Profil'),
+            onTap: () {
+              //Navigator.pushReplacementNamed(context, '/settings');
+              Get.toNamed('/settings');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.history),
+            title: Text('Historie'),
+            onTap: () {
+              Get.toNamed('/history');
             },
           ),
           ListTile(
@@ -43,6 +75,14 @@ class DrawerDraw extends StatelessWidget {
             onTap: () {
               //Navigator.pushReplacementNamed(context, '/settings');
               Get.toNamed('/settings');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.logout),
+            title: Text('Odhlásit'),
+            onTap: () {
+              box.write('isloggedin', false);
+              Get.offAllNamed('/login');
             },
           ),
         ],

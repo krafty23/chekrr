@@ -28,7 +28,7 @@ class _BottomTabsState extends State<BottomTabs> {
         _selectedIndex = index;
         if (index == 0) {
           //Navigator.pushReplacementNamed(context, '/myplan');
-          Get.toNamed('/');
+          Get.toNamed('/home');
         }
         if (index == 1) {
           //Navigator.pushReplacementNamed(context, '/challenges');

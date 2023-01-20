@@ -2,6 +2,7 @@ import 'package:chekrr/screens/HomeScreen.dart';
 import "package:flutter/material.dart";
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import '../globals.dart' as globals;
 import '../controllers/TaskController.dart';
 import '../models/task.dart';
@@ -15,7 +16,7 @@ class AddTaskScreen extends StatefulWidget {
 }
 
 class _AddTaskScreenState extends State<AddTaskScreen> {
-  final TaskController taskController = Get.find();
+  //final TaskController taskController = Get.put(TaskController());
   static const List<String> timecount = <String>[
     '1',
     '2',
@@ -79,7 +80,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     /*if (!this.index.isNull) {
       name = taskController.tasks[index].name;
     }*/
-
+    final box = GetStorage();
+    var uid = box.read('uid');
     return Scaffold(
       appBar: AppBar(
         title: Text('Vložit výzvu'),
@@ -361,21 +363,20 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     //child: Text((this.index.isNull) ? 'Add' : 'Edit'),
                     onPressed: () {
                       /*if (this.index.isNull) {*/
-                      taskController.tasks
-                          .add(Task(name: textEditingController.text));
+                      /*taskController.tasks
+                          .add(Task(name: textEditingController.text));*/
                       AddTask(
                         textEditingController.text,
+                        uid,
                         dropdownValue2,
                         selectedValue,
-                      );
+                      ).then((value) => Get.offAllNamed('/home'));
                       /*
                     } else {
                       var editing = todoController.todos[index];
                       editing.text = textEditingController.text;
                       todoController.todos[index] = editing;
                     }*/
-
-                      Get.back();
                     },
                   ),
                 ),
@@ -389,9 +390,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 }
 
 Future<http.Response> AddTask(
-    String name, var schedule_count, var schedule_unit) async {
+    String name, var uid, var schedule_count, var schedule_unit) async {
   var conn = await MySqlConnection.connect(globals.dbSettings);
-  final task = TaskDetails(name, globals.uid, schedule_count, schedule_unit);
+  //final task = TaskDetails(name, globals.uid, schedule_count, schedule_unit);
+  final task = TaskDetails(name, uid, schedule_count, schedule_unit);
   /*Map<String, dynamic> body = {
     'name': name,
     'uid': 30,
@@ -405,7 +407,7 @@ Future<http.Response> AddTask(
   Map<String, dynamic> body = {
     'name': name,
     //'uid': globals.uid.toString(),
-    'uid': 23,
+    'uid': uid.toString(),
     'schedule_count': schedule_count,
     'schedule_unit': schedule_unit
   };

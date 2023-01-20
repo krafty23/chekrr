@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:mysql1/mysql1.dart';
 import 'dart:io';
+import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import '../globals.dart' as globals;
 import '../controllers/TaskController.dart';
@@ -23,18 +24,16 @@ class _HomeScreenState extends State<HomeScreen> {
 //class HomeScreen extends StatelessWidget {
   late Future<List<Task>> _future;
   Future<List<Task>> getTask() async {
+    final box = GetStorage();
+    var uid = box.read('uid');
     try {
-      //http.Response response = await http.post(
-      // "https://***************.000webhostapp.com/*************.php",
-      // );
       Map<String, dynamic> requestbody = {
         //'uid': globals.uid.toString(),
-        'uid': "23",
+        'uid': uid.toString(),
       };
       var url = Uri.parse(globals.globalProtocol +
           globals.globalURL +
           '/api/index.php/task/list');
-      print(url);
       http.Response response = await http.post(
           Uri.parse(globals.globalProtocol +
               globals.globalURL +
@@ -45,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
             //'Content-Type': 'application/json; charset=UTF-8',
           },
           body: requestbody);
-      print(response.body);
+      //print(response.body);
       /*String jsonString = '''
       [{"id":1,"name":"PAKISTANI","status":0},{"id":3,"name":"INDIAN","status":0},{"id":4,"name":"abc","status":0},{"id":5,"name":"def","status":0},{"id":6,"name":"hi","status":0}]
       ''';*/
@@ -62,14 +61,25 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  late GlobalKey<ScaffoldState> _scaffoldKey;
   @override
   void initState() {
-    _future = getTask();
+    _scaffoldKey = GlobalKey();
     super.initState();
+    _future = getTask();
   }
+
+  @override
+  /*void reassemble() {
+    super.initState();
+    _future = getTask();
+    _scaffoldKey = GlobalKey();
+    super.reassemble();
+  }*/
 
   Widget build(BuildContext context) {
     //final TaskController taskController = Get.put(TaskController());
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Můj Plán"),
@@ -78,7 +88,10 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.blueGrey,
         child: Icon(Icons.add),
         onPressed: () {
-          Get.toNamed('/add_task');
+          Get.toNamed('/add_task')?.then((result) {
+            _future = getTask();
+          });
+          ;
         },
       ),
       drawer: DrawerDraw(),
@@ -101,6 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
               } else {
                 return Container(
                   child: ListView.builder(
+                    key: _scaffoldKey,
                     //separatorBuilder: (_, __) => Divider(),
                     //itemCount: taskController.tasks.length,
                     itemCount: snapshot.data?.length,
@@ -112,10 +126,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     flavors[index] =
                         flavor.copyWith(isFavorite: !flavor.isFavorite);
                   });*/
+                          FinishTask(snapshot.data![index].id.toString());
                           Get.showSnackbar(
                             GetSnackBar(
                               title: 'Gratulace!',
-                              message: 'Výzva splněna',
+                              message: 'Výzva ' +
+                                  snapshot.data![index].name +
+                                  ' splněna',
                               icon: const Icon(
                                 Icons.check,
                                 color: Colors.green,
@@ -126,10 +143,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           return delete;
                         } else {
                           bool delete = true;
+                          RejectTask(snapshot.data![index].id.toString());
                           Get.showSnackbar(
                             GetSnackBar(
                               title: 'Příště to vyjde!',
-                              message: 'Výzva nesplněna',
+                              message: 'Výzva ' +
+                                  snapshot.data![index].name +
+                                  ' nesplněna',
                               icon: const Icon(
                                 Icons.cancel,
                                 color: Colors.red,
@@ -141,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         }
                       },
                       onDismissed: (_) {
-                        Get.showSnackbar(
+                        /*Get.showSnackbar(
                           GetSnackBar(
                             title: 'Hovno!',
                             message: 'Ser na to',
@@ -151,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             duration: const Duration(seconds: 2),
                           ),
-                        );
+                        );*/
                       },
                       background: Container(
                         color: Colors.green,
@@ -230,4 +250,54 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomTabs(),
     );
   }
+}
+
+Future<http.Response> FinishTask(var id) async {
+  var conn = await MySqlConnection.connect(globals.dbSettings);
+  final task = TaskId(id);
+  Map<String, dynamic> body = {
+    'id': id.toString(),
+  };
+  final response =
+      await http.post(Uri.parse('https://chekrr.cz/api/finish_task.php'),
+          headers: <String, String>{
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+            //'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: body);
+  if (response.statusCode == 200) {
+    print(response.body);
+  } else {
+    throw Exception('Chyba: nepodařilo se označit výzvu jako dokončenou - ' +
+        response.body +
+        ' / ' +
+        response.statusCode.toString());
+  }
+  return response;
+}
+
+Future<http.Response> RejectTask(var id) async {
+  var conn = await MySqlConnection.connect(globals.dbSettings);
+  final task = TaskId(id);
+  Map<String, dynamic> body = {
+    'id': id.toString(),
+  };
+  final response =
+      await http.post(Uri.parse('https://chekrr.cz/api/reject_task.php'),
+          headers: <String, String>{
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+            //'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: body);
+  if (response.statusCode == 200) {
+    print(response.body);
+  } else {
+    throw Exception('Chyba: nepodařilo se označit výzvu jako zrušenou - ' +
+        response.body +
+        ' / ' +
+        response.statusCode.toString());
+  }
+  return response;
 }
