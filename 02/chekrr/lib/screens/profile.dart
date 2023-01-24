@@ -8,12 +8,12 @@ import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:chekrr/screens/HomeScreen.dart';
 
-class LoadingScreen extends StatefulWidget {
+class ProfileScreen extends StatefulWidget {
   @override
-  _LoadingScreenState createState() => _LoadingScreenState();
+  _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _LoadingScreenState extends State<LoadingScreen> {
+class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final box = GetStorage();

@@ -44,7 +44,7 @@ class DrawerDraw extends StatelessWidget {
             leading: Icon(Icons.list),
             title: Text('Výzvy'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, '/');
+              Get.toNamed('/challenges');
             },
           ),
           ListTile(
@@ -59,7 +59,7 @@ class DrawerDraw extends StatelessWidget {
             title: Text('Profil'),
             onTap: () {
               //Navigator.pushReplacementNamed(context, '/settings');
-              Get.toNamed('/settings');
+              Get.toNamed('/profile');
             },
           ),
           ListTile(

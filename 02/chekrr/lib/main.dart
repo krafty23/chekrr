@@ -5,6 +5,8 @@ import '/screens/HomeScreen.dart';
 import '/screens/add_task.dart';
 import '/screens/settings.dart';
 import '/screens/history.dart';
+import '/screens/profile.dart';
+import '/screens/challenges.dart';
 import '/screens/login.dart';
 import '/screens/loading_screen.dart';
 
@@ -45,6 +47,16 @@ class MyApp extends StatelessWidget {
           name: '/add_task',
           page: () => AddTaskScreen(),
           transition: Transition.downToUp,
+        ),
+        GetPage(
+          name: '/profile',
+          page: () => ProfileScreen(),
+          transition: Transition.upToDown,
+        ),
+        GetPage(
+          name: '/challenges',
+          page: () => ChallengesScreen(),
+          transition: Transition.upToDown,
         ),
         GetPage(
           name: '/history',
