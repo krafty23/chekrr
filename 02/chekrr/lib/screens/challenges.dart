@@ -6,6 +6,8 @@ import 'package:chekrr/drawer.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
+import '../bottomtab.dart';
+import 'package:get/get.dart';
 
 class ChallengesScreen extends StatefulWidget {
   ChallengesScreen({super.key});
@@ -94,6 +96,12 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                         itemBuilder: (context, index) => Dismissible(
                           key: UniqueKey(),
                           child: ListTile(
+                            onTap: () {
+                              Get.toNamed(
+                                '/challenge?id=' +
+                                    snapshot.data![index].id.toString(),
+                              );
+                            },
                             visualDensity: VisualDensity(vertical: 1),
                             title: Card(
                               child: Padding(
@@ -211,6 +219,7 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
           }
         },
       ),
+      bottomNavigationBar: BottomTabs(),
     );
   }
 }

@@ -12,7 +12,7 @@ class _BottomTabsState extends State<BottomTabs> {
   int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
-    /*dynamic cesta = ModalRoute.of(context)?.settings.name;
+    dynamic cesta = ModalRoute.of(context)?.settings.name;
     if (cesta == '/home') {
       setState(() {
         _selectedIndex = 0;
@@ -22,7 +22,7 @@ class _BottomTabsState extends State<BottomTabs> {
       setState(() {
         _selectedIndex = 1;
       });
-    }*/
+    }
     void _onItemTapped(int index) {
       setState(() {
         _selectedIndex = index;
@@ -31,6 +31,7 @@ class _BottomTabsState extends State<BottomTabs> {
           Get.toNamed('/home');
         }
         if (index == 1) {
+          Get.toNamed('/challenges');
           //Navigator.pushReplacementNamed(context, '/challenges');
         }
       });

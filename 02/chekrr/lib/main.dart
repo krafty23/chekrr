@@ -6,6 +6,7 @@ import '/screens/add_task.dart';
 import '/screens/settings.dart';
 import '/screens/history.dart';
 import '/screens/profile.dart';
+import '/screens/challenge.dart';
 import '/screens/challenges.dart';
 import '/screens/login.dart';
 import '/screens/loading_screen.dart';
@@ -52,6 +53,11 @@ class MyApp extends StatelessWidget {
           name: '/profile',
           page: () => ProfileScreen(),
           transition: Transition.upToDown,
+        ),
+        GetPage(
+          name: '/challenge',
+          page: () => ChallengeScreen(),
+          transition: Transition.circularReveal,
         ),
         GetPage(
           name: '/challenges',
