@@ -61,6 +61,33 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(''),
+        actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+            child: ElevatedButton.icon(
+              onPressed: () {},
+              icon: Icon(
+                // <-- Icon
+                Icons.add,
+                size: 30.0,
+              ),
+              label: Text('Přijmout výzvy'),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+                  (Set<MaterialState> states) {
+                    if (states.contains(MaterialState.pressed)) {
+                      return Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withOpacity(0.5);
+                    }
+                    return null; // Use the component's default.
+                  },
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: FutureBuilder(
         future: _future,
@@ -128,6 +155,16 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                                       'Počet výzev: ' +
                                           snapshot.data![index].challenge_count
                                               .toString(),
+                                      style: TextStyle(
+                                        color: Color.fromRGBO(
+                                            255, 255, 255, 0.801),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Délka programu: ' +
+                                          snapshot.data![index].day_count
+                                              .toString() +
+                                          ' dnů',
                                       style: TextStyle(
                                         color: Color.fromRGBO(
                                             255, 255, 255, 0.801),

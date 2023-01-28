@@ -59,6 +59,7 @@ class ProgramFull {
   int id;
   int use_color;
   int category_id;
+  int day_count;
   List<ProgramFull> ProgramFullFromJson(String str) => List<ProgramFull>.from(
       json.decode(str).map((x) => ProgramFull.fromJson(x)));
 
@@ -76,6 +77,7 @@ class ProgramFull {
     this.id = 0,
     this.use_color = 0,
     this.category_id = 0,
+    this.day_count = 0,
   });
   factory ProgramFull.fromJson(Map<String, dynamic> json) => ProgramFull(
         name: json['name'] as String,
@@ -87,7 +89,8 @@ class ProgramFull {
         use_color: int.tryParse(json['use_color']) as int,
         color: json['color'] as String,
         category_id: int.tryParse(json['category_id']) as int,
-        category_name: json['category_name'] as String,
+        category_name: json['category_name'].toString() as String,
+        day_count: int.tryParse(json['day_count']) as int,
       );
 
   Map<String, dynamic> toJson() => {
@@ -101,5 +104,6 @@ class ProgramFull {
         'color': color,
         'category_id': category_id,
         'category_name': category_name,
+        'day_count': day_count,
       };
 }

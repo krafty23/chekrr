@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/challenges',
           page: () => ChallengesScreen(),
-          transition: Transition.upToDown,
+          transition: Transition.fade,
         ),
         GetPage(
           name: '/history',
