@@ -366,11 +366,18 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       /*taskController.tasks
                           .add(Task(name: textEditingController.text));*/
                       AddTask(
-                        textEditingController.text,
-                        uid,
-                        dropdownValue2,
-                        selectedValue,
-                      ).then((value) => Get.offAllNamed('/home'));
+                              textEditingController.text,
+                              uid,
+                              dropdownValue2,
+                              selectedValue,
+                              isChecked,
+                              isChecked2,
+                              isChecked3,
+                              isChecked4,
+                              isChecked5,
+                              isChecked6,
+                              isChecked7)
+                          .then((value) => Get.offAllNamed('/home'));
                       /*
                     } else {
                       var editing = todoController.todos[index];
@@ -390,10 +397,22 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 }
 
 Future<http.Response> AddTask(
-    String name, var uid, var schedule_count, var schedule_unit) async {
+  String name,
+  var uid,
+  var schedule_count,
+  var schedule_unit,
+  bool isChecked,
+  bool isChecked2,
+  bool isChecked3,
+  bool isChecked4,
+  bool isChecked5,
+  bool isChecked6,
+  bool isChecked7,
+) async {
   var conn = await MySqlConnection.connect(globals.dbSettings);
   //final task = TaskDetails(name, globals.uid, schedule_count, schedule_unit);
-  final task = TaskDetails(name, uid, schedule_count, schedule_unit);
+  final task = TaskDetails(name, uid, schedule_count, schedule_unit, isChecked,
+      isChecked2, isChecked3, isChecked4, isChecked5, isChecked6, isChecked7);
   /*Map<String, dynamic> body = {
     'name': name,
     'uid': 30,
@@ -409,7 +428,14 @@ Future<http.Response> AddTask(
     //'uid': globals.uid.toString(),
     'uid': uid.toString(),
     'schedule_count': schedule_count,
-    'schedule_unit': schedule_unit
+    'schedule_unit': schedule_unit,
+    'day1': isChecked.toString(),
+    'day2': isChecked2.toString(),
+    'day3': isChecked3.toString(),
+    'day4': isChecked4.toString(),
+    'day5': isChecked5.toString(),
+    'day6': isChecked6.toString(),
+    'day7': isChecked7.toString(),
   };
   //debugPrint(body.toString());
   //final response = await http.get(url);

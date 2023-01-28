@@ -80,8 +80,27 @@ class TaskDetails {
   int uid;
   var schedule_count;
   var schedule_unit;
+  bool isChecked;
+  bool isChecked2;
+  bool isChecked3;
+  bool isChecked4;
+  bool isChecked5;
+  bool isChecked6;
+  bool isChecked7;
 
-  TaskDetails(this.name, this.uid, this.schedule_count, this.schedule_unit);
+  TaskDetails(
+    this.name,
+    this.uid,
+    this.schedule_count,
+    this.schedule_unit,
+    this.isChecked,
+    this.isChecked2,
+    this.isChecked3,
+    this.isChecked4,
+    this.isChecked5,
+    this.isChecked6,
+    this.isChecked7,
+  );
 
   @override
   String toString() {
