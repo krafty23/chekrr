@@ -44,13 +44,6 @@ class _HomeScreenState extends State<HomeScreen> {
             //'Content-Type': 'application/json; charset=UTF-8',
           },
           body: requestbody);
-      //print(response.body);
-      /*String jsonString = '''
-      [{"id":1,"name":"PAKISTANI","status":0},{"id":3,"name":"INDIAN","status":0},{"id":4,"name":"abc","status":0},{"id":5,"name":"def","status":0},{"id":6,"name":"hi","status":0}]
-      ''';*/
-      //http.Response response = http.Response(jsonString, 200);
-
-      //print('getCategory Response: ${response.body}');
       if (response.statusCode == 200) {
         return TaskFromJson(response.body);
       } else {
@@ -82,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Můj Plán"),
+        title: Text("Můj Plán Dne"),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blueGrey,
@@ -253,7 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 Future<http.Response> FinishTask(var id) async {
-  var conn = await MySqlConnection.connect(globals.dbSettings);
+  //var conn = await MySqlConnection.connect(globals.dbSettings);
   final task = TaskId(id);
   Map<String, dynamic> body = {
     'id': id.toString(),
@@ -278,7 +271,7 @@ Future<http.Response> FinishTask(var id) async {
 }
 
 Future<http.Response> RejectTask(var id) async {
-  var conn = await MySqlConnection.connect(globals.dbSettings);
+  //var conn = await MySqlConnection.connect(globals.dbSettings);
   final task = TaskId(id);
   Map<String, dynamic> body = {
     'id': id.toString(),

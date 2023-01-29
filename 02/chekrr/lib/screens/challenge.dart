@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import '../globals.dart' as globals;
 import 'package:http/http.dart' as http;
 import 'package:flutter_html/flutter_html.dart';
+import 'package:drop_shadow/drop_shadow.dart';
 
 class ChallengeScreen extends StatefulWidget {
   ChallengeScreen({super.key});
@@ -58,6 +59,8 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final box = GetStorage();
+    var uid = box.read('uid');
     return Scaffold(
       appBar: AppBar(
         title: Text(''),
@@ -65,7 +68,23 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
           Padding(
             padding: EdgeInsets.fromLTRB(7.0, 6.0, 7.0, 6.0),
             child: ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                AddProgram(
+                  Get.parameters['id'],
+                  uid,
+                ).then((value) => Get.offAllNamed('/home'));
+                Get.showSnackbar(
+                  GetSnackBar(
+                    title: 'Výzva přijata',
+                    message: 'Výzva ',
+                    icon: const Icon(
+                      Icons.check,
+                      color: Colors.green,
+                    ),
+                    duration: const Duration(seconds: 2),
+                  ),
+                );
+              },
               icon: Icon(
                 // <-- Icon
                 Icons.add,
@@ -122,10 +141,10 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                           key: UniqueKey(),
                           child: ListTile(
                             onTap: () {
-                              Get.toNamed(
+                              /*Get.toNamed(
                                 '/challenge?id=' +
                                     snapshot.data![index].id.toString(),
-                              );
+                              );*/
                             },
                             visualDensity: VisualDensity(vertical: 1),
                             title: Card(
@@ -136,14 +155,19 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Image(
-                                      image: NetworkImage(
-                                        globals.globalProtocol +
-                                            globals.globalURL +
-                                            '/images/chekrr/folders/' +
-                                            snapshot
-                                                .data![index].image_filename,
+                                    DropShadow(
+                                      child: Image(
+                                        image: NetworkImage(
+                                          globals.globalProtocol +
+                                              globals.globalURL +
+                                              '/images/chekrr/folders/' +
+                                              snapshot
+                                                  .data![index].image_filename,
+                                        ),
                                       ),
+                                      blurRadius: 3,
+                                      opacity: 0.9,
+                                      spread: 0.3,
                                     ),
                                     Padding(
                                       padding:
@@ -216,4 +240,31 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
       ),
     );
   }
+}
+
+Future<http.Response> AddProgram(
+  var pid,
+  var uid,
+) async {
+  //var conn = await MySqlConnection.connect(globals.dbSettings);
+  final program = ProgramDetails(pid, uid);
+  Map<String, dynamic> body = {
+    'pid': pid.toString(),
+    'uid': uid.toString(),
+  };
+  final response =
+      await http.post(Uri.parse('https://chekrr.cz/api/add_program.php'),
+          headers: <String, String>{
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: body);
+  if (response.statusCode == 200) {
+  } else {
+    throw Exception('Failed to create program - ' +
+        response.body +
+        ' / ' +
+        response.statusCode.toString());
+  }
+  return response;
 }

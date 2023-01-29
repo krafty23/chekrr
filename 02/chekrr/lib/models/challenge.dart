@@ -107,3 +107,17 @@ class ProgramFull {
         'day_count': day_count,
       };
 }
+
+class ProgramDetails {
+  var pid;
+  var uid;
+  ProgramDetails(
+    this.pid,
+    this.uid,
+  );
+
+  @override
+  String toString() {
+    return '{ ${this.pid}, ${this.uid} }';
+  }
+}

@@ -409,23 +409,10 @@ Future<http.Response> AddTask(
   bool isChecked6,
   bool isChecked7,
 ) async {
-  var conn = await MySqlConnection.connect(globals.dbSettings);
-  //final task = TaskDetails(name, globals.uid, schedule_count, schedule_unit);
   final task = TaskDetails(name, uid, schedule_count, schedule_unit, isChecked,
       isChecked2, isChecked3, isChecked4, isChecked5, isChecked6, isChecked7);
-  /*Map<String, dynamic> body = {
-    'name': name,
-    'uid': 30,
-    'homeTeam': json.encode(
-      {'team': 'Team A'},
-    ),
-    'awayTeam': json.encode(
-      {'team': 'Team B'},
-    ),
-  };*/
   Map<String, dynamic> body = {
     'name': name,
-    //'uid': globals.uid.toString(),
     'uid': uid.toString(),
     'schedule_count': schedule_count,
     'schedule_unit': schedule_unit,
@@ -437,8 +424,6 @@ Future<http.Response> AddTask(
     'day6': isChecked6.toString(),
     'day7': isChecked7.toString(),
   };
-  //debugPrint(body.toString());
-  //final response = await http.get(url);
   final response =
       await http.post(Uri.parse('https://chekrr.cz/api/add_task.php'),
           headers: <String, String>{
@@ -451,8 +436,6 @@ Future<http.Response> AddTask(
     // if server response 200 / OK
     //return jsonDecode(response.body);
   } else {
-    // If the server did not return a 201 CREATED response,
-    // then throw an exception.
     throw Exception('Failed to create task - ' +
         response.body +
         ' / ' +
