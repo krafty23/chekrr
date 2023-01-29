@@ -63,7 +63,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
         title: Text(''),
         actions: <Widget>[
           Padding(
-            padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+            padding: EdgeInsets.fromLTRB(7.0, 6.0, 7.0, 6.0),
             child: ElevatedButton.icon(
               onPressed: () {},
               icon: Icon(
@@ -73,13 +73,18 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
               ),
               label: Text('Přijmout výzvy'),
               style: ButtonStyle(
+                /*shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero,
+                  ),
+                ),*/
                 backgroundColor: MaterialStateProperty.resolveWith<Color?>(
                   (Set<MaterialState> states) {
                     if (states.contains(MaterialState.pressed)) {
                       return Theme.of(context)
                           .colorScheme
                           .primary
-                          .withOpacity(0.5);
+                          .withOpacity(0.8);
                     }
                     return null; // Use the component's default.
                   },
@@ -124,9 +129,12 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                             },
                             visualDensity: VisualDensity(vertical: 1),
                             title: Card(
+                              elevation: 5,
                               child: Padding(
                                 padding: EdgeInsets.all(16.0),
                                 child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Image(
                                       image: NetworkImage(
@@ -137,18 +145,17 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                                                 .data![index].image_filename,
                                       ),
                                     ),
-                                    Text(
-                                      snapshot.data![index].name,
-                                      style: TextStyle(
-                                        color: Color.fromRGBO(
-                                            255, 255, 255, 0.801),
-                                      ),
-                                    ),
-                                    Text(
-                                      snapshot.data![index].perex,
-                                      style: TextStyle(
-                                        color: Color.fromRGBO(
-                                            255, 255, 255, 0.801),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(0, 12, 0, 10),
+                                      child: Text(
+                                        snapshot.data![index].name,
+                                        style: TextStyle(
+                                          color: Color.fromRGBO(
+                                              255, 255, 255, 0.801),
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w900,
+                                        ),
                                       ),
                                     ),
                                     Text(
@@ -158,6 +165,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                                       style: TextStyle(
                                         color: Color.fromRGBO(
                                             255, 255, 255, 0.801),
+                                        fontSize: 17,
                                       ),
                                     ),
                                     Text(
@@ -168,6 +176,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                                       style: TextStyle(
                                         color: Color.fromRGBO(
                                             255, 255, 255, 0.801),
+                                        fontSize: 17,
                                       ),
                                     ),
                                     Html(

@@ -183,7 +183,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       child: Column(
                         children: [
                           Text(
-                            'P',
+                            'Po',
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
@@ -208,7 +208,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       child: Column(
                         children: [
                           Text(
-                            'U',
+                            'Út',
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
@@ -232,7 +232,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       child: Column(
                         children: [
                           Text(
-                            'S',
+                            'St',
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
@@ -256,7 +256,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       child: Column(
                         children: [
                           Text(
-                            'Č',
+                            'Čt',
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
@@ -280,7 +280,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       child: Column(
                         children: [
                           Text(
-                            'P',
+                            'Pá',
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
@@ -304,7 +304,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       child: Column(
                         children: [
                           Text(
-                            'S',
+                            'So',
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
@@ -328,7 +328,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       child: Column(
                         children: [
                           Text(
-                            'N',
+                            'Ne',
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,

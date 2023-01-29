@@ -104,9 +104,12 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                             },
                             visualDensity: VisualDensity(vertical: 1),
                             title: Card(
+                              elevation: 5,
                               child: Padding(
                                 padding: EdgeInsets.all(16.0),
                                 child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Image(
                                       image: NetworkImage(
@@ -117,11 +120,18 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                                                 .data![index].image_filename,
                                       ),
                                     ),
-                                    Text(
-                                      snapshot.data![index].name,
-                                      style: TextStyle(
-                                        color: Color.fromRGBO(
-                                            255, 255, 255, 0.801),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(0, 12, 0, 10),
+                                      child: Text(
+                                        snapshot.data![index].name,
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                          color: Color.fromRGBO(
+                                              255, 255, 255, 0.801),
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w900,
+                                        ),
                                       ),
                                     ),
                                     Text(
@@ -129,6 +139,7 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                                       style: TextStyle(
                                         color: Color.fromRGBO(
                                             255, 255, 255, 0.801),
+                                        fontSize: 17,
                                       ),
                                     ),
                                   ],
