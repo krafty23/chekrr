@@ -26,9 +26,6 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
         //'uid': globals.uid.toString(),
         'uid': uid.toString(),
       };
-      var url = Uri.parse(globals.globalProtocol +
-          globals.globalURL +
-          '/api/index.php/challenge/list');
       http.Response response = await http.post(
           Uri.parse(globals.globalProtocol +
               globals.globalURL +
@@ -87,66 +84,69 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                       flex: 1,
                       child: Text('d'),
                     ),*/
-                    Expanded(
-                      flex: 9,
-                      child: ListView.builder(
-                        //scrollDirection: Axis.horizontal,
-                        key: _scaffoldKey,
-                        itemCount: snapshot.data?.length,
-                        itemBuilder: (context, index) => Dismissible(
-                          key: UniqueKey(),
-                          child: ListTile(
-                            onTap: () {
-                              Get.toNamed(
-                                '/challenge?id=' +
-                                    snapshot.data![index].id.toString(),
-                              );
-                            },
-                            visualDensity: VisualDensity(vertical: 1),
-                            title: Card(
-                              elevation: 5,
-                              child: Padding(
-                                padding: EdgeInsets.all(16.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Image(
-                                      image: NetworkImage(
-                                        globals.globalProtocol +
-                                            globals.globalURL +
-                                            '/images/chekrr/folders/' +
-                                            snapshot
-                                                .data![index].image_filename,
+                    snapshot.data!.isNotEmpty
+                        ? Expanded(
+                            flex: 9,
+                            child: ListView.builder(
+                              //scrollDirection: Axis.horizontal,
+                              key: _scaffoldKey,
+                              itemCount: snapshot.data?.length,
+                              itemBuilder: (context, index) => Dismissible(
+                                key: UniqueKey(),
+                                child: ListTile(
+                                  onTap: () {
+                                    Get.toNamed(
+                                      '/challenge?id=' +
+                                          snapshot.data![index].id.toString(),
+                                    );
+                                  },
+                                  visualDensity: VisualDensity(vertical: 1),
+                                  title: Card(
+                                    elevation: 5,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(16.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Image(
+                                            image: NetworkImage(
+                                              globals.globalProtocol +
+                                                  globals.globalURL +
+                                                  '/images/chekrr/folders/' +
+                                                  snapshot.data![index]
+                                                      .image_filename,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.fromLTRB(
+                                                0, 12, 0, 10),
+                                            child: Text(
+                                              snapshot.data![index].name,
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                color: Color.fromRGBO(
+                                                    255, 255, 255, 0.801),
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w900,
+                                              ),
+                                            ),
+                                          ),
+                                          Text(
+                                            snapshot.data![index].perex,
+                                            style: TextStyle(
+                                              color: Color.fromRGBO(
+                                                  255, 255, 255, 0.801),
+                                              fontSize: 17,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.fromLTRB(0, 12, 0, 10),
-                                      child: Text(
-                                        snapshot.data![index].name,
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          color: Color.fromRGBO(
-                                              255, 255, 255, 0.801),
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w900,
-                                        ),
-                                      ),
-                                    ),
-                                    Text(
-                                      snapshot.data![index].perex,
-                                      style: TextStyle(
-                                        color: Color.fromRGBO(
-                                            255, 255, 255, 0.801),
-                                        fontSize: 17,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            /*leading: Column(
+                                  ),
+                                  /*leading: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Icon(
@@ -164,68 +164,21 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                                 ),
                               ],
                             ),*/
+                                ),
+                              ),
+                            ),
+                          )
+                        : Column(
+                            children: <Widget>[
+                              Expanded(
+                                child: Center(
+                                  child: Text('Žádné výzvy nenalezeny'),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ),
-                    ),
                   ],
-                  /*
-                    Expanded(
-                      flex: 1,
-                      child: ListView(
-                        
-                        scrollDirection: Axis.horizontal,
-                        children: <Widget>[
-                          Container(
-                            //width: 200,
-                            color: Colors.purple[600],
-                            child: const Center(
-                                child: Text(
-                              'Item 1 sdfgfds gfg dfsg  dfs o jl;k j;kljk;lj ;kl j;lk j;klj ;kl',
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.white),
-                            )),
-                          ),
-                          Container(
-                            width: 200,
-                            color: Colors.purple[500],
-                            child: const Center(
-                                child: Text(
-                              'Item 2',
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.white),
-                            )),
-                          ),
-                          Container(
-                            width: 200,
-                            color: Colors.purple[400],
-                            child: const Center(
-                                child: Text(
-                              'Item 3',
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.white),
-                            )),
-                          ),
-                          Container(
-                            width: 200,
-                            color: Colors.purple[300],
-                            child: const Center(
-                                child: Text(
-                              'Item 4',
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.white),
-                            )),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Text('ddd'),
-                    ),
-                  ],*/
                 );
-                debugPrint(snapshot.data?.length.toString());
               }
           }
         },

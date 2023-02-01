@@ -29,7 +29,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
               Get.offAllNamed('/login');
             }
           },
-          child: Text('Get Location'),
+          child: Text('Let\'s fucking GO'),
         ),
       ),
     );
