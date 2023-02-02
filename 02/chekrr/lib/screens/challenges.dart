@@ -59,6 +59,8 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Výzvy"),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
       drawer: DrawerDraw(),
       body: FutureBuilder(
@@ -168,14 +170,11 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                               ),
                             ),
                           )
-                        : Column(
-                            children: <Widget>[
-                              Expanded(
-                                child: Center(
-                                  child: Text('Žádné výzvy nenalezeny'),
-                                ),
-                              ),
-                            ],
+                        : Expanded(
+                            flex: 1,
+                            child: Center(
+                              child: Text('Žádné výzvy nenalezeny'),
+                            ),
                           ),
                   ],
                 );

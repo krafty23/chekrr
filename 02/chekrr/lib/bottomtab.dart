@@ -42,14 +42,14 @@ class _BottomTabsState extends State<BottomTabs> {
         BottomNavigationBarItem(
           icon: Icon(
             Icons.check,
-            size: 40.0,
+            size: 45.0,
           ),
           label: 'Můj Plán',
         ),
         BottomNavigationBarItem(
           icon: Icon(
             Icons.list,
-            size: 40.0,
+            size: 45.0,
           ),
           label: 'Výzvy',
           //label: '$cesta',
@@ -58,8 +58,9 @@ class _BottomTabsState extends State<BottomTabs> {
       currentIndex: _selectedIndex,
       selectedItemColor: Colors.white,
       unselectedItemColor: Color(0xFF707070),
-      backgroundColor: Color.fromRGBO(238, 238, 238, 0.144),
+      backgroundColor: Colors.transparent,
       onTap: _onItemTapped,
+      elevation: 0,
     );
   }
 }

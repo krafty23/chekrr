@@ -59,6 +59,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Profil"),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
       body: FutureBuilder(
         future: _future,
@@ -107,6 +109,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         ' ' +
                                         snapshot.data![index].surname
                                             .toString(),
+                                  ),
+                                  Text(
+                                    '( ' +
+                                        snapshot.data![index].username
+                                            .toString() +
+                                        ' )',
+                                  ),
+                                  Text(
+                                    snapshot.data![index].email_personal
+                                        .toString(),
                                   ),
                                 ],
                               ),

@@ -17,7 +17,9 @@ class User {
 class UserFull {
   String name;
   String surname;
+  String username;
   String foto_filename;
+  String email_personal;
   int id;
   List<UserFull> UserFullFromJson(String str) =>
       List<UserFull>.from(json.decode(str).map((x) => UserFull.fromJson(x)));
@@ -28,19 +30,25 @@ class UserFull {
   UserFull(
       {this.name = '',
       this.surname = '',
+      this.username = '',
       this.foto_filename = '',
+      this.email_personal = '',
       this.id = 0});
   factory UserFull.fromJson(Map<String, dynamic> json) => UserFull(
         name: json['name'] as String,
         surname: json['surname'] as String,
+        username: json['username'] as String,
         foto_filename: json['foto_filename'] as String,
+        email_personal: json['email_personal'] as String,
         id: int.tryParse(json['id']) as int,
       );
 
   Map<String, dynamic> toJson() => {
         'name': name,
         'surname': surname,
+        'username': username,
         'foto_filename': foto_filename,
+        'email_personal': email_personal,
         'id': id,
       };
 }

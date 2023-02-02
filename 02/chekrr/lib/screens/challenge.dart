@@ -64,6 +64,8 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(''),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         actions: <Widget>[
           Padding(
             padding: EdgeInsets.fromLTRB(7.0, 6.0, 7.0, 6.0),

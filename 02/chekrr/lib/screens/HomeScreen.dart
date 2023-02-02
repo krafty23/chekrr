@@ -76,6 +76,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Můj Plán Dne"),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blueGrey,
