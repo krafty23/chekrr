@@ -12,6 +12,7 @@ import 'package:chekrr/drawer.dart';
 import 'package:http/http.dart' as http;
 import '../models/task.dart';
 import '../bottomtab.dart';
+import 'package:flutter/services.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
@@ -22,6 +23,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 //class HomeScreen extends StatelessWidget {
+
   late Future<List<Task>> _future;
   Future<List<Task>> getTask() async {
     final box = GetStorage();
@@ -60,6 +62,12 @@ class _HomeScreenState extends State<HomeScreen> {
     _scaffoldKey = GlobalKey();
     super.initState();
     _future = getTask();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.transparent,
+    ));
+    //SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+    //  overlays: [SystemUiOverlay.top]);
   }
 
   @override
@@ -74,6 +82,8 @@ class _HomeScreenState extends State<HomeScreen> {
     //final TaskController taskController = Get.put(TaskController());
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      extendBody: true,
       appBar: AppBar(
         title: Text("Můj Plán Dne"),
         backgroundColor: Colors.transparent,
@@ -90,79 +100,86 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       ),
       drawer: DrawerDraw(),
-      body: FutureBuilder(
-        future: _future,
-        builder: (context, AsyncSnapshot<List<Task>> snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.none:
-              return Text('none');
-            case ConnectionState.waiting:
-              return Center(child: CircularProgressIndicator());
-            case ConnectionState.active:
-              return Text('');
-            case ConnectionState.done:
-              if (snapshot.hasError) {
-                return Text(
-                  '${snapshot.error}',
-                  style: TextStyle(color: Colors.red),
-                );
-              } else {
-                return Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: snapshot.data!.isNotEmpty
-                          ? ListView.builder(
-                              key: _scaffoldKey,
-                              //separatorBuilder: (_, __) => Divider(),
-                              //itemCount: taskController.tasks.length,
-                              itemCount: snapshot.data?.length,
-                              itemBuilder: (context, index) => Dismissible(
-                                confirmDismiss: (direction) async {
-                                  bool delete = true;
-                                  if (direction ==
-                                      DismissDirection.startToEnd) {
-                                    /*setState(() {
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("images/abstract_background.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: FutureBuilder(
+          future: _future,
+          builder: (context, AsyncSnapshot<List<Task>> snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return Text('none');
+              case ConnectionState.waiting:
+                return Center(child: CircularProgressIndicator());
+              case ConnectionState.active:
+                return Text('');
+              case ConnectionState.done:
+                if (snapshot.hasError) {
+                  return Text(
+                    '${snapshot.error}',
+                    style: TextStyle(color: Colors.red),
+                  );
+                } else {
+                  return Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: snapshot.data!.isNotEmpty
+                            ? ListView.builder(
+                                key: _scaffoldKey,
+                                //separatorBuilder: (_, __) => Divider(),
+                                //itemCount: taskController.tasks.length,
+                                itemCount: snapshot.data?.length,
+                                itemBuilder: (context, index) => Dismissible(
+                                  confirmDismiss: (direction) async {
+                                    bool delete = true;
+                                    if (direction ==
+                                        DismissDirection.startToEnd) {
+                                      /*setState(() {
                     flavors[index] =
                         flavor.copyWith(isFavorite: !flavor.isFavorite);
                   });*/
-                                    FinishTask(
-                                        snapshot.data![index].id.toString());
-                                    Get.showSnackbar(
-                                      GetSnackBar(
-                                        title: 'Gratulace!',
-                                        message: 'Výzva ' +
-                                            snapshot.data![index].name +
-                                            ' splněna',
-                                        icon: const Icon(
-                                          Icons.check,
-                                          color: Colors.green,
+                                      FinishTask(
+                                          snapshot.data![index].id.toString());
+                                      Get.showSnackbar(
+                                        GetSnackBar(
+                                          title: 'Gratulace!',
+                                          message: 'Výzva ' +
+                                              snapshot.data![index].name +
+                                              ' splněna',
+                                          icon: const Icon(
+                                            Icons.check,
+                                            color: Colors.green,
+                                          ),
+                                          duration: const Duration(seconds: 2),
                                         ),
-                                        duration: const Duration(seconds: 2),
-                                      ),
-                                    );
-                                    return delete;
-                                  } else {
-                                    bool delete = true;
-                                    RejectTask(
-                                        snapshot.data![index].id.toString());
-                                    Get.showSnackbar(
-                                      GetSnackBar(
-                                        title: 'Příště to vyjde!',
-                                        message: 'Výzva ' +
-                                            snapshot.data![index].name +
-                                            ' nesplněna',
-                                        icon: const Icon(
-                                          Icons.cancel,
-                                          color: Colors.red,
+                                      );
+                                      return delete;
+                                    } else {
+                                      bool delete = true;
+                                      RejectTask(
+                                          snapshot.data![index].id.toString());
+                                      Get.showSnackbar(
+                                        GetSnackBar(
+                                          title: 'Příště to vyjde!',
+                                          message: 'Výzva ' +
+                                              snapshot.data![index].name +
+                                              ' nesplněna',
+                                          icon: const Icon(
+                                            Icons.cancel,
+                                            color: Colors.red,
+                                          ),
+                                          duration: const Duration(seconds: 2),
                                         ),
-                                        duration: const Duration(seconds: 2),
-                                      ),
-                                    );
-                                    return delete;
-                                  }
-                                },
-                                onDismissed: (_) {
-                                  /*Get.showSnackbar(
+                                      );
+                                      return delete;
+                                    }
+                                  },
+                                  onDismissed: (_) {
+                                    /*Get.showSnackbar(
                           GetSnackBar(
                             title: 'Hovno!',
                             message: 'Ser na to',
@@ -173,92 +190,97 @@ class _HomeScreenState extends State<HomeScreen> {
                             duration: const Duration(seconds: 2),
                           ),
                         );*/
-                                },
-                                background: Container(
-                                  color: Colors.green,
-                                  child: Align(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 16),
-                                      child: Icon(Icons.check_circle),
-                                    ),
-                                    alignment: Alignment.centerLeft,
-                                  ),
-                                ),
-                                secondaryBackground: Container(
-                                  color: Colors.red,
-                                  child: Align(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(right: 16),
-                                      child: Icon(Icons.cancel),
-                                    ),
-                                    alignment: Alignment.centerRight,
-                                  ),
-                                ),
-                                key: UniqueKey(),
-                                child: ListTile(
-                                  visualDensity: VisualDensity(vertical: 3),
-                                  title: Text(
-                                    //taskController.tasks[index].name,
-                                    snapshot.data![index].name,
-                                    style: TextStyle(
-                                      color:
-                                          Color.fromRGBO(255, 255, 255, 0.801),
+                                  },
+                                  background: Container(
+                                    color: Colors.green,
+                                    child: Align(
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 16),
+                                        child: Icon(Icons.check_circle),
+                                      ),
+                                      alignment: Alignment.centerLeft,
                                     ),
                                   ),
-                                  onTap: () {
-                                    /*Get.to(AddTaskScreen(
+                                  secondaryBackground: Container(
+                                    color: Colors.red,
+                                    child: Align(
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 16),
+                                        child: Icon(Icons.cancel),
+                                      ),
+                                      alignment: Alignment.centerRight,
+                                    ),
+                                  ),
+                                  key: UniqueKey(),
+                                  child: ListTile(
+                                    visualDensity: VisualDensity(vertical: 3),
+                                    title: Text(
+                                      //taskController.tasks[index].name,
+                                      snapshot.data![index].name,
+                                      style: TextStyle(
+                                        color: Color.fromRGBO(
+                                            255, 255, 255, 0.801),
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      /*Get.to(AddTaskScreen(
                     index: index,
                   ));*/
-                                  },
-                                  onLongPress: () {
-                                    Get.showSnackbar(
-                                      GetSnackBar(
-                                        title: 'Klik!',
-                                        message: 'jde to',
-                                        icon: const Icon(
-                                          Icons.cancel,
-                                          color: Colors.blueGrey,
+                                    },
+                                    onLongPress: () {
+                                      Get.showSnackbar(
+                                        GetSnackBar(
+                                          title: 'Klik!',
+                                          message: 'jde to',
+                                          icon: const Icon(
+                                            Icons.cancel,
+                                            color: Colors.blueGrey,
+                                          ),
+                                          duration: const Duration(seconds: 2),
                                         ),
-                                        duration: const Duration(seconds: 2),
-                                      ),
-                                    );
-                                  },
-                                  leading: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.chevron_left,
-                                        color: Colors.red,
-                                      ),
-                                    ],
-                                  ),
-                                  trailing: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.chevron_right,
-                                        color: Colors.green,
-                                      ),
-                                    ],
+                                      );
+                                    },
+                                    leading: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.chevron_left,
+                                          color: Colors.red,
+                                        ),
+                                      ],
+                                    ),
+                                    trailing: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.chevron_right,
+                                          color: Colors.green,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
+                              )
+                            : Column(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Center(
+                                      child: Text('Žádné výzvy nenalezeny'),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            )
-                          : Column(
-                              children: <Widget>[
-                                Expanded(
-                                  child: Center(
-                                    child: Text('Žádné výzvy nenalezeny'),
-                                  ),
-                                ),
-                              ],
-                            ),
-                    ),
-                  ],
-                );
-              }
-          }
-        },
+                      ),
+                    ],
+                  );
+                }
+            }
+          },
+        ),
       ),
       bottomNavigationBar: BottomTabs(),
     );

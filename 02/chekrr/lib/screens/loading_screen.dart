@@ -18,18 +18,28 @@ class _LoadingScreenState extends State<LoadingScreen> {
   Widget build(BuildContext context) {
     final box = GetStorage();
     bool LoggedIn = box.read('isloggedin') ?? false;
-    return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            //navigator.pushReplacementNamed(context, '/');
-            if (LoggedIn == true) {
-              Get.offAllNamed('/home');
-            } else {
-              Get.offAllNamed('/login');
-            }
-          },
-          child: Text('Let\'s fucking GO'),
+    return Container(
+      child: Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("images/abstract_background.jpg"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Center(
+            child: ElevatedButton(
+              onPressed: () {
+                //navigator.pushReplacementNamed(context, '/');
+                if (LoggedIn == true) {
+                  Get.offAllNamed('/home');
+                } else {
+                  Get.offAllNamed('/login');
+                }
+              },
+              child: Text('Let\'s fucking GO'),
+            ),
+          ),
         ),
       ),
     );

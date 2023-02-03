@@ -10,10 +10,13 @@ import '/screens/challenge.dart';
 import '/screens/challenges.dart';
 import '/screens/login.dart';
 import '/screens/loading_screen.dart';
+import 'package:flutter/services.dart';
 
 void main() async {
   await GetStorage.init();
   runApp(MyApp());
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+      overlays: [SystemUiOverlay.top]);
 }
 
 class MyApp extends StatelessWidget {
