@@ -133,50 +133,155 @@ class _HistoryScreenState extends State<HistoryScreen> {
       ChartData('10.2.', 1, 3)
     ];
     return Scaffold(
-      /*extendBodyBehindAppBar: true,*/
+      extendBodyBehindAppBar: true,
       extendBody: true,
       appBar: AppBar(
         title: Text("Historie & Statistiky"),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: Column(
-        children: [
-          Container(
-            child: Padding(
-              padding: EdgeInsets.all(0),
-              child: DropdownButton<String>(
-                value: dropdownValue,
-                icon: const Icon(Icons.arrow_downward),
-                elevation: 16,
-                style: const TextStyle(
-                  color: Color.fromRGBO(179, 179, 179, 1),
-                  fontSize: 25.0,
+      body: Container(
+        padding: EdgeInsets.fromLTRB(0, 90, 0, 0),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("images/abstract_background.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Column(
+          children: [
+            Container(
+              child: Padding(
+                padding: EdgeInsets.all(0),
+                child: DropdownButton<String>(
+                  value: dropdownValue,
+                  icon: const Icon(Icons.arrow_downward),
+                  elevation: 16,
+                  style: const TextStyle(
+                    color: Color.fromRGBO(179, 179, 179, 1),
+                    fontSize: 25.0,
+                  ),
+                  underline: SizedBox(),
+                  onChanged: (String? value) {
+                    // This is called when the user selects an item.
+                    setState(() {
+                      dropdownValue = value!;
+                    });
+                  },
+                  items: listek.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
                 ),
-                underline: SizedBox(),
-                onChanged: (String? value) {
-                  // This is called when the user selects an item.
-                  setState(() {
-                    dropdownValue = value!;
-                  });
-                },
-                items: listek.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
               ),
             ),
-          ),
-          Expanded(
-            flex: 2,
-            child: /*Text(snapshot.data!.length
+            Expanded(
+              flex: 2,
+              child: /*Text(snapshot.data!.length
                           .toString()),*/
-                Center(
-              child: FutureBuilder<List<yxnType>>(
-                future: getYxn(),
-                builder: (context, AsyncSnapshot<List<yxnType>> snapshot) {
+                  Center(
+                child: FutureBuilder<List<yxnType>>(
+                  future: getYxn(),
+                  builder: (context, AsyncSnapshot<List<yxnType>> snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                        return Text('none');
+                      case ConnectionState.waiting:
+                        return Center(child: CircularProgressIndicator());
+                      case ConnectionState.active:
+                        return Text('');
+                      case ConnectionState.done:
+                        if (snapshot.hasError) {
+                          return Text(
+                            '${snapshot.error}',
+                            style: TextStyle(color: Colors.red),
+                          );
+                        } else {
+                          Future<List<yxnType?>> statistika1 = getYxn();
+                          final List<ChartData2> chartData12 = [
+                            ChartData2(
+                                snapshot.data![0].x,
+                                snapshot.data![0].y,
+                                Color.fromARGB(207, 51, 201, 14),
+                                snapshot.data![0].text),
+                            ChartData2(snapshot.data![1].x, snapshot.data![1].y,
+                                Colors.red, snapshot.data![1].text),
+                          ];
+                          /*final List<ChartData2> chartData1 = [
+                      ChartData2('Splněno', 65, Colors.blueGrey, 'Splněno 75%'),
+                      ChartData2('Nesplněno', 35, Colors.red, 'Nesplněno 25%'),
+                    ];*/
+                          return Container(
+                              child: SfCircularChart(series: <CircularSeries>[
+                            // Render pie chart
+                            PieSeries<ChartData2, String>(
+                              explode: true,
+                              explodeIndex: 1,
+                              dataSource: chartData12,
+                              pointColorMapper: (ChartData2 data, _) =>
+                                  data.color,
+                              xValueMapper: (ChartData2 data, _) => data.x,
+                              yValueMapper: (ChartData2 data, _) => data.y,
+                              dataLabelMapper: (ChartData2 data, _) =>
+                                  data.text,
+                              dataLabelSettings: DataLabelSettings(
+                                isVisible: true,
+                                labelPosition: ChartDataLabelPosition.outside,
+                                useSeriesColor: true,
+                              ),
+                            ),
+                          ]));
+                        }
+                    }
+                  },
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Center(
+                child: Container(
+                  child: SfCartesianChart(
+                    tooltipBehavior: _tooltipBehavior,
+                    primaryXAxis: CategoryAxis(),
+                    series: <ChartSeries>[
+                      // Renders line chart
+                      SplineSeries<ChartData, String>(
+                          name: 'Nesplněno',
+                          dataSource: chartData,
+                          color: Colors.red,
+                          markerSettings: MarkerSettings(
+                            isVisible: true,
+                            shape: DataMarkerType.circle,
+                            width: 6,
+                            height: 6,
+                          ),
+                          xValueMapper: (ChartData data, _) => data.x,
+                          yValueMapper: (ChartData data, _) => data.z),
+                      SplineSeries<ChartData, String>(
+                          name: 'Splněno',
+                          dataSource: chartData,
+                          color: Color.fromARGB(207, 51, 201, 14),
+                          markerSettings: MarkerSettings(
+                            isVisible: true,
+                            shape: DataMarkerType.circle,
+                            width: 6,
+                            height: 6,
+                          ),
+                          xValueMapper: (ChartData data, _) => data.x,
+                          yValueMapper: (ChartData data, _) => data.y),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 3,
+              child: FutureBuilder(
+                future: _future,
+                builder: (context, AsyncSnapshot<List<Task>> snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.none:
                       return Text('none');
@@ -191,157 +296,65 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           style: TextStyle(color: Colors.red),
                         );
                       } else {
-                        Future<List<yxnType?>> statistika1 = getYxn();
-                        final List<ChartData2> chartData12 = [
-                          ChartData2(snapshot.data![0].x, snapshot.data![0].y,
-                              Colors.blueGrey, snapshot.data![0].text),
-                          ChartData2(snapshot.data![1].x, snapshot.data![1].y,
-                              Colors.red, snapshot.data![1].text),
-                        ];
-                        /*final List<ChartData2> chartData1 = [
-                      ChartData2('Splněno', 65, Colors.blueGrey, 'Splněno 75%'),
-                      ChartData2('Nesplněno', 35, Colors.red, 'Nesplněno 25%'),
-                    ];*/
                         return Container(
-                            child: SfCircularChart(series: <CircularSeries>[
-                          // Render pie chart
-                          PieSeries<ChartData2, String>(
-                            explode: true,
-                            explodeIndex: 1,
-                            dataSource: chartData12,
-                            pointColorMapper: (ChartData2 data, _) =>
-                                data.color,
-                            xValueMapper: (ChartData2 data, _) => data.x,
-                            yValueMapper: (ChartData2 data, _) => data.y,
-                            dataLabelMapper: (ChartData2 data, _) => data.text,
-                            dataLabelSettings: DataLabelSettings(
-                              isVisible: true,
-                              labelPosition: ChartDataLabelPosition.outside,
-                              useSeriesColor: true,
+                          child: ListView.builder(
+                            key: _scaffoldKey,
+                            //separatorBuilder: (_, __) => Divider(),
+                            //itemCount: taskController.tasks.length,
+                            itemCount: snapshot.data?.length,
+                            itemBuilder: (context, index) => Dismissible(
+                              key: UniqueKey(),
+                              child: ListTile(
+                                visualDensity: VisualDensity(vertical: 3),
+                                title: Text(
+                                  //taskController.tasks[index].name,
+                                  snapshot.data![index].name,
+                                  style: TextStyle(
+                                    color: Color.fromRGBO(255, 255, 255, 0.801),
+                                  ),
+                                ),
+                                onTap: () {
+                                  /*Get.to(AddTaskScreen(
+                    index: index,
+                  ));*/
+                                },
+                                onLongPress: () {
+                                  Get.showSnackbar(
+                                    GetSnackBar(
+                                      title: 'Klik!',
+                                      message: 'jde to',
+                                      icon: const Icon(
+                                        Icons.cancel,
+                                        color: Colors.blueGrey,
+                                      ),
+                                      duration: const Duration(seconds: 2),
+                                    ),
+                                  );
+                                },
+                                leading: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      (snapshot.data![index].status == 1)
+                                          ? Icons.check
+                                          : Icons.cancel,
+                                      color: (snapshot.data![index].status == 1)
+                                          ? Colors.green
+                                          : Colors.red,
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
-                        ]));
+                        );
                       }
                   }
                 },
               ),
             ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Center(
-              child: Container(
-                child: SfCartesianChart(
-                  tooltipBehavior: _tooltipBehavior,
-                  primaryXAxis: CategoryAxis(),
-                  series: <ChartSeries>[
-                    // Renders line chart
-                    SplineSeries<ChartData, String>(
-                        name: 'Nesplněno',
-                        dataSource: chartData,
-                        color: Colors.red,
-                        markerSettings: MarkerSettings(
-                          isVisible: true,
-                          shape: DataMarkerType.circle,
-                          width: 6,
-                          height: 6,
-                        ),
-                        xValueMapper: (ChartData data, _) => data.x,
-                        yValueMapper: (ChartData data, _) => data.z),
-                    SplineSeries<ChartData, String>(
-                        name: 'Splněno',
-                        dataSource: chartData,
-                        color: Colors.blueGrey,
-                        markerSettings: MarkerSettings(
-                          isVisible: true,
-                          shape: DataMarkerType.circle,
-                          width: 6,
-                          height: 6,
-                        ),
-                        xValueMapper: (ChartData data, _) => data.x,
-                        yValueMapper: (ChartData data, _) => data.y),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 3,
-            child: FutureBuilder(
-              future: _future,
-              builder: (context, AsyncSnapshot<List<Task>> snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.none:
-                    return Text('none');
-                  case ConnectionState.waiting:
-                    return Center(child: CircularProgressIndicator());
-                  case ConnectionState.active:
-                    return Text('');
-                  case ConnectionState.done:
-                    if (snapshot.hasError) {
-                      return Text(
-                        '${snapshot.error}',
-                        style: TextStyle(color: Colors.red),
-                      );
-                    } else {
-                      return Container(
-                        child: ListView.builder(
-                          key: _scaffoldKey,
-                          //separatorBuilder: (_, __) => Divider(),
-                          //itemCount: taskController.tasks.length,
-                          itemCount: snapshot.data?.length,
-                          itemBuilder: (context, index) => Dismissible(
-                            key: UniqueKey(),
-                            child: ListTile(
-                              visualDensity: VisualDensity(vertical: 3),
-                              title: Text(
-                                //taskController.tasks[index].name,
-                                snapshot.data![index].name,
-                                style: TextStyle(
-                                  color: Color.fromRGBO(255, 255, 255, 0.801),
-                                ),
-                              ),
-                              onTap: () {
-                                /*Get.to(AddTaskScreen(
-                    index: index,
-                  ));*/
-                              },
-                              onLongPress: () {
-                                Get.showSnackbar(
-                                  GetSnackBar(
-                                    title: 'Klik!',
-                                    message: 'jde to',
-                                    icon: const Icon(
-                                      Icons.cancel,
-                                      color: Colors.blueGrey,
-                                    ),
-                                    duration: const Duration(seconds: 2),
-                                  ),
-                                );
-                              },
-                              leading: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    (snapshot.data![index].status == 1)
-                                        ? Icons.check
-                                        : Icons.cancel,
-                                    color: (snapshot.data![index].status == 1)
-                                        ? Colors.green
-                                        : Colors.red,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    }
-                }
-              },
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

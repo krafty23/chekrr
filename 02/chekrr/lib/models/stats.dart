@@ -44,3 +44,35 @@ class yxnType {
         'text': text,
       };
 }
+
+class HistoryTask {
+  HistoryTask({
+    required this.id,
+    required this.date,
+    required this.done,
+    required this.canceled,
+  });
+
+  int id;
+  String date;
+  int done;
+  int canceled;
+  factory HistoryTask.fromJson(Map<String, dynamic> json) => HistoryTask(
+        id: int.tryParse(json['id']) as int,
+        date: json['date'] as String,
+        done: int.tryParse(json['done']) as int,
+        canceled: int.tryParse(json['canceled']) as int,
+      );
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'date': date,
+        'done': done,
+        'canceled': canceled,
+      };
+}
+
+List<HistoryTask> HistoryTaskFromJson(String str) => List<HistoryTask>.from(
+    json.decode(str).map((x) => HistoryTask.fromJson(x)));
+
+String CalendarTaskToJson(List<HistoryTask> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));

@@ -2,11 +2,13 @@ import 'package:chekrr/screens/HomeScreen.dart';
 import "package:flutter/material.dart";
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
+import 'dart:io';
 import 'package:get_storage/get_storage.dart';
 import '../globals.dart' as globals;
 import '../controllers/TaskController.dart';
 import '../models/task.dart';
 import 'package:mysql1/mysql1.dart';
+import 'package:flutter/services.dart';
 
 class AddTaskScreen extends StatefulWidget {
   AddTaskScreen({super.key, this.restorationId});
@@ -73,8 +75,21 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   bool isChecked7 = true;
   /*final int index;
   AddTaskScreen({this.index});*/
+
   @override
   TextEditingController textEditingController = TextEditingController();
+  late GlobalKey<ScaffoldState> _scaffoldKey;
+  @override
+  void initState() {
+    _scaffoldKey = GlobalKey();
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.transparent,
+        statusBarColor: Colors.transparent,
+      ),
+    );
+  }
+
   Widget build(BuildContext context) {
     String name = '';
     /*if (!this.index.isNull) {
@@ -83,14 +98,25 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     final box = GetStorage();
     var uid = box.read('uid');
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      extendBody: true,
       appBar: AppBar(
         title: Text('Vložit výzvu'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
       body: Container(
-        padding: EdgeInsets.all(12.0),
+        padding: EdgeInsets.fromLTRB(10, 100, 10, 10),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("images/abstract_background.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Column(
           children: [
             Expanded(
+              flex: 1,
               child: TextField(
                 controller: textEditingController,
                 autofocus: true,
@@ -192,7 +218,14 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           ),
                           Checkbox(
                             checkColor: Colors.white,
-                            //fillColor: MaterialStateProperty.resolveWith(getColor),
+                            fillColor: MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.disabled)) {
+                                  return Color.fromARGB(155, 57, 21, 119);
+                                }
+                                return Color.fromARGB(255, 57, 21, 119);
+                              },
+                            ),
                             //value: Get.find<TaskController>().isChecked,
                             value: isChecked,
                             onChanged: (bool? value) {
@@ -217,6 +250,14 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           ),
                           Checkbox(
                             checkColor: Colors.white,
+                            fillColor: MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.disabled)) {
+                                  return Color.fromARGB(155, 57, 21, 119);
+                                }
+                                return Color.fromARGB(255, 57, 21, 119);
+                              },
+                            ),
                             //fillColor: MaterialStateProperty.resolveWith(getColor),
                             value: isChecked2,
                             onChanged: (bool? value) {
@@ -241,6 +282,14 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           ),
                           Checkbox(
                             checkColor: Colors.white,
+                            fillColor: MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.disabled)) {
+                                  return Color.fromARGB(155, 57, 21, 119);
+                                }
+                                return Color.fromARGB(255, 57, 21, 119);
+                              },
+                            ),
                             //fillColor: MaterialStateProperty.resolveWith(getColor),
                             value: isChecked3,
                             onChanged: (bool? value) {
@@ -265,6 +314,14 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           ),
                           Checkbox(
                             checkColor: Colors.white,
+                            fillColor: MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.disabled)) {
+                                  return Color.fromARGB(155, 57, 21, 119);
+                                }
+                                return Color.fromARGB(255, 57, 21, 119);
+                              },
+                            ),
                             //fillColor: MaterialStateProperty.resolveWith(getColor),
                             value: isChecked4,
                             onChanged: (bool? value) {
@@ -289,6 +346,14 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           ),
                           Checkbox(
                             checkColor: Colors.white,
+                            fillColor: MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.disabled)) {
+                                  return Color.fromARGB(155, 57, 21, 119);
+                                }
+                                return Color.fromARGB(255, 57, 21, 119);
+                              },
+                            ),
                             //fillColor: MaterialStateProperty.resolveWith(getColor),
                             value: isChecked5,
                             onChanged: (bool? value) {
@@ -313,6 +378,14 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           ),
                           Checkbox(
                             checkColor: Colors.white,
+                            fillColor: MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.disabled)) {
+                                  return Color.fromARGB(155, 57, 21, 119);
+                                }
+                                return Color.fromARGB(255, 57, 21, 119);
+                              },
+                            ),
                             //fillColor: MaterialStateProperty.resolveWith(getColor),
                             value: isChecked6,
                             onChanged: (bool? value) {
@@ -337,6 +410,14 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           ),
                           Checkbox(
                             checkColor: Colors.white,
+                            fillColor: MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.disabled)) {
+                                  return Color.fromARGB(155, 57, 21, 119);
+                                }
+                                return Color.fromARGB(255, 57, 21, 119);
+                              },
+                            ),
                             //fillColor: MaterialStateProperty.resolveWith(getColor),
                             value: isChecked7,
                             onChanged: (bool? value) {
@@ -359,6 +440,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               children: [
                 Expanded(
                   child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          Color.fromARGB(255, 57, 21, 119)),
+                    ),
                     child: Text('Vložit'),
                     //child: Text((this.index.isNull) ? 'Add' : 'Edit'),
                     onPressed: () {

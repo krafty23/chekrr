@@ -99,7 +99,8 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: Color.fromARGB(255, 57, 21, 119),
+        foregroundColor: Colors.white,
         child: Icon(Icons.add),
         onPressed: () {
           Get.toNamed('/add_task')?.then((result) {
@@ -224,53 +225,61 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                   key: UniqueKey(),
-                                  child: ListTile(
-                                    visualDensity: VisualDensity(vertical: 3),
-                                    title: Text(
-                                      //taskController.tasks[index].name,
-                                      snapshot.data![index].name,
-                                      style: TextStyle(
-                                        color: Color.fromRGBO(
-                                            255, 255, 255, 0.801),
-                                      ),
+                                  child: Container(
+                                    margin: EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: Color.fromARGB(103, 0, 0, 0),
                                     ),
-                                    onTap: () {
-                                      /*Get.to(AddTaskScreen(
+                                    child: ListTile(
+                                      visualDensity: VisualDensity(vertical: 3),
+                                      title: Text(
+                                        //taskController.tasks[index].name,
+                                        snapshot.data![index].name,
+                                        style: TextStyle(
+                                          color: Color.fromRGBO(
+                                              255, 255, 255, 0.801),
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        /*Get.to(AddTaskScreen(
                     index: index,
                   ));*/
-                                    },
-                                    onLongPress: () {
-                                      Get.showSnackbar(
-                                        GetSnackBar(
-                                          title: 'Klik!',
-                                          message: 'jde to',
-                                          icon: const Icon(
-                                            Icons.cancel,
-                                            color: Colors.blueGrey,
+                                      },
+                                      onLongPress: () {
+                                        Get.showSnackbar(
+                                          GetSnackBar(
+                                            title: 'Klik!',
+                                            message: 'jde to',
+                                            icon: const Icon(
+                                              Icons.cancel,
+                                              color: Colors.blueGrey,
+                                            ),
+                                            duration:
+                                                const Duration(seconds: 2),
                                           ),
-                                          duration: const Duration(seconds: 2),
-                                        ),
-                                      );
-                                    },
-                                    leading: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Icon(
-                                          Icons.chevron_left,
-                                          color: Colors.red,
-                                        ),
-                                      ],
-                                    ),
-                                    trailing: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Icon(
-                                          Icons.chevron_right,
-                                          color: Colors.green,
-                                        ),
-                                      ],
+                                        );
+                                      },
+                                      leading: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.chevron_left,
+                                            color: Colors.red,
+                                          ),
+                                        ],
+                                      ),
+                                      trailing: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.check,
+                                            //Icons.chevron_right,
+                                            color: Colors.green,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
