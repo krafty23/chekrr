@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
+import 'package:chekrr/drawer.dart';
+import '../bottomtab.dart';
 import '../models/user.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -23,7 +25,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         //'uid': globals.uid.toString(),
         'uid': uid.toString(),
       };
-      debugPrint(uid.toString());
       http.Response response = await http.post(
           Uri.parse(globals.globalProtocol +
               globals.globalURL +
@@ -62,6 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
+      drawer: DrawerDraw(),
       body: FutureBuilder(
         future: _future,
         builder: (context, AsyncSnapshot<List<UserFull>> snapshot) {
@@ -79,7 +81,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   style: TextStyle(color: Colors.red),
                 );
               } else {
-                debugPrint(snapshot.data?.length.toString());
                 return Padding(
                   padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                   child: Column(
@@ -133,6 +134,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
         },
       ),
+      bottomNavigationBar: BottomTabs(),
     );
   }
 }

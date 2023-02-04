@@ -23,6 +23,11 @@ class _BottomTabsState extends State<BottomTabs> {
         _selectedIndex = 1;
       });
     }
+    if (cesta == '/profile') {
+      setState(() {
+        _selectedIndex = 2;
+      });
+    }
     void _onItemTapped(int index) {
       setState(() {
         _selectedIndex = index;
@@ -32,6 +37,10 @@ class _BottomTabsState extends State<BottomTabs> {
         }
         if (index == 1) {
           Get.toNamed('/challenges');
+          //Navigator.pushReplacementNamed(context, '/challenges');
+        }
+        if (index == 2) {
+          Get.toNamed('/profile');
           //Navigator.pushReplacementNamed(context, '/challenges');
         }
       });
@@ -54,10 +63,18 @@ class _BottomTabsState extends State<BottomTabs> {
           label: 'Výzvy',
           //label: '$cesta',
         ),
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.person,
+            size: 45.0,
+          ),
+          label: 'Profil',
+          //label: '$cesta',
+        ),
       ],
       currentIndex: _selectedIndex,
-      selectedItemColor: Colors.white,
-      unselectedItemColor: Color(0xFF707070),
+      selectedItemColor: Color.fromARGB(255, 212, 124, 9),
+      unselectedItemColor: Color.fromARGB(255, 214, 214, 214),
       backgroundColor: Colors.transparent,
       onTap: _onItemTapped,
       elevation: 0,

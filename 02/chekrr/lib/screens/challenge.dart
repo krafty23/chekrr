@@ -6,6 +6,7 @@ import '../globals.dart' as globals;
 import 'package:http/http.dart' as http;
 import 'package:flutter_html/flutter_html.dart';
 import 'package:drop_shadow/drop_shadow.dart';
+import 'package:flutter/services.dart';
 
 class ChallengeScreen extends StatefulWidget {
   ChallengeScreen({super.key});
@@ -52,6 +53,12 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
   late GlobalKey<ScaffoldState> _scaffoldKey;
   @override
   void initState() {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.transparent,
+        statusBarColor: Colors.transparent,
+      ),
+    );
     _scaffoldKey = GlobalKey();
     super.initState();
     _future = getProgramFull();

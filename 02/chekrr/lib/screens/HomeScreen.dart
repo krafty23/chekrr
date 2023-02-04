@@ -33,9 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
         //'uid': globals.uid.toString(),
         'uid': uid.toString(),
       };
-      var url = Uri.parse(globals.globalProtocol +
-          globals.globalURL +
-          '/api/index.php/task/list');
       http.Response response = await http.post(
           Uri.parse(globals.globalProtocol +
               globals.globalURL +
@@ -73,6 +70,15 @@ class _HomeScreenState extends State<HomeScreen> {
     //  overlays: [SystemUiOverlay.top]);
   }
 
+  /*void reassemble() {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.transparent,
+        statusBarColor: Colors.transparent,
+      ),
+    );
+  }*/
+
   @override
   /*void reassemble() {
     super.initState();
@@ -104,6 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       drawer: DrawerDraw(),
       body: Container(
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 90),
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage("images/abstract_background.jpg"),
@@ -305,7 +312,7 @@ Future<http.Response> FinishTask(var id) async {
           },
           body: body);
   if (response.statusCode == 200) {
-    print(response.body);
+    //print(response.body);
   } else {
     throw Exception('Chyba: nepodařilo se označit výzvu jako dokončenou - ' +
         response.body +
@@ -330,7 +337,7 @@ Future<http.Response> RejectTask(var id) async {
           },
           body: body);
   if (response.statusCode == 200) {
-    print(response.body);
+    //print(response.body);
   } else {
     throw Exception('Chyba: nepodařilo se označit výzvu jako zrušenou - ' +
         response.body +

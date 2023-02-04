@@ -5,6 +5,7 @@ import '/screens/HomeScreen.dart';
 import '/screens/add_task.dart';
 import '/screens/settings.dart';
 import '/screens/history.dart';
+import '/screens/calendar.dart';
 import '/screens/profile.dart';
 import '/screens/challenge.dart';
 import '/screens/challenges.dart';
@@ -15,8 +16,14 @@ import 'package:flutter/services.dart';
 void main() async {
   await GetStorage.init();
   runApp(MyApp());
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-      overlays: [SystemUiOverlay.top]);
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.transparent,
+      statusBarColor: Colors.transparent,
+    ),
+  );
+  //SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+  //overlays: [SystemUiOverlay.top]);
 }
 
 class MyApp extends StatelessWidget {
@@ -55,7 +62,7 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/profile',
           page: () => ProfileScreen(),
-          transition: Transition.upToDown,
+          transition: Transition.fade,
         ),
         GetPage(
           name: '/challenge',
@@ -75,6 +82,11 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/settings',
           page: () => SettingsScreen(),
+          transition: Transition.downToUp,
+        ),
+        GetPage(
+          name: '/calendar',
+          page: () => CalendarScreen(),
           transition: Transition.downToUp,
         ),
       ],

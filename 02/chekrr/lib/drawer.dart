@@ -48,12 +48,19 @@ class DrawerDraw extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: Icon(Icons.calendar_month),
+            title: Text('Kalendář'),
+            onTap: () {
+              Get.toNamed('/calendar');
+            },
+          ),
+          /*ListTile(
             leading: Icon(Icons.people),
             title: Text('Lidé'),
             onTap: () {
               Get.toNamed('/history');
             },
-          ),
+          ),*/
           ListTile(
             leading: Icon(Icons.person),
             title: Text('Profil'),
@@ -69,14 +76,14 @@ class DrawerDraw extends StatelessWidget {
               Get.toNamed('/history');
             },
           ),
-          ListTile(
+          /*ListTile(
             leading: Icon(Icons.settings),
             title: Text('Nastavení'),
             onTap: () {
               //Navigator.pushReplacementNamed(context, '/settings');
               Get.toNamed('/settings');
             },
-          ),
+          ),*/
           ListTile(
             leading: Icon(Icons.logout),
             title: Text('Odhlásit'),

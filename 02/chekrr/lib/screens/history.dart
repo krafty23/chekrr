@@ -12,6 +12,7 @@ import 'package:http/http.dart' as http;
 import '../models/task.dart';
 import '../models/stats.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:flutter/services.dart';
 
 late TooltipBehavior _tooltipBehavior;
 
@@ -83,6 +84,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
   late GlobalKey<ScaffoldState> _scaffoldKey;
   @override
   void initState() {
+    /*SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.transparent,
+        statusBarColor: Colors.transparent,
+      ),
+    );*/
     _scaffoldKey = GlobalKey();
     _tooltipBehavior = TooltipBehavior(
       enable: true,
@@ -126,6 +133,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
       ChartData('10.2.', 1, 3)
     ];
     return Scaffold(
+      /*extendBodyBehindAppBar: true,*/
+      extendBody: true,
       appBar: AppBar(
         title: Text("Historie & Statistiky"),
         backgroundColor: Colors.transparent,
