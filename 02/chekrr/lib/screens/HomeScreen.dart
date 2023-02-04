@@ -62,10 +62,13 @@ class _HomeScreenState extends State<HomeScreen> {
     _scaffoldKey = GlobalKey();
     super.initState();
     _future = getTask();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.transparent,
-    ));
+    //SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.transparent,
+        statusBarColor: Colors.transparent,
+      ),
+    );
     //SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
     //  overlays: [SystemUiOverlay.top]);
   }
