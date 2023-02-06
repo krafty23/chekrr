@@ -8,12 +8,17 @@ class DrawerDraw extends StatelessWidget {
   Widget build(BuildContext context) {
     final box = GetStorage();
     return Drawer(
+      backgroundColor: Color.fromRGBO(20, 15, 45, 0.76),
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
             decoration: BoxDecoration(
-              color: Color.fromRGBO(255, 255, 255, 0.185),
+              color: Color.fromRGBO(244, 156, 55, 0.178),
+              image: DecorationImage(
+                image: AssetImage("images/abstract_background.jpg"),
+                fit: BoxFit.fill,
+              ),
             ),
             /*child: CircleAvatar(
               radius: 58,
@@ -33,7 +38,7 @@ class DrawerDraw extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.check),
+            leading: Icon(Icons.home),
             title: Text('Můj plán dne'),
             onTap: () {
               //Navigator.pushReplacementNamed(context, '/settings');
@@ -41,8 +46,8 @@ class DrawerDraw extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.list),
-            title: Text('Výzvy'),
+            leading: Icon(Icons.rocket_launch),
+            title: Text('Programy'),
             onTap: () {
               Get.toNamed('/challenges');
             },

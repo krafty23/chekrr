@@ -99,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color.fromARGB(255, 57, 21, 119),
+        backgroundColor: Color.fromARGB(230, 57, 21, 119),
         foregroundColor: Colors.white,
         child: Icon(Icons.add),
         onPressed: () {
@@ -111,10 +111,10 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       drawer: DrawerDraw(),
       body: Container(
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 90),
+        padding: EdgeInsets.fromLTRB(0, 100, 0, 90),
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("images/abstract_background.jpg"),
+            image: AssetImage("images/chekrr_bg.png"),
             fit: BoxFit.cover,
           ),
         ),
@@ -140,6 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Expanded(
                         child: snapshot.data!.isNotEmpty
                             ? ListView.builder(
+                                padding: EdgeInsets.zero,
                                 key: _scaffoldKey,
                                 //separatorBuilder: (_, __) => Divider(),
                                 //itemCount: taskController.tasks.length,
@@ -157,6 +158,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                           snapshot.data![index].id.toString());
                                       Get.showSnackbar(
                                         GetSnackBar(
+                                          snackPosition: SnackPosition.TOP,
+                                          backgroundColor:
+                                              Color.fromARGB(220, 0, 0, 0),
                                           title: 'Gratulace!',
                                           message: 'Výzva ' +
                                               snapshot.data![index].name +
@@ -175,12 +179,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                           snapshot.data![index].id.toString());
                                       Get.showSnackbar(
                                         GetSnackBar(
+                                          snackPosition: SnackPosition.TOP,
+                                          backgroundColor:
+                                              Color.fromARGB(220, 0, 0, 0),
                                           title: 'Příště to vyjde!',
                                           message: 'Výzva ' +
                                               snapshot.data![index].name +
                                               ' nesplněna',
                                           icon: const Icon(
-                                            Icons.cancel,
+                                            Icons.close,
                                             color: Colors.red,
                                           ),
                                           duration: const Duration(seconds: 2),
@@ -203,23 +210,23 @@ class _HomeScreenState extends State<HomeScreen> {
                         );*/
                                   },
                                   background: Container(
-                                    color: Colors.green,
+                                    color: Color.fromARGB(100, 76, 175, 79),
                                     child: Align(
                                       child: Padding(
                                         padding:
                                             const EdgeInsets.only(left: 16),
-                                        child: Icon(Icons.check_circle),
+                                        child: Icon(Icons.check),
                                       ),
                                       alignment: Alignment.centerLeft,
                                     ),
                                   ),
                                   secondaryBackground: Container(
-                                    color: Colors.red,
+                                    color: Color.fromARGB(100, 244, 67, 54),
                                     child: Align(
                                       child: Padding(
                                         padding:
                                             const EdgeInsets.only(right: 16),
-                                        child: Icon(Icons.cancel),
+                                        child: Icon(Icons.close),
                                       ),
                                       alignment: Alignment.centerRight,
                                     ),
@@ -228,7 +235,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Container(
                                     margin: EdgeInsets.all(5),
                                     decoration: BoxDecoration(
-                                      color: Color.fromARGB(103, 0, 0, 0),
+                                      color: Color.fromARGB(129, 0, 0, 0),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(30)),
                                     ),
                                     child: ListTile(
                                       visualDensity: VisualDensity(vertical: 3),
@@ -264,7 +273,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             MainAxisAlignment.center,
                                         children: <Widget>[
                                           Icon(
-                                            Icons.chevron_left,
+                                            Icons.close,
                                             color: Colors.red,
                                           ),
                                         ],

@@ -47,26 +47,28 @@ class _BottomTabsState extends State<BottomTabs> {
     }
 
     return BottomNavigationBar(
+      showUnselectedLabels: false,
+      showSelectedLabels: true,
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.check,
-            size: 45.0,
+            Icons.home,
+            size: 50.0,
           ),
           label: 'Můj Plán',
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.list,
-            size: 45.0,
+            Icons.rocket_launch,
+            size: 50.0,
           ),
-          label: 'Výzvy',
+          label: 'Programy',
           //label: '$cesta',
         ),
         BottomNavigationBarItem(
           icon: Icon(
             Icons.person,
-            size: 45.0,
+            size: 50.0,
           ),
           label: 'Profil',
           //label: '$cesta',
@@ -74,7 +76,7 @@ class _BottomTabsState extends State<BottomTabs> {
       ],
       currentIndex: _selectedIndex,
       selectedItemColor: Color.fromARGB(255, 255, 255, 255),
-      unselectedItemColor: Color.fromARGB(255, 180, 180, 180),
+      unselectedItemColor: Color.fromARGB(165, 180, 180, 180),
       backgroundColor: Colors.transparent,
       onTap: _onItemTapped,
       elevation: 0,

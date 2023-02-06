@@ -84,6 +84,8 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                 ).then((value) => Get.offAllNamed('/home'));
                 Get.showSnackbar(
                   GetSnackBar(
+                    snackPosition: SnackPosition.TOP,
+                    backgroundColor: Color.fromARGB(200, 0, 0, 0),
                     title: 'Výzva přijata',
                     message: 'Výzva ',
                     icon: const Icon(

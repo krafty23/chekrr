@@ -23,12 +23,50 @@ class _LoadingScreenState extends State<LoadingScreen> {
         body: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("images/abstract_background.jpg"),
+              image: AssetImage("images/chekrr_bg.png"),
               fit: BoxFit.cover,
             ),
           ),
           child: Center(
             child: ElevatedButton(
+              style: ButtonStyle(
+                textStyle: MaterialStateProperty.resolveWith(
+                  (states) {
+                    // If the button is pressed, return size 40, otherwise 20
+                    if (states.contains(MaterialState.pressed)) {
+                      return TextStyle(
+                        fontSize: 32,
+                        fontFamily: 'Roboto',
+                      );
+                    }
+                    return TextStyle(
+                      fontSize: 30,
+                      fontFamily: 'Roboto',
+                    );
+                  },
+                ),
+                padding: MaterialStateProperty.all(const EdgeInsets.all(15)),
+                shape: MaterialStateProperty.resolveWith<OutlinedBorder>((_) {
+                  return RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    side: BorderSide(color: Color.fromARGB(60, 57, 21, 119)),
+                  );
+                }),
+                foregroundColor: MaterialStateProperty.all<Color>(
+                    Color.fromARGB(255, 214, 214, 214)),
+                backgroundColor: MaterialStateProperty.all<Color>(
+                    Color.fromARGB(75, 57, 21, 119)),
+                overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                  (Set<MaterialState> states) {
+                    if (states.contains(MaterialState.hovered))
+                      return Colors.blue.withOpacity(0.04);
+                    if (states.contains(MaterialState.focused) ||
+                        states.contains(MaterialState.pressed))
+                      return Color.fromARGB(50, 244, 157, 55);
+                    return null; // Defer to the widget's default.
+                  },
+                ),
+              ),
               onPressed: () {
                 //navigator.pushReplacementNamed(context, '/');
                 if (LoggedIn == true) {

@@ -57,45 +57,54 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      extendBody: true,
       appBar: AppBar(
-        title: Text("Výzvy"),
+        title: Text("Programy"),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
       drawer: DrawerDraw(),
-      body: FutureBuilder(
-        future: _future,
-        builder: (context, AsyncSnapshot<List<Program>> snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.none:
-              return Text('none');
-            case ConnectionState.waiting:
-              return Center(child: CircularProgressIndicator());
-            case ConnectionState.active:
-              return Text('');
-            case ConnectionState.done:
-              if (snapshot.hasError) {
-                return Text(
-                  '${snapshot.error}',
-                  style: TextStyle(color: Colors.red),
-                );
-              } else {
-                return Column(
-                  children: <Widget>[
-                    /*Expanded(
+      body: Container(
+        padding: EdgeInsets.fromLTRB(0, 100, 0, 90),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("images/chekrr_bg.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: FutureBuilder(
+          future: _future,
+          builder: (context, AsyncSnapshot<List<Program>> snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return Text('none');
+              case ConnectionState.waiting:
+                return Center(child: CircularProgressIndicator());
+              case ConnectionState.active:
+                return Text('');
+              case ConnectionState.done:
+                if (snapshot.hasError) {
+                  return Text(
+                    '${snapshot.error}',
+                    style: TextStyle(color: Colors.red),
+                  );
+                } else {
+                  return Column(
+                    children: <Widget>[
+                      /*Expanded(
                       flex: 1,
                       child: Text('d'),
                     ),*/
-                    snapshot.data!.isNotEmpty
-                        ? Expanded(
-                            flex: 9,
-                            child: ListView.builder(
-                              //scrollDirection: Axis.horizontal,
-                              key: _scaffoldKey,
-                              itemCount: snapshot.data?.length,
-                              itemBuilder: (context, index) => Dismissible(
-                                key: UniqueKey(),
-                                child: ListTile(
+                      snapshot.data!.isNotEmpty
+                          ? Expanded(
+                              flex: 9,
+                              child: ListView.builder(
+                                //scrollDirection: Axis.horizontal,
+                                padding: EdgeInsets.zero,
+                                key: _scaffoldKey,
+                                itemCount: snapshot.data?.length,
+                                itemBuilder: (context, index) => ListTile(
                                   onTap: () {
                                     Get.toNamed(
                                       '/challenge?id=' +
@@ -168,19 +177,20 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                             ),*/
                                 ),
                               ),
+                            )
+                          : Expanded(
+                              flex: 1,
+                              child: Center(
+                                child: Text(
+                                    'Žádné další programy nejsou k dispozici'),
+                              ),
                             ),
-                          )
-                        : Expanded(
-                            flex: 1,
-                            child: Center(
-                              child: Text('Žádné výzvy nenalezeny'),
-                            ),
-                          ),
-                  ],
-                );
-              }
-          }
-        },
+                    ],
+                  );
+                }
+            }
+          },
+        ),
       ),
       bottomNavigationBar: BottomTabs(),
     );

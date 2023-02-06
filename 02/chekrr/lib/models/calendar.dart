@@ -85,10 +85,10 @@ class CalendarTask {
         ) as DateTime,
         //to: int.tryParse(json['id']) as int,
         background: int.parse(json['status']) == 0
-            ? Colors.blueGrey
+            ? Color.fromARGB(111, 96, 125, 139)
             : int.parse(json['status']) == 1
-                ? Colors.green
-                : Colors.red,
+                ? Color.fromARGB(111, 51, 201, 14)
+                : Color.fromARGB(111, 242, 44, 41),
         isAllDay: true as bool,
       );
 

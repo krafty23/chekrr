@@ -109,7 +109,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         padding: EdgeInsets.fromLTRB(10, 100, 10, 10),
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("images/abstract_background.jpg"),
+            image: AssetImage("images/chekrr_bg.png"),
             fit: BoxFit.cover,
           ),
         ),
@@ -439,12 +439,24 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  child: ElevatedButton(
+                  child: ElevatedButton.icon(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
-                          Color.fromARGB(255, 57, 21, 119)),
+                          Color.fromARGB(185, 57, 21, 119)),
+                      padding:
+                          MaterialStateProperty.all(const EdgeInsets.all(10)),
+                      textStyle: MaterialStateProperty.resolveWith(
+                        (states) {
+                          // If the button is pressed, return size 40, otherwise 20
+                          if (states.contains(MaterialState.pressed)) {
+                            return TextStyle(fontSize: 21);
+                          }
+                          return TextStyle(fontSize: 20);
+                        },
+                      ),
                     ),
-                    child: Text('Vložit'),
+                    icon: Icon(Icons.add),
+                    label: Text('Vložit'),
                     //child: Text((this.index.isNull) ? 'Add' : 'Edit'),
                     onPressed: () {
                       /*if (this.index.isNull) {*/

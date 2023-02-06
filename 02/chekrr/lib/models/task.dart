@@ -6,6 +6,11 @@ List<Task> TaskFromJson(String str) =>
 
 String TaskToJson(List<Task> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+List<PastTask> PastTaskFromJson(String str) =>
+    List<PastTask>.from(json.decode(str).map((x) => PastTask.fromJson(x)));
+
+String PastTaskToJson(List<PastTask> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 List<TaskFull> TaskFullFromJson(String str) =>
     List<TaskFull>.from(json.decode(str).map((x) => TaskFull.fromJson(x)));
@@ -27,6 +32,44 @@ class Task {
 
   Map<String, dynamic> toJson() => {
         'name': name,
+        'status': status,
+        'id': id,
+      };
+}
+
+class PastTask {
+  String name;
+  String date;
+  String time;
+  int status;
+  int id;
+
+  PastTask(
+      {this.name = '',
+      this.date = '',
+      this.time = '',
+      this.status = 0,
+      this.id = 0});
+  factory PastTask.fromJson(Map<String, dynamic> json) => PastTask(
+        name: json['name'] as String,
+        date: json['statuschange_day'] +
+            '.' +
+            json['statuschange_month'] +
+            '.' +
+            json['statuschange_year'] as String,
+        time: json['statuschange_hour'] +
+            ':' +
+            json['statuschange_minute'] +
+            ':' +
+            json['statuschange_second'] as String,
+        status: int.tryParse(json['status']) as int,
+        id: int.tryParse(json['id']) as int,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'date': date,
+        'time': time,
         'status': status,
         'id': id,
       };

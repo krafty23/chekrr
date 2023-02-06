@@ -58,81 +58,94 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final box = GetStorage();
     bool LoggedIn = box.read('isloggedin') ?? false;
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      extendBody: true,
       appBar: AppBar(
         title: Text("Profil"),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
       drawer: DrawerDraw(),
-      body: FutureBuilder(
-        future: _future,
-        builder: (context, AsyncSnapshot<List<UserFull>> snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.none:
-              return Text('none');
-            case ConnectionState.waiting:
-              return Center(child: CircularProgressIndicator());
-            case ConnectionState.active:
-              return Text('');
-            case ConnectionState.done:
-              if (snapshot.hasError) {
-                return Text(
-                  '${snapshot.error}',
-                  style: TextStyle(color: Colors.red),
-                );
-              } else {
-                return Padding(
-                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: Column(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: ListView.builder(
-                          //scrollDirection: Axis.horizontal,
-                          key: _scaffoldKey,
-                          itemCount: snapshot.data?.length,
-                          itemBuilder: (context, index) => Card(
-                            elevation: 5,
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
-                              child: Column(
-                                children: <Widget>[
-                                  Image(
-                                    image: NetworkImage(
-                                      globals.globalProtocol +
-                                          globals.globalURL +
-                                          '/images/users/' +
-                                          snapshot.data![index].foto_filename,
+      body: Container(
+        padding: EdgeInsets.fromLTRB(0, 100, 0, 90),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("images/chekrr_bg.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: FutureBuilder(
+          future: _future,
+          builder: (context, AsyncSnapshot<List<UserFull>> snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return Text('none');
+              case ConnectionState.waiting:
+                return Center(child: CircularProgressIndicator());
+              case ConnectionState.active:
+                return Text('');
+              case ConnectionState.done:
+                if (snapshot.hasError) {
+                  return Text(
+                    '${snapshot.error}',
+                    style: TextStyle(color: Colors.red),
+                  );
+                } else {
+                  return Padding(
+                    padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 1,
+                          child: ListView.builder(
+                            //scrollDirection: Axis.horizontal,
+                            padding: EdgeInsets.zero,
+                            key: _scaffoldKey,
+                            itemCount: snapshot.data?.length,
+                            itemBuilder: (context, index) => Card(
+                              elevation: 5,
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+                                child: Column(
+                                  children: <Widget>[
+                                    Image(
+                                      image: NetworkImage(
+                                        globals.globalProtocol +
+                                            globals.globalURL +
+                                            '/images/users/' +
+                                            snapshot.data![index].foto_filename,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    snapshot.data![index].name.toString() +
-                                        ' ' +
-                                        snapshot.data![index].surname
-                                            .toString(),
-                                  ),
-                                  Text(
-                                    '( ' +
-                                        snapshot.data![index].username
-                                            .toString() +
-                                        ' )',
-                                  ),
-                                  Text(
-                                    snapshot.data![index].email_personal
-                                        .toString(),
-                                  ),
-                                ],
+                                    Text(
+                                      snapshot.data![index].name.toString() +
+                                          ' ' +
+                                          snapshot.data![index].surname
+                                              .toString(),
+                                    ),
+                                    Text(
+                                      '( ' +
+                                          snapshot.data![index].username
+                                              .toString() +
+                                          ' )',
+                                    ),
+                                    Text(
+                                      snapshot.data![index].email_personal
+                                          .toString(),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              }
-          }
-        },
+                      ],
+                    ),
+                  );
+                }
+            }
+          },
+        ),
       ),
       bottomNavigationBar: BottomTabs(),
     );

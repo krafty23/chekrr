@@ -15,25 +15,6 @@ class CalendarScreen extends StatefulWidget {
   _CalendarScreenState createState() => _CalendarScreenState();
 }
 
-List<Meeting> _getDataSource() {
-  final List<Meeting> meetings = <Meeting>[];
-  final DateTime today = DateTime.now();
-  final DateTime zitra = DateTime.utc(2023, 2, 6, 0, 0, 0);
-  final DateTime startTime =
-      DateTime(today.year, today.month, today.day, 9, 0, 0);
-  final DateTime endTime = startTime.add(const Duration(hours: 2));
-  final DateTime startTime2 =
-      DateTime(zitra.year, zitra.month, zitra.day, 9, 0, 0);
-  final DateTime endTime2 = startTime2.add(const Duration(hours: 2));
-  meetings.add(Meeting('Nehulit', startTime, endTime, Colors.blueGrey, true));
-  meetings.add(Meeting('Cvicit', startTime, endTime, Colors.blueGrey, true));
-  meetings.add(Meeting('Mrdat', startTime, endTime, Colors.blueGrey, true));
-  meetings.add(Meeting('Behat', startTime, endTime, Colors.blueGrey, true));
-  meetings.add(Meeting('Nehulit', startTime2, endTime2, Colors.blueGrey, true));
-  meetings.add(Meeting('Cvicit', startTime2, endTime2, Colors.blueGrey, true));
-  return meetings;
-}
-
 class _CalendarScreenState extends State<CalendarScreen> {
   late Future<List<CalendarTask>> _future;
   Future<List<CalendarTask>> getTask() async {
@@ -69,12 +50,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
   void initState() {
     _scaffoldKey = GlobalKey();
     _future = getTask();
-    SystemChrome.setSystemUIOverlayStyle(
+    /*SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
         systemNavigationBarColor: Colors.transparent,
         statusBarColor: Colors.transparent,
       ),
-    );
+    );*/
   }
 
   Widget build(BuildContext context) {
@@ -91,7 +72,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         padding: EdgeInsets.fromLTRB(0, 90, 0, 0),
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("images/abstract_background.jpg"),
+            image: AssetImage("images/chekrr_bg.png"),
             fit: BoxFit.cover,
           ),
         ),
@@ -120,6 +101,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                             ? SfCalendar(
                                 initialSelectedDate: DateTime.now(),
                                 view: CalendarView.month,
+                                todayHighlightColor:
+                                    Color.fromARGB(214, 63, 137, 197),
                                 showDatePickerButton: true,
                                 dataSource:
                                     CalendarTaskDataSource(snapshot.data!),

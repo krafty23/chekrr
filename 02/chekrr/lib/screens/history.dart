@@ -24,9 +24,10 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  late Future<List<Task>> _future;
+  late Future<List<PastTask>> _future;
   late Future<List<yxnType>> _future2;
-  Future<List<Task>> getTask() async {
+  late Future<List<HistoryTask>> _future3;
+  Future<List<PastTask>> getTask() async {
     final box = GetStorage();
     var uid = box.read('uid');
     try {
@@ -45,12 +46,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
           body: requestbody);
       //print(response.body);
       if (response.statusCode == 200) {
-        return TaskFromJson(response.body);
+        return PastTaskFromJson(response.body);
       } else {
-        return <Task>[];
+        return <PastTask>[];
       }
     } catch (e) {
-      return <Task>[]; // return an empty list on exception/error
+      return <PastTask>[]; // return an empty list on exception/error
     }
   }
 
@@ -81,6 +82,34 @@ class _HistoryScreenState extends State<HistoryScreen> {
     }
   }
 
+  Future<List<HistoryTask>> getHistory() async {
+    final box = GetStorage();
+    var uid = box.read('uid');
+    try {
+      Map<String, dynamic> requestbody = {
+        //'uid': globals.uid.toString(),
+        'uid': uid.toString(),
+      };
+      http.Response response = await http.post(
+          Uri.parse(globals.globalProtocol +
+              globals.globalURL +
+              '/api/index.php/stats/history'),
+          headers: <String, String>{
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+            //'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: requestbody);
+      if (response.statusCode == 200) {
+        return HistoryTaskFromJson(response.body);
+      } else {
+        return <HistoryTask>[];
+      }
+    } catch (e) {
+      return <HistoryTask>[]; // return an empty list on exception/error
+    }
+  }
+
   late GlobalKey<ScaffoldState> _scaffoldKey;
   @override
   void initState() {
@@ -98,6 +127,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     super.initState();
     _future = getTask();
     _future2 = getYxn();
+    _future3 = getHistory();
   }
 
   static const List<String> listek = <String>[
@@ -108,30 +138,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
   String selectedTime = "1";
   String dropdownValue = listek.first;
   Widget build(BuildContext context) {
-    final List<ChartData> chartData = [
-      ChartData('20.1.', 5, 9),
-      ChartData('21.1.', 10, 1),
-      ChartData('22.1.', 2, 5),
-      ChartData('23.1.', 4, 7),
-      ChartData('24.1.', 10, 0),
-      ChartData('25.1.', 10, 0),
-      ChartData('26.1.', 8, 2),
-      ChartData('27.1.', 5, 5),
-      ChartData('28.1.', 2, 8),
-      ChartData('29.1.', 4, 6),
-      ChartData('30.1.', 7, 3),
-      ChartData('31.1.', 10, 3),
-      ChartData('1.2.', 8, 2),
-      ChartData('2.2.', 5, 5),
-      ChartData('3.2.', 4, 6),
-      ChartData('4.2.', 7, 3),
-      ChartData('5.2.', 8, 2),
-      ChartData('6.2.', 10, 4),
-      ChartData('7.2.', 3, 5),
-      ChartData('8.2.', 5, 6),
-      ChartData('9.2.', 7, 7),
-      ChartData('10.2.', 1, 3)
-    ];
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
@@ -144,7 +150,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         padding: EdgeInsets.fromLTRB(0, 90, 0, 0),
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("images/abstract_background.jpg"),
+            image: AssetImage("images/chekrr_bg.png"),
             fit: BoxFit.cover,
           ),
         ),
@@ -214,25 +220,34 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       ChartData2('Nesplněno', 35, Colors.red, 'Nesplněno 25%'),
                     ];*/
                           return Container(
-                              child: SfCircularChart(series: <CircularSeries>[
-                            // Render pie chart
-                            PieSeries<ChartData2, String>(
-                              explode: true,
-                              explodeIndex: 1,
-                              dataSource: chartData12,
-                              pointColorMapper: (ChartData2 data, _) =>
-                                  data.color,
-                              xValueMapper: (ChartData2 data, _) => data.x,
-                              yValueMapper: (ChartData2 data, _) => data.y,
-                              dataLabelMapper: (ChartData2 data, _) =>
-                                  data.text,
-                              dataLabelSettings: DataLabelSettings(
-                                isVisible: true,
-                                labelPosition: ChartDataLabelPosition.outside,
-                                useSeriesColor: true,
-                              ),
-                            ),
-                          ]));
+                            child: (snapshot.data![0].y > 0 ||
+                                    snapshot.data![1].y > 0)
+                                ? SfCircularChart(
+                                    series: <CircularSeries>[
+                                      // Render pie chart
+                                      PieSeries<ChartData2, String>(
+                                        explode: true,
+                                        explodeIndex: 1,
+                                        dataSource: chartData12,
+                                        pointColorMapper:
+                                            (ChartData2 data, _) => data.color,
+                                        xValueMapper: (ChartData2 data, _) =>
+                                            data.x,
+                                        yValueMapper: (ChartData2 data, _) =>
+                                            data.y,
+                                        dataLabelMapper: (ChartData2 data, _) =>
+                                            data.text,
+                                        dataLabelSettings: DataLabelSettings(
+                                          isVisible: true,
+                                          labelPosition:
+                                              ChartDataLabelPosition.outside,
+                                          useSeriesColor: true,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Container(),
+                          );
                         }
                     }
                   },
@@ -242,38 +257,70 @@ class _HistoryScreenState extends State<HistoryScreen> {
             Expanded(
               flex: 2,
               child: Center(
-                child: Container(
-                  child: SfCartesianChart(
-                    tooltipBehavior: _tooltipBehavior,
-                    primaryXAxis: CategoryAxis(),
-                    series: <ChartSeries>[
-                      // Renders line chart
-                      SplineSeries<ChartData, String>(
-                          name: 'Nesplněno',
-                          dataSource: chartData,
-                          color: Colors.red,
-                          markerSettings: MarkerSettings(
-                            isVisible: true,
-                            shape: DataMarkerType.circle,
-                            width: 6,
-                            height: 6,
-                          ),
-                          xValueMapper: (ChartData data, _) => data.x,
-                          yValueMapper: (ChartData data, _) => data.z),
-                      SplineSeries<ChartData, String>(
-                          name: 'Splněno',
-                          dataSource: chartData,
-                          color: Color.fromARGB(207, 51, 201, 14),
-                          markerSettings: MarkerSettings(
-                            isVisible: true,
-                            shape: DataMarkerType.circle,
-                            width: 6,
-                            height: 6,
-                          ),
-                          xValueMapper: (ChartData data, _) => data.x,
-                          yValueMapper: (ChartData data, _) => data.y),
-                    ],
-                  ),
+                child: FutureBuilder(
+                  future: _future3,
+                  builder:
+                      (context, AsyncSnapshot<List<HistoryTask>> snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                        return Text('Chyba pripojeni');
+                      case ConnectionState.waiting:
+                        return Center(child: CircularProgressIndicator());
+                      case ConnectionState.active:
+                        return Text('');
+                      case ConnectionState.done:
+                        if (snapshot.hasError) {
+                          return Text(
+                            '${snapshot.error}',
+                            style: TextStyle(color: Colors.red),
+                          );
+                        } else {
+                          //print(snapshot.data?.length.toString());
+                          return Container(
+                            child: snapshot.data!.isNotEmpty
+                                ? SfCartesianChart(
+                                    tooltipBehavior: _tooltipBehavior,
+                                    primaryXAxis: CategoryAxis(),
+                                    series: <ChartSeries>[
+                                      // Renders line chart
+                                      SplineSeries<HistoryTask, String>(
+                                          name: 'Nesplněno',
+                                          dataSource: snapshot.data!,
+                                          color: Colors.red,
+                                          markerSettings: MarkerSettings(
+                                            isVisible: true,
+                                            shape: DataMarkerType.circle,
+                                            width: 6,
+                                            height: 6,
+                                          ),
+                                          xValueMapper: (HistoryTask data, _) =>
+                                              data.date,
+                                          yValueMapper: (HistoryTask data, _) =>
+                                              data.canceled),
+                                      SplineSeries<HistoryTask, String>(
+                                          name: 'Splněno',
+                                          dataSource: snapshot.data!,
+                                          color:
+                                              Color.fromARGB(207, 51, 201, 14),
+                                          markerSettings: MarkerSettings(
+                                            isVisible: true,
+                                            shape: DataMarkerType.circle,
+                                            width: 6,
+                                            height: 6,
+                                          ),
+                                          xValueMapper: (HistoryTask data, _) =>
+                                              data.date,
+                                          yValueMapper: (HistoryTask data, _) =>
+                                              data.done),
+                                    ],
+                                  )
+                                : Center(
+                                    child: Text('Žádná data nenalezena'),
+                                  ),
+                          );
+                        }
+                    }
+                  },
                 ),
               ),
             ),
@@ -281,7 +328,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               flex: 3,
               child: FutureBuilder(
                 future: _future,
-                builder: (context, AsyncSnapshot<List<Task>> snapshot) {
+                builder: (context, AsyncSnapshot<List<PastTask>> snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.none:
                       return Text('none');
@@ -299,11 +346,18 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         return Container(
                           child: ListView.builder(
                             key: _scaffoldKey,
+                            padding: EdgeInsets.zero,
                             //separatorBuilder: (_, __) => Divider(),
                             //itemCount: taskController.tasks.length,
                             itemCount: snapshot.data?.length,
-                            itemBuilder: (context, index) => Dismissible(
-                              key: UniqueKey(),
+                            itemBuilder: (context, index) => Container(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 3, horizontal: 5),
+                              decoration: BoxDecoration(
+                                color: (snapshot.data![index].status == 1)
+                                    ? Color.fromARGB(45, 76, 175, 79)
+                                    : Color.fromARGB(25, 244, 67, 54),
+                              ),
                               child: ListTile(
                                 visualDensity: VisualDensity(vertical: 3),
                                 title: Text(
@@ -337,10 +391,31 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     Icon(
                                       (snapshot.data![index].status == 1)
                                           ? Icons.check
-                                          : Icons.cancel,
+                                          : Icons.close,
                                       color: (snapshot.data![index].status == 1)
                                           ? Colors.green
                                           : Colors.red,
+                                    ),
+                                  ],
+                                ),
+                                trailing: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      snapshot.data![index].date,
+                                      style: TextStyle(
+                                        color: Color.fromRGBO(
+                                            255, 255, 255, 0.562),
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    Text(
+                                      snapshot.data![index].time,
+                                      style: TextStyle(
+                                        color: Color.fromRGBO(
+                                            255, 255, 255, 0.562),
+                                        fontSize: 12,
+                                      ),
                                     ),
                                   ],
                                 ),
