@@ -58,14 +58,14 @@ class _LoginPage extends State<LoginPage> {
         } else {
           showprogress = false; //don't show progress indicator
           error = true;
-          errormsg = "Something went wrong.";
+          errormsg = "Něco je špatně";
         }
       }
     } else {
       setState(() {
         showprogress = false; //don't show progress indicator
         error = true;
-        errormsg = "Error during connecting to server.";
+        errormsg = "Chyba připojení k serveru";
       });
     }
   }
@@ -86,22 +86,22 @@ class _LoginPage extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+      extendBodyBehindAppBar: true,
+      extendBody: true,
+      body: Container(
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("images/chekrr_bg.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Container(
           constraints: BoxConstraints(
             minHeight: MediaQuery.of(context).size.height,
           ),
           width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [
-                Color.fromRGBO(48, 48, 48, 1),
-                Color.fromRGBO(150, 150, 150, 1),
-              ],
-            ),
-          ),
+          decoration: BoxDecoration(),
           padding: EdgeInsets.all(20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -139,7 +139,7 @@ class _LoginPage extends State<LoginPage> {
                   style: TextStyle(
                       color: Color.fromARGB(255, 216, 216, 216), fontSize: 20),
                   decoration: myInputDecoration(
-                    label: "Username",
+                    label: "Uživatelské jméno",
                     icon: Icons.person,
                   ),
                   onChanged: (value) {
@@ -156,7 +156,7 @@ class _LoginPage extends State<LoginPage> {
                       color: Color.fromRGBO(218, 218, 218, 1), fontSize: 20),
                   obscureText: true,
                   decoration: myInputDecoration(
-                    label: "Password",
+                    label: "Heslo",
                     icon: Icons.lock,
                   ),
                   onChanged: (value) {
@@ -167,11 +167,26 @@ class _LoginPage extends State<LoginPage> {
               ),
               Container(
                 padding: EdgeInsets.all(10),
-                margin: EdgeInsets.only(top: 20),
+                margin: EdgeInsets.only(top: 10),
                 child: SizedBox(
-                  height: 60,
+                  height: 50,
                   width: double.infinity,
-                  child: ElevatedButton(
+                  child: ElevatedButton.icon(
+                    icon: Icon(
+                      Icons.login,
+                      size: 25.0,
+                    ),
+                    style: ButtonStyle(
+                      /*shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero,
+                  ),
+                ),*/
+                      foregroundColor: MaterialStateProperty.all<Color>(
+                          Color.fromARGB(255, 214, 214, 214)),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Color.fromARGB(122, 57, 21, 119)),
+                    ),
                     onPressed: () {
                       setState(() {
                         //show progress indicator on click
@@ -179,7 +194,7 @@ class _LoginPage extends State<LoginPage> {
                       });
                       startLogin();
                     },
-                    child: showprogress
+                    label: showprogress
                         ? SizedBox(
                             height: 30,
                             width: 30,
@@ -191,7 +206,7 @@ class _LoginPage extends State<LoginPage> {
                             ),
                           )
                         : Text(
-                            "LOGIN NOW",
+                            "Přihlásit",
                             style: TextStyle(fontSize: 20),
                           ),
                     // if showprogress == true then show progress indicator
@@ -205,7 +220,7 @@ class _LoginPage extends State<LoginPage> {
                   ),
                 ),
               ),
-              Container(
+              /*Container(
                 padding: EdgeInsets.all(10),
                 margin: EdgeInsets.only(top: 20),
                 child: InkResponse(
@@ -217,7 +232,7 @@ class _LoginPage extends State<LoginPage> {
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ),
-              )
+              )*/
             ],
           ),
         ),
@@ -245,7 +260,7 @@ class _LoginPage extends State<LoginPage> {
       enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
           borderSide: BorderSide(
-              color: (Color.fromRGBO(194, 194, 194, 1))!,
+              color: (Color.fromRGBO(255, 255, 255, 0.219))!,
               width: 1)), //default border of input
 
       focusedBorder: OutlineInputBorder(
@@ -254,7 +269,7 @@ class _LoginPage extends State<LoginPage> {
               color: (Color.fromRGBO(207, 207, 207, 1))!,
               width: 1)), //focus border
 
-      fillColor: Color.fromRGBO(167, 167, 167, 0.342),
+      fillColor: Color.fromRGBO(0, 0, 0, 0.26),
       filled: true, //set true if you want to show input background
     );
   }
@@ -266,9 +281,9 @@ class _LoginPage extends State<LoginPage> {
       margin: EdgeInsets.only(bottom: 10.00),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Color.fromRGBO(244, 67, 54, 0.507),
+          color: Color.fromRGBO(244, 67, 54, 0.288),
           border: Border.all(
-              color: (Color.fromRGBO(231, 50, 50, 0.575))!, width: 2)),
+              color: (Color.fromRGBO(231, 50, 50, 0.315))!, width: 2)),
       child: Row(children: <Widget>[
         Container(
           margin: EdgeInsets.only(right: 6.00),

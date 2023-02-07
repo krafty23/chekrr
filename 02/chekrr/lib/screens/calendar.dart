@@ -93,13 +93,20 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     style: TextStyle(color: Colors.red),
                   );
                 } else {
-                  //print(snapshot.data?.length.toString());
+                  dynamic args = Get.arguments;
                   return Column(
                     children: <Widget>[
                       Expanded(
                         child: snapshot.data!.isNotEmpty
                             ? SfCalendar(
-                                initialSelectedDate: DateTime.now(),
+                                initialDisplayDate: args != null
+                                    ? args['preselected']
+                                    //? DateTime.tryParse(args[0]['preselected'])
+                                    : DateTime.now(),
+                                initialSelectedDate: args != null
+                                    ? args['preselected']
+                                    //? DateTime.tryParse(args[0]['preselected'])
+                                    : DateTime.now(),
                                 view: CalendarView.month,
                                 todayHighlightColor:
                                     Color.fromARGB(214, 63, 137, 197),
