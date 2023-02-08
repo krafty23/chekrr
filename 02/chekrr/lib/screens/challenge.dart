@@ -104,7 +104,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                     snackPosition: SnackPosition.TOP,
                     backgroundColor: Color.fromARGB(200, 0, 0, 0),
                     title: 'Výzva přijata',
-                    message: 'Výzva ',
+                    message: 'Jdi do toho!',
                     icon: const Icon(
                       Icons.check,
                       color: Colors.green,

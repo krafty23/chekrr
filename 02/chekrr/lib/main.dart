@@ -7,6 +7,7 @@ import '/screens/settings.dart';
 import '/screens/history.dart';
 import '/screens/calendar.dart';
 import '/screens/profile.dart';
+import '/screens/edit_profile.dart';
 import '/screens/challenge.dart';
 import '/screens/challenges.dart';
 import '/screens/login.dart';
@@ -62,6 +63,11 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/profile',
           page: () => ProfileScreen(),
+          transition: Transition.fade,
+        ),
+        GetPage(
+          name: '/edit_profile',
+          page: () => EditProfileScreen(),
           transition: Transition.fade,
         ),
         GetPage(

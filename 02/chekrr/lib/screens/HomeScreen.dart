@@ -12,6 +12,7 @@ import 'package:chekrr/drawer.dart';
 import 'package:http/http.dart' as http;
 import '../models/task.dart';
 import '../bottomtab.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter/services.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -51,6 +52,261 @@ class _HomeScreenState extends State<HomeScreen> {
     } catch (e) {
       return <Task>[]; // return an empty list on exception/error
     }
+  }
+
+  Offset _tapPosition = Offset.zero;
+  void _getTapPosition(LongPressStartDetails details) {
+    final RenderBox referenceBox = context.findRenderObject() as RenderBox;
+    setState(() {
+      _tapPosition = referenceBox.globalToLocal(details.globalPosition);
+    });
+  }
+
+  _showPopupMenu(BuildContext context) async {
+    //double left = offset.dx;
+    //double top = offset.dy;
+    /*final RenderObject? overlay =
+        Overlay.of(context).context.findRenderObject();
+    await showMenu(
+      context: context,
+      color: Color.fromRGBO(15, 5, 31, 0.835),
+      //position: RelativeRect.fromLTRB(0, 0, 0, 0),
+      position: RelativeRect.fromRect(
+          Rect.fromLTWH(_tapPosition.dx, _tapPosition.dy, 30, 30),
+          Rect.fromLTWH(0, 0, overlay!.paintBounds.size.width,
+              overlay.paintBounds.size.height)),
+      //position: RelativeRect.fromLTRB(left, top, 0, 0),
+      items: [
+        PopupMenuItem<String>(
+            child: ElevatedButton.icon(
+              icon: Icon(
+                // <-- Icon
+                Icons.delete,
+                size: 25.0,
+              ),
+              label: Text('Přijmout výzvy'),
+              onPressed: () {},
+            ),
+            value: 'Doge'),
+        PopupMenuItem<String>(child: Text('Lion'), value: 'Lion'),
+      ],
+      elevation: 8.0,
+    );*/
+    return AlertDialog(
+        contentPadding: EdgeInsets.all(20),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+        content: Text('dfdff'));
+  }
+
+  Future<void> _dialogConfirmer(BuildContext context, Task data) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Color.fromARGB(213, 131, 1, 1),
+          title: data.folder_id > 0
+              ? Text(
+                  'Opravdu zrušit program?',
+                  style: TextStyle(
+                    color: Color.fromRGBO(255, 255, 255, 0.692),
+                    fontSize: 22,
+                    fontWeight: FontWeight.w900,
+                  ),
+                )
+              : Text(
+                  'Opravdu zrušit výzvu?',
+                  style: TextStyle(
+                    color: Color.fromRGBO(255, 255, 255, 0.692),
+                    fontSize: 22,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: data.folder_id > 0
+                    ? Text(
+                        'Opravdu si přejete zrušit program "' +
+                            data.folder_name.toString() +
+                            '" včetně všech výzev?',
+                        style: TextStyle(
+                          color: Color.fromRGBO(255, 255, 255, 0.459),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      )
+                    : Text(
+                        'Opravdu si přejete zrušit výzvu "' +
+                            data.name.toString() +
+                            '" včetně všech možných opakování?',
+                        style: TextStyle(
+                          color: Color.fromRGBO(255, 255, 255, 0.459),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            data.folder_id > 0
+                ? ElevatedButton(
+                    style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.all<Color>(
+                          Color.fromARGB(255, 214, 214, 214)),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Color.fromARGB(255, 255, 0, 0)),
+                    ),
+                    child: const Text('Ano'),
+                    onPressed: () {
+                      HapticFeedback.heavyImpact();
+                      DeleteProgram(data.id.toString())
+                          .then((value) => setState(() {
+                                _future = getTask();
+                              }));
+                      Navigator.of(context).pop();
+                      Get.showSnackbar(
+                        GetSnackBar(
+                          snackPosition: SnackPosition.TOP,
+                          backgroundColor: Color.fromARGB(200, 0, 0, 0),
+                          title: 'Program zrušen',
+                          message: data.folder_name,
+                          icon: const Icon(
+                            Icons.close,
+                            color: Colors.red,
+                          ),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                    },
+                  )
+                : ElevatedButton(
+                    style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.all<Color>(
+                          Color.fromARGB(255, 214, 214, 214)),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Color.fromARGB(255, 255, 0, 0)),
+                    ),
+                    child: const Text('Ano'),
+                    onPressed: () {
+                      HapticFeedback.heavyImpact();
+                      DeleteTask(data.id.toString())
+                          .then((value) => setState(() {
+                                _future = getTask();
+                              }));
+                      Navigator.of(context).pop();
+                      Get.showSnackbar(
+                        GetSnackBar(
+                          snackPosition: SnackPosition.TOP,
+                          backgroundColor: Color.fromARGB(200, 0, 0, 0),
+                          title: 'Výzva zrušena',
+                          message: data.name,
+                          icon: const Icon(
+                            Icons.close,
+                            color: Colors.red,
+                          ),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                    },
+                  ),
+            ElevatedButton(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(
+                    Color.fromARGB(255, 255, 255, 255)),
+                backgroundColor: MaterialStateProperty.all<Color>(
+                    Color.fromARGB(126, 0, 0, 0)),
+              ),
+              child: const Text('Ne'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _dialogBuilder(BuildContext context, Task data) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            data.name,
+            style: TextStyle(
+              color: Color.fromRGBO(255, 255, 255, 0.692),
+              fontSize: 22,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              data.folder_id > 0
+                  ? Padding(
+                      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                      child: Text(
+                        'Součást programu ' + data.folder_name.toString(),
+                        style: TextStyle(
+                          color: Color.fromRGBO(255, 255, 255, 0.459),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w100,
+                        ),
+                      ),
+                    )
+                  : Container(),
+              data.text != ''
+                  ? Html(
+                      data: data.text,
+                    )
+                  : Container(),
+            ],
+          ),
+          /*shape: RoundedRectangleBorder(
+            side: BorderSide(color: Color.fromARGB(153, 32, 23, 46)),
+            borderRadius: BorderRadius.all(
+              Radius.circular(5.0),
+            ),
+          ),*/
+          backgroundColor: Color.fromARGB(218, 22, 19, 29),
+          actions: <Widget>[
+            data.folder_id > 0
+                ? TextButton(
+                    style: TextButton.styleFrom(
+                      textStyle: Theme.of(context).textTheme.labelLarge,
+                      foregroundColor: Color.fromARGB(255, 255, 0, 0),
+                    ),
+                    child: const Text('Zrušit program'),
+                    onPressed: () {
+                      HapticFeedback.heavyImpact();
+                      Navigator.of(context).pop();
+                      _dialogConfirmer(context, data);
+                    },
+                  )
+                : TextButton(
+                    style: TextButton.styleFrom(
+                      textStyle: Theme.of(context).textTheme.labelLarge,
+                      foregroundColor: Color.fromARGB(255, 255, 0, 0),
+                    ),
+                    child: const Text('Zrušit výzvu'),
+                    onPressed: () {
+                      HapticFeedback.heavyImpact();
+                      Navigator.of(context).pop();
+                      _dialogConfirmer(context, data);
+                      //DeleteTask(data.id.toString());
+                      /*setState(() {
+                        _future = getTask();
+                      });*/
+                    },
+                  ),
+          ],
+        );
+      },
+    );
   }
 
   late GlobalKey<ScaffoldState> _scaffoldKey;
@@ -111,7 +367,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       drawer: DrawerDraw(),
       body: Container(
-        padding: EdgeInsets.fromLTRB(0, 100, 0, 90),
+        padding: EdgeInsets.fromLTRB(0, 100, 0, 80),
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage("images/chekrr_bg.png"),
@@ -232,29 +488,36 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                   key: UniqueKey(),
-                                  child: Container(
-                                    margin: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: Color.fromARGB(129, 0, 0, 0),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(30)),
-                                    ),
-                                    child: ListTile(
-                                      visualDensity: VisualDensity(vertical: 3),
-                                      title: Text(
-                                        //taskController.tasks[index].name,
-                                        snapshot.data![index].name,
-                                        style: TextStyle(
-                                          color: Color.fromRGBO(
-                                              255, 255, 255, 0.801),
-                                        ),
+                                  child: GestureDetector(
+                                    onLongPressStart: (details) =>
+                                        HapticFeedback.heavyImpact(),
+                                    //onLongPress: () => _showPopupMenu(context),
+                                    onLongPress: () => _dialogBuilder(
+                                        context, snapshot.data![index]),
+                                    child: Container(
+                                      margin: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        color: Color.fromARGB(129, 0, 0, 0),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(30)),
                                       ),
-                                      onTap: () {
+                                      child: ListTile(
+                                        visualDensity:
+                                            VisualDensity(vertical: 3),
+                                        title: Text(
+                                          //taskController.tasks[index].name,
+                                          snapshot.data![index].name,
+                                          style: TextStyle(
+                                            color: Color.fromRGBO(
+                                                255, 255, 255, 0.801),
+                                          ),
+                                        ),
+                                        //onTap: () {
                                         /*Get.to(AddTaskScreen(
                     index: index,
                   ));*/
-                                      },
-                                      onLongPress: () {
+                                        //},
+                                        /*onLongPress: () {
                                         Get.showSnackbar(
                                           GetSnackBar(
                                             title: 'Klik!',
@@ -267,27 +530,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 const Duration(seconds: 2),
                                           ),
                                         );
-                                      },
-                                      leading: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.close,
-                                            color: Colors.red,
-                                          ),
-                                        ],
-                                      ),
-                                      trailing: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.check,
-                                            //Icons.chevron_right,
-                                            color: Colors.green,
-                                          ),
-                                        ],
+                                      },*/
+                                        leading: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Icon(
+                                              Icons.close,
+                                              color: Colors.red,
+                                            ),
+                                          ],
+                                        ),
+                                        trailing: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Icon(
+                                              Icons.check,
+                                              //Icons.chevron_right,
+                                              color: Colors.green,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -348,6 +612,54 @@ Future<http.Response> RejectTask(var id) async {
   };
   final response =
       await http.post(Uri.parse('https://chekrr.cz/api/reject_task.php'),
+          headers: <String, String>{
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+            //'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: body);
+  if (response.statusCode == 200) {
+    //print(response.body);
+  } else {
+    throw Exception('Chyba: nepodařilo se označit výzvu jako zrušenou - ' +
+        response.body +
+        ' / ' +
+        response.statusCode.toString());
+  }
+  return response;
+}
+
+Future<http.Response> DeleteTask(var id) async {
+  final task = TaskId(id);
+  Map<String, dynamic> body = {
+    'id': id.toString(),
+  };
+  final response =
+      await http.post(Uri.parse('https://chekrr.cz/api/delete_task.php'),
+          headers: <String, String>{
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+            //'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: body);
+  if (response.statusCode == 200) {
+    //print(response.body);
+  } else {
+    throw Exception('Chyba: nepodařilo se označit výzvu jako zrušenou - ' +
+        response.body +
+        ' / ' +
+        response.statusCode.toString());
+  }
+  return response;
+}
+
+Future<http.Response> DeleteProgram(var id) async {
+  final task = TaskId(id);
+  Map<String, dynamic> body = {
+    'id': id.toString(),
+  };
+  final response =
+      await http.post(Uri.parse('https://chekrr.cz/api/delete_program.php'),
           headers: <String, String>{
             "Accept": "application/json",
             "Content-Type": "application/x-www-form-urlencoded",

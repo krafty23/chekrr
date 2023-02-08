@@ -20,18 +20,35 @@ String TaskFullToJson(List<TaskFull> data) =>
 
 class Task {
   String name;
+  String text;
   int status;
   int id;
+  int folder_id;
+  int item_id;
+  String folder_name;
 
-  Task({this.name = '', this.status = 0, this.id = 0});
+  Task({
+    this.name = '',
+    this.text = '',
+    this.status = 0,
+    this.id = 0,
+    this.folder_id = 0,
+    this.item_id = 0,
+    this.folder_name = '',
+  });
   factory Task.fromJson(Map<String, dynamic> json) => Task(
         name: json['name'] as String,
+        text: json['text'] as String,
         status: int.tryParse(json['status']) as int,
         id: int.tryParse(json['id']) as int,
+        folder_id: int.tryParse(json['folder_id']) as int,
+        item_id: int.tryParse(json['item_id']) as int,
+        folder_name: json['folder_name'].toString() as String,
       );
 
   Map<String, dynamic> toJson() => {
         'name': name,
+        'text': text,
         'status': status,
         'id': id,
       };

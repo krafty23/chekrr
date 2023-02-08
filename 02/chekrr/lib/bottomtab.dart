@@ -53,14 +53,14 @@ class _BottomTabsState extends State<BottomTabs> {
         BottomNavigationBarItem(
           icon: Icon(
             Icons.home,
-            size: 50.0,
+            size: 45.0,
           ),
           label: 'Můj Plán',
         ),
         BottomNavigationBarItem(
           icon: Icon(
             Icons.rocket_launch,
-            size: 50.0,
+            size: 45.0,
           ),
           label: 'Programy',
           //label: '$cesta',
@@ -68,7 +68,7 @@ class _BottomTabsState extends State<BottomTabs> {
         BottomNavigationBarItem(
           icon: Icon(
             Icons.person,
-            size: 50.0,
+            size: 45.0,
           ),
           label: 'Profil',
           //label: '$cesta',

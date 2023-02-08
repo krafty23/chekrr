@@ -223,7 +223,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           fontSize: 14,
                                         ),
                                       ),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Get.toNamed(
+                                          '/edit_profile?id=' +
+                                              snapshot.data![0].id.toString(),
+                                        );
+                                      },
                                       style: ButtonStyle(
                                         shape: MaterialStateProperty
                                             .resolveWith<OutlinedBorder>((_) {
@@ -415,73 +420,101 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         Expanded(
                           flex: 1,
-                          child: FutureBuilder(
-                            future: _futurex,
-                            builder: (context,
-                                AsyncSnapshot<List<CalendarTask>> snapshot) {
-                              switch (snapshot.connectionState) {
-                                case ConnectionState.none:
-                                  return Text('Chyba pripojeni');
-                                case ConnectionState.waiting:
-                                  return Center(
-                                      child: CircularProgressIndicator());
-                                case ConnectionState.active:
-                                  return Text('');
-                                case ConnectionState.done:
-                                  if (snapshot.hasError) {
-                                    return Text(
-                                      '${snapshot.error}',
-                                      style: TextStyle(color: Colors.red),
-                                    );
-                                  } else {
-                                    return snapshot.data!.isNotEmpty
-                                        ? SfCalendar(
-                                            //initialSelectedDate: DateTime.now(),
-                                            onTap:
-                                                (CalendarTapDetails details) {
-                                              print(details.date);
-                                              Get.toNamed(
-                                                '/calendar',
-                                                arguments: {
-                                                  'preselected': details.date
-                                                },
-                                              );
-                                            },
-                                            showDatePickerButton: true,
-                                            view: CalendarView.month,
-                                            todayHighlightColor: Color.fromARGB(
-                                                59, 244, 156, 55),
-                                            selectionDecoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: Color.fromARGB(
-                                                      54, 244, 156, 55),
-                                                  width: 2),
-                                            ),
-                                            dataSource: CalendarTaskDataSource(
-                                                snapshot.data!),
-                                            firstDayOfWeek: 1,
-                                            monthViewSettings:
-                                                MonthViewSettings(
-                                              numberOfWeeksInView: 1,
-                                              appointmentDisplayCount: 6,
-                                              appointmentDisplayMode:
-                                                  MonthAppointmentDisplayMode
-                                                      .indicator,
-                                            ),
-                                          )
-                                        : Column(
-                                            children: <Widget>[
-                                              Expanded(
-                                                child: Center(
-                                                  child: Text(
-                                                      'Žádné výzvy nenalezeny'),
+                          child: Container(
+                            child: FutureBuilder(
+                              future: _futurex,
+                              builder: (context,
+                                  AsyncSnapshot<List<CalendarTask>> snapshot) {
+                                switch (snapshot.connectionState) {
+                                  case ConnectionState.none:
+                                    return Text('Chyba pripojeni');
+                                  case ConnectionState.waiting:
+                                    return Center(
+                                        child: CircularProgressIndicator());
+                                  case ConnectionState.active:
+                                    return Text('');
+                                  case ConnectionState.done:
+                                    if (snapshot.hasError) {
+                                      return Text(
+                                        '${snapshot.error}',
+                                        style: TextStyle(color: Colors.red),
+                                      );
+                                    } else {
+                                      return snapshot.data!.isNotEmpty
+                                          ? Column(
+                                              children: [
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Container(
+                                                    constraints: BoxConstraints(
+                                                      minHeight:
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .height,
+                                                    ),
+                                                    child: SfCalendar(
+                                                      //initialSelectedDate: DateTime.now(),
+                                                      onTap: (CalendarTapDetails
+                                                          details) {
+                                                        print(details.date);
+                                                        Get.toNamed(
+                                                          '/calendar',
+                                                          arguments: {
+                                                            'preselected':
+                                                                details.date
+                                                          },
+                                                        );
+                                                      },
+                                                      showDatePickerButton:
+                                                          true,
+                                                      view: CalendarView.month,
+                                                      todayHighlightColor:
+                                                          Color.fromARGB(
+                                                              59, 244, 156, 55),
+                                                      selectionDecoration:
+                                                          BoxDecoration(
+                                                        border: Border.all(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    54,
+                                                                    244,
+                                                                    156,
+                                                                    55),
+                                                            width: 2),
+                                                      ),
+                                                      dataSource:
+                                                          CalendarTaskDataSource(
+                                                              snapshot.data!),
+                                                      firstDayOfWeek: 1,
+                                                      monthViewSettings:
+                                                          MonthViewSettings(
+                                                        showAgenda: false,
+                                                        numberOfWeeksInView: 1,
+                                                        appointmentDisplayCount:
+                                                            6,
+                                                        appointmentDisplayMode:
+                                                            MonthAppointmentDisplayMode
+                                                                .indicator,
+                                                      ),
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
-                                          );
-                                  }
-                              }
-                            },
+                                              ],
+                                            )
+                                          : Column(
+                                              children: <Widget>[
+                                                Expanded(
+                                                  child: Center(
+                                                    child: Text(
+                                                        'Žádné výzvy nenalezeny'),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                    }
+                                }
+                              },
+                            ),
                           ),
                         ),
                         Padding(

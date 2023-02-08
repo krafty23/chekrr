@@ -72,7 +72,7 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
             fit: BoxFit.cover,
           ),
         ),
-        padding: EdgeInsets.fromLTRB(0, 100, 0, 90),
+        padding: EdgeInsets.fromLTRB(0, 100, 0, 80),
         child: FutureBuilder(
           future: _future,
           builder: (context, AsyncSnapshot<List<Program>> snapshot) {
