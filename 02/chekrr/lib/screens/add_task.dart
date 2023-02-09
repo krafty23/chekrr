@@ -521,19 +521,20 @@ Future<http.Response> AddTask(
     'day6': isChecked6.toString(),
     'day7': isChecked7.toString(),
   };
-  final response =
-      await http.post(Uri.parse('https://chekrr.cz/api/add_task.php'),
-          headers: <String, String>{
-            "Accept": "application/json",
-            "Content-Type": "application/x-www-form-urlencoded",
-            //'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: body);
+  final response = await http.post(
+      Uri.parse(
+          globals.globalProtocol + globals.globalURL + '/api/add_task.php'),
+      headers: <String, String>{
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
+        //'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: body);
   if (response.statusCode == 200) {
     // if server response 200 / OK
     //return jsonDecode(response.body);
   } else {
-    throw Exception('Failed to create task - ' +
+    throw Exception('Nepovedlo se vytvořit výzvu - ' +
         response.body +
         ' / ' +
         response.statusCode.toString());

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import "package:flutter/material.dart";
 import '../globals.dart' as globals;
 import '../models/user.dart';
@@ -17,17 +18,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String errormsg = '';
   bool error = false, showprogress = false;
   String name = '', surname = '', email_personal = '', birthday = '';
-  int gender = 1;
   var _name = TextEditingController();
   var _email_personal = TextEditingController();
   var _surname = TextEditingController();
   TextEditingController dateinput = TextEditingController();
+  TextEditingController dateinput2 = TextEditingController();
   int? _gender = 1;
   //var _gender = TextEditingController();
   late Future<List<UserFull>> _future;
   Future<List<UserFull>> getUserFull() async {
-    final box = GetStorage();
-    var uid = box.read('uid');
+    final box2 = GetStorage();
+    var uid = box2.read('uid');
     try {
       Map<String, dynamic> requestbody = {
         //'uid': globals.uid.toString(),
@@ -53,20 +54,79 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }
 
+  EditUser() async {
+    final box = GetStorage();
+    var uid = box.read('uid');
+    String apiurl =
+        globals.globalProtocol + globals.globalURL + '/api/edit_user.php';
+    var response = await http.post(Uri.parse(apiurl), body: {
+      'uid': uid.toString(),
+      'name': _name.text,
+      'surname': _surname.text,
+      'email_personal': _email_personal.text, //get password text
+      'gender': _gender.toString(),
+      'birthday': dateinput2.text,
+    });
+    if (response.statusCode == 200) {
+      var jsondata = json.decode(response.body);
+      if (jsondata["error"]) {
+        setState(() {
+          showprogress = false; //don't show progress indicator
+          error = true;
+          errormsg = jsondata["message"];
+        });
+      } else {
+        if (jsondata["success"]) {
+          setState(() {
+            error = false;
+            showprogress = false;
+          });
+          /*final box = GetStorage();
+          //var LoggedIn = box.read('isloggedin') ?? 0;
+          //print(box.read('loggedin'));
+          box.write('isloggedin', true);
+          box.write('uid', jsondata["uid"]);
+          box.write('fullname', jsondata["fullname"]);
+          box.write('foto_filename', jsondata["foto_filename"]);
+          int uid = jsondata["uid"];
+          String fullname = jsondata["fullname"];*/
+          Get.toNamed('/profile');
+        } else {
+          showprogress = false; //don't show progress indicator
+          error = true;
+          errormsg = "Něco je špatně";
+        }
+      }
+    } else {
+      setState(() {
+        showprogress = false; //don't show progress indicator
+        error = true;
+        errormsg = "Chyba připojení k serveru";
+      });
+    }
+  }
+
   late GlobalKey<ScaffoldState> _scaffoldKey;
   @override
   void initState() {
+    super.initState();
     name = "";
     surname = "";
     email_personal = "";
-    birthday = "";
+    //birthday = "";
     errormsg = "";
-    _gender = 1;
+    //_gender = 1;
     error = false;
     showprogress = false;
     _scaffoldKey = GlobalKey();
     _future = getUserFull();
-    dateinput.text = "";
+    //dateinput.text = "";
+    //dateinput2.text = "";
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -82,7 +142,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           Padding(
             padding: EdgeInsets.fromLTRB(7.0, 6.0, 7.0, 6.0),
             child: ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                setState(() {
+                  //show progress indicator on click
+                  showprogress = true;
+                });
+                EditUser();
+                /*EditUser(
+                  'test',
+                  uid,
+                ).then((value) => Get.offAllNamed('/profile'));*/
+              },
               icon: Icon(
                 // <-- Icon
                 Icons.save,
@@ -90,11 +160,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               label: Text('Uložit'),
               style: ButtonStyle(
-                /*shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.zero,
-                  ),
-                ),*/
                 foregroundColor: MaterialStateProperty.all<Color>(
                     Color.fromARGB(255, 214, 214, 214)),
                 backgroundColor: MaterialStateProperty.all<Color>(
@@ -134,6 +199,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   _name.value = TextEditingValue(text: snapshot.data![0].name);
                   _surname.value =
                       TextEditingValue(text: snapshot.data![0].surname);
+                  //_gender = snapshot.data![0].gender;
+                  //gender = TextEditingValue(text: snapshot.data![0].gender);
+                  snapshot.data![0].birthday == '0000-00-00'
+                      ? DateTime.now()
+                      : dateinput.text = DateFormat('d.M.yyyy')
+                          .format(DateTime.parse(snapshot.data![0].birthday));
                   return Padding(
                     padding: EdgeInsets.fromLTRB(0, 100, 0, 0),
                     child: ListView(
@@ -276,30 +347,29 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                           DateTime? pickedDate =
                                               await showDatePicker(
                                                   context: context,
-                                                  initialDate: DateTime.now(),
+                                                  initialDate: snapshot.data![0]
+                                                              .birthday ==
+                                                          '0000-00-00'
+                                                      ? DateTime.now()
+                                                      : DateTime.parse(snapshot
+                                                          .data![0].birthday),
                                                   firstDate: DateTime(
                                                       1920), //DateTime.now() - not to allow to choose before today.
                                                   lastDate: DateTime(2101));
 
                                           if (pickedDate != null) {
-                                            print(
-                                                pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
                                             String formattedDate =
                                                 DateFormat('yyyy-MM-dd')
                                                     .format(pickedDate);
                                             String formattedDate2 =
                                                 DateFormat('d.M.yyyy')
                                                     .format(pickedDate);
-                                            print(
-                                                formattedDate); //formatted date output using intl package =>  2021-03-16
-                                            //you can implement different kind of Date Format here according to your requirement
-
                                             setState(() {
                                               dateinput.text =
-                                                  formattedDate2; //set output date to TextField value.
+                                                  formattedDate2; //s
+                                              dateinput2.text =
+                                                  formattedDate; //set output date to TextField value.et output date to TextField value.
                                             });
-                                          } else {
-                                            print("Datum nezvoleno");
                                           }
                                         },
                                       ),
@@ -329,6 +399,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                               value: 1,
                                               groupValue: _gender,
                                               onChanged: (value) {
+                                                debugPrint(value.toString());
                                                 setState(() {
                                                   _gender = value;
                                                 });

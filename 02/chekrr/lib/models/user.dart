@@ -14,13 +14,21 @@ class User {
   int uid;
 }
 
+class EditUser {
+  EditUser({this.name = '', this.uid = 0});
+  String name;
+  int uid;
+}
+
 class UserFull {
   String name;
   String surname;
   String username;
   String foto_filename;
   String email_personal;
+  String birthday;
   int id;
+  int gender;
   int finished_folder_count;
   int finished_item_count;
   int achievement_count;
@@ -36,7 +44,9 @@ class UserFull {
     this.username = '',
     this.foto_filename = '',
     this.email_personal = '',
+    this.birthday = '',
     this.id = 0,
+    this.gender = 1,
     this.finished_folder_count = 0,
     this.finished_item_count = 0,
     this.achievement_count = 0,
@@ -47,7 +57,9 @@ class UserFull {
         username: json['username'] as String,
         foto_filename: json['foto_filename'] as String,
         email_personal: json['email_personal'] as String,
+        birthday: json['birthday'] as String,
         id: int.tryParse(json['id']) as int,
+        gender: int.tryParse(json['gender']) as int,
         finished_folder_count:
             int.tryParse(json['finished_folder_count']) as int,
         finished_item_count: int.tryParse(json['finished_item_count']) as int,
