@@ -75,64 +75,6 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
         title: Text(''),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.fromLTRB(7.0, 6.0, 7.0, 6.0),
-            child: ElevatedButton.icon(
-              onPressed: () {
-                AddProgram(
-                  Get.parameters['id'],
-                  uid,
-                ).then((value) => Get.offAllNamed('/home'));
-                showDialog(
-                    // The user CANNOT close this dialog  by pressing outsite it
-                    barrierDismissible: false,
-                    context: context,
-                    builder: (_) {
-                      return Dialog(
-                        backgroundColor: Color.fromARGB(20, 0, 0, 0),
-                        child: Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                        /*
-            put a CircularProgressIndicator() here
-            */
-                      );
-                    });
-                Get.showSnackbar(
-                  GetSnackBar(
-                    snackPosition: SnackPosition.TOP,
-                    backgroundColor: Color.fromARGB(200, 0, 0, 0),
-                    title: 'Výzva přijata',
-                    message: 'Jdi do toho!',
-                    icon: const Icon(
-                      Icons.check,
-                      color: Colors.green,
-                    ),
-                    duration: const Duration(seconds: 2),
-                  ),
-                );
-              },
-              icon: Icon(
-                // <-- Icon
-                Icons.add,
-                size: 25.0,
-              ),
-              label: Text('Přijmout výzvy'),
-              style: ButtonStyle(
-                /*shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.zero,
-                  ),
-                ),*/
-                foregroundColor: MaterialStateProperty.all<Color>(
-                    Color.fromARGB(255, 214, 214, 214)),
-                backgroundColor: MaterialStateProperty.all<Color>(
-                    Color.fromARGB(100, 57, 21, 119)),
-              ),
-            ),
-          ),
-        ],
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -141,7 +83,8 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
             fit: BoxFit.cover,
           ),
         ),
-        padding: EdgeInsets.fromLTRB(0, 100, 0, 0),
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+        margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
         child: FutureBuilder(
           future: _future,
           builder: (context, AsyncSnapshot<List<ProgramFull>> snapshot) {
@@ -167,24 +110,30 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                           ? Expanded(
                               flex: 9,
                               child: Container(
-                                margin: EdgeInsets.fromLTRB(5, 0, 5, 10),
+                                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                padding: EdgeInsets.zero,
                                 child: ListView.builder(
-                                  padding: EdgeInsets.zero,
+                                  padding: EdgeInsets.all(0),
                                   key: _scaffoldKey,
                                   itemCount: snapshot.data?.length,
                                   itemBuilder: (context, index) => Container(
-                                    margin: EdgeInsets.all(5),
+                                    padding: EdgeInsets.all(0),
+                                    margin: EdgeInsets.all(0),
                                     decoration: BoxDecoration(
-                                      color: Color.fromARGB(129, 0, 0, 0),
+                                      color: Colors.transparent,
                                       borderRadius:
-                                          BorderRadius.all(Radius.circular(15)),
+                                          BorderRadius.all(Radius.circular(0)),
                                     ),
                                     child: ListTile(
-                                      visualDensity: VisualDensity(vertical: 3),
+                                      minVerticalPadding: 0,
+                                      contentPadding:
+                                          EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                      visualDensity: VisualDensity(
+                                          horizontal: 0, vertical: -4),
                                       title: Container(
                                         child: Padding(
                                           padding:
-                                              EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                              EdgeInsets.fromLTRB(0, 0, 0, 0),
                                           child: Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
@@ -192,64 +141,85 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                                                 CrossAxisAlignment.start,
                                             children: <Widget>[
                                               ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(10.0),
-                                                child: Image(
-                                                  image: NetworkImage(
-                                                    globals.globalProtocol +
-                                                        globals.globalURL +
-                                                        '/images/chekrr/folders/' +
-                                                        snapshot.data![index]
-                                                            .image_filename,
+                                                child: ShaderMask(
+                                                  shaderCallback: (rect) {
+                                                    return LinearGradient(
+                                                      begin:
+                                                          Alignment.topCenter,
+                                                      end: Alignment
+                                                          .bottomCenter,
+                                                      colors: [
+                                                        Colors.black,
+                                                        Colors.transparent
+                                                      ],
+                                                    ).createShader(
+                                                        Rect.fromLTRB(
+                                                            0,
+                                                            rect.height - 100,
+                                                            rect.width,
+                                                            rect.height));
+                                                  },
+                                                  blendMode: BlendMode.dstIn,
+                                                  child: Image(
+                                                    image: NetworkImage(
+                                                      globals.globalProtocol +
+                                                          globals.globalURL +
+                                                          '/images/chekrr/folders/' +
+                                                          snapshot.data![index]
+                                                              .image_filename,
+                                                    ),
                                                   ),
+                                                ),
+                                              ),
+                                              Transform.translate(
+                                                offset: Offset(0, -16),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.fromLTRB(
+                                                              0, 0, 10, 0),
+                                                      child: snapshot
+                                                          .data![index].icon,
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.fromLTRB(
+                                                              0, 0, 0, 5),
+                                                      child: Text(
+                                                        snapshot
+                                                            .data![index].name,
+                                                        textAlign:
+                                                            TextAlign.start,
+                                                        style: TextStyle(
+                                                          color: Color.fromRGBO(
+                                                              255,
+                                                              255,
+                                                              255,
+                                                              0.801),
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.w900,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                               Row(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.start,
+                                                    MainAxisAlignment.center,
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Padding(
                                                     padding:
                                                         EdgeInsets.fromLTRB(
-                                                            0, 15, 10, 5),
-                                                    child: snapshot
-                                                        .data![index].icon,
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsets.fromLTRB(
-                                                            0, 15, 0, 10),
-                                                    child: Text(
-                                                      snapshot
-                                                          .data![index].name,
-                                                      textAlign:
-                                                          TextAlign.start,
-                                                      style: TextStyle(
-                                                        color: Color.fromRGBO(
-                                                            255,
-                                                            255,
-                                                            255,
-                                                            0.801),
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.w900,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsets.fromLTRB(
-                                                            0, 1, 10, 5),
+                                                            0, 0, 5, 5),
                                                     child: Icon(
                                                       Icons.checklist,
                                                       size: 25,
@@ -260,12 +230,11 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                                                   Padding(
                                                     padding:
                                                         EdgeInsets.fromLTRB(
-                                                            0, 5, 0, 10),
+                                                            0, 4, 0, 10),
                                                     child: Text(
                                                       snapshot.data![index]
-                                                              .challenge_count
-                                                              .toString() +
-                                                          ' výzev',
+                                                          .challenge_count
+                                                          .toString(),
                                                       textAlign:
                                                           TextAlign.start,
                                                       style: TextStyle(
@@ -280,18 +249,10 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                                                       ),
                                                     ),
                                                   ),
-                                                ],
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
                                                   Padding(
                                                     padding:
                                                         EdgeInsets.fromLTRB(
-                                                            0, 1, 10, 5),
+                                                            20, 0, 5, 5),
                                                     child: Icon(
                                                       Icons.calendar_month,
                                                       size: 25,
@@ -302,12 +263,11 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                                                   Padding(
                                                     padding:
                                                         EdgeInsets.fromLTRB(
-                                                            0, 5, 0, 10),
+                                                            0, 4, 0, 10),
                                                     child: Text(
                                                       snapshot.data![index]
-                                                              .day_count
-                                                              .toString() +
-                                                          ' dnů',
+                                                          .day_count
+                                                          .toString(),
                                                       textAlign:
                                                           TextAlign.start,
                                                       style: TextStyle(
@@ -324,10 +284,59 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                                                   ),
                                                 ],
                                               ),
-                                              Html(
-                                                data:
-                                                    snapshot.data![index].text,
+                                              Padding(
+                                                padding: EdgeInsets.fromLTRB(
+                                                    15, 1, 15, 0),
+                                                child: Html(
+                                                  data: snapshot
+                                                      .data![index].text,
+                                                ),
                                               ),
+                                              Padding(
+                                                padding: EdgeInsets.fromLTRB(
+                                                    15, 0, 15, 20),
+                                                child: Center(
+                                                  child: Text(
+                                                    'Co získáš?',
+                                                    textAlign: TextAlign.start,
+                                                    style: TextStyle(
+                                                      color: Color.fromRGBO(
+                                                          244, 157, 55, 0.575),
+                                                      fontSize: 25,
+                                                      fontWeight:
+                                                          FontWeight.w900,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.fromLTRB(
+                                                    15, 0, 15, 20),
+                                                child: Center(
+                                                  child: Text(
+                                                    snapshot.data![index]
+                                                            .challenge_count
+                                                            .toString() +
+                                                        ' VÝZEV NA ' +
+                                                        snapshot.data![index]
+                                                            .day_count
+                                                            .toString() +
+                                                        ' DNÍ',
+                                                    textAlign: TextAlign.start,
+                                                    style: TextStyle(
+                                                      color: Color.fromRGBO(
+                                                          255, 255, 255, 0.575),
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.w900,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.fromLTRB(
+                                                    0, 0, 0, 90),
+                                              )
                                             ],
                                           ),
                                         ),
@@ -346,117 +355,70 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                             ),
                     ],
                   );
-                  /*return Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: ListView.builder(
-                          //scrollDirection: Axis.horizontal,
-                          key: _scaffoldKey,
-                          itemCount: snapshot.data?.length,
-                          itemBuilder: (context, index) => Dismissible(
-                            key: UniqueKey(),
-                            child: ListTile(
-                              onTap: () {
-                                /*Get.toNamed(
-                                '/challenge?id=' +
-                                    snapshot.data![index].id.toString(),
-                              );*/
-                              },
-                              visualDensity: VisualDensity(vertical: 1),
-                              title: Card(
-                                elevation: 5,
-                                child: Padding(
-                                  padding: EdgeInsets.all(16.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      DropShadow(
-                                        child: Image(
-                                          image: NetworkImage(
-                                            globals.globalProtocol +
-                                                globals.globalURL +
-                                                '/images/chekrr/folders/' +
-                                                snapshot.data![index]
-                                                    .image_filename,
-                                          ),
-                                        ),
-                                        blurRadius: 3,
-                                        opacity: 0.9,
-                                        spread: 0.3,
-                                      ),
-                                      Padding(
-                                        padding:
-                                            EdgeInsets.fromLTRB(0, 12, 0, 10),
-                                        child: Text(
-                                          snapshot.data![index].name,
-                                          style: TextStyle(
-                                            color: Color.fromRGBO(
-                                                255, 255, 255, 0.801),
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w900,
-                                          ),
-                                        ),
-                                      ),
-                                      Text(
-                                        'Počet výzev: ' +
-                                            snapshot
-                                                .data![index].challenge_count
-                                                .toString(),
-                                        style: TextStyle(
-                                          color: Color.fromRGBO(
-                                              255, 255, 255, 0.801),
-                                          fontSize: 17,
-                                        ),
-                                      ),
-                                      Text(
-                                        'Délka programu: ' +
-                                            snapshot.data![index].day_count
-                                                .toString() +
-                                            ' dnů',
-                                        style: TextStyle(
-                                          color: Color.fromRGBO(
-                                              255, 255, 255, 0.801),
-                                          fontSize: 17,
-                                        ),
-                                      ),
-                                      Html(
-                                        data: snapshot.data![index].text,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              /*leading: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.cancel,
-                                  color: Colors.red,
-                                ),
-                              ],
-                            ),
-                            trailing: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.check,
-                                  color: Colors.green,
-                                ),
-                              ],
-                            ),*/
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  );*/
                 }
             }
           },
         ),
       ),
+      persistentFooterButtons: [
+        Padding(
+          padding: EdgeInsets.fromLTRB(7.0, 6.0, 7.0, 6.0),
+          child: ElevatedButton.icon(
+            onPressed: () {
+              AddProgram(
+                Get.parameters['id'],
+                uid,
+              ).then((value) => Get.offAllNamed('/home'));
+              showDialog(
+                  // The user CANNOT close this dialog  by pressing outsite it
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (_) {
+                    return Dialog(
+                      backgroundColor: Color.fromARGB(20, 0, 0, 0),
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      /*
+            put a CircularProgressIndicator() here
+            */
+                    );
+                  });
+              Get.showSnackbar(
+                GetSnackBar(
+                  snackPosition: SnackPosition.TOP,
+                  backgroundColor: Color.fromARGB(200, 0, 0, 0),
+                  title: 'Výzva přijata',
+                  message: 'Jdi do toho!',
+                  icon: const Icon(
+                    Icons.check,
+                    color: Colors.green,
+                  ),
+                  duration: const Duration(seconds: 2),
+                ),
+              );
+            },
+            icon: Icon(
+              // <-- Icon
+              Icons.add,
+              size: 25.0,
+            ),
+            label: Text('Přijmout výzvy'),
+            style: ButtonStyle(
+              /*shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero,
+                  ),
+                ),*/
+              padding: MaterialStateProperty.all(const EdgeInsets.all(15)),
+              foregroundColor: MaterialStateProperty.all<Color>(
+                  Color.fromARGB(255, 214, 214, 214)),
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  Color.fromARGB(255, 75, 21, 119)),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

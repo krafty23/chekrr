@@ -4,6 +4,7 @@ import '../models/user.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class EditProfileScreen extends StatefulWidget {
   EditProfileScreen({super.key});
@@ -20,7 +21,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   var _name = TextEditingController();
   var _email_personal = TextEditingController();
   var _surname = TextEditingController();
-  var _gender = TextEditingController();
+  TextEditingController dateinput = TextEditingController();
+  int? _gender = 1;
+  //var _gender = TextEditingController();
   late Future<List<UserFull>> _future;
   Future<List<UserFull>> getUserFull() async {
     final box = GetStorage();
@@ -58,10 +61,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     email_personal = "";
     birthday = "";
     errormsg = "";
+    _gender = 1;
     error = false;
     showprogress = false;
     _scaffoldKey = GlobalKey();
     _future = getUserFull();
+    dateinput.text = "";
   }
 
   @override
@@ -73,6 +78,31 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         title: Text("Editovat profil"),
         backgroundColor: Colors.transparent,
         elevation: 0,
+        actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.fromLTRB(7.0, 6.0, 7.0, 6.0),
+            child: ElevatedButton.icon(
+              onPressed: () {},
+              icon: Icon(
+                // <-- Icon
+                Icons.save,
+                size: 25.0,
+              ),
+              label: Text('Uložit'),
+              style: ButtonStyle(
+                /*shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero,
+                  ),
+                ),*/
+                foregroundColor: MaterialStateProperty.all<Color>(
+                    Color.fromARGB(255, 214, 214, 214)),
+                backgroundColor: MaterialStateProperty.all<Color>(
+                    Color.fromARGB(100, 57, 21, 119)),
+              ),
+            ),
+          ),
+        ],
       ),
       body: Container(
         padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -105,8 +135,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   _surname.value =
                       TextEditingValue(text: snapshot.data![0].surname);
                   return Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    padding: EdgeInsets.fromLTRB(0, 100, 0, 0),
                     child: ListView(
+                      padding: EdgeInsets.zero,
                       children: <Widget>[
                         Padding(
                           padding: EdgeInsets.all(20),
@@ -224,11 +255,106 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       padding:
                                           EdgeInsets.fromLTRB(15, 0, 15, 0),
                                       child: Text(
+                                        'Datum narození',
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      padding:
+                                          EdgeInsets.fromLTRB(15, 0, 15, 10),
+                                      margin: EdgeInsets.only(top: 10),
+                                      child: TextField(
+                                        controller: dateinput,
+                                        decoration: myInputDecoration(
+                                          label: "Datum narození",
+                                          icon: Icons.cake,
+                                        ),
+                                        readOnly: true,
+                                        onTap: () async {
+                                          DateTime? pickedDate =
+                                              await showDatePicker(
+                                                  context: context,
+                                                  initialDate: DateTime.now(),
+                                                  firstDate: DateTime(
+                                                      1920), //DateTime.now() - not to allow to choose before today.
+                                                  lastDate: DateTime(2101));
+
+                                          if (pickedDate != null) {
+                                            print(
+                                                pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                                            String formattedDate =
+                                                DateFormat('yyyy-MM-dd')
+                                                    .format(pickedDate);
+                                            String formattedDate2 =
+                                                DateFormat('d.M.yyyy')
+                                                    .format(pickedDate);
+                                            print(
+                                                formattedDate); //formatted date output using intl package =>  2021-03-16
+                                            //you can implement different kind of Date Format here according to your requirement
+
+                                            setState(() {
+                                              dateinput.text =
+                                                  formattedDate2; //set output date to TextField value.
+                                            });
+                                          } else {
+                                            print("Datum nezvoleno");
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(15, 0, 15, 0),
+                                      child: Text(
                                         'Pohlaví',
                                         style: TextStyle(
                                           fontSize: 15,
                                         ),
                                       ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Center(
+                                            child: RadioListTile<int?>(
+                                              activeColor: Color.fromARGB(
+                                                  155, 244, 157, 55),
+                                              value: 1,
+                                              groupValue: _gender,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  _gender = value;
+                                                });
+                                              },
+                                              title: Text("Muž"),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Center(
+                                            child: RadioListTile<int?>(
+                                              activeColor: Color.fromARGB(
+                                                  155, 244, 157, 55),
+                                              value: 2,
+                                              groupValue: _gender,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  _gender = value;
+                                                });
+                                              },
+                                              title: Text("Žena"),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ]),
                             ),

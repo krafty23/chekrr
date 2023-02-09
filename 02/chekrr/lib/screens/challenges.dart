@@ -60,7 +60,7 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
       extendBodyBehindAppBar: true,
       extendBody: true,
       appBar: AppBar(
-        title: Text("Programy"),
+        //title: Text("Programy"),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -105,11 +105,11 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                                   key: _scaffoldKey,
                                   itemCount: snapshot.data?.length,
                                   itemBuilder: (context, index) => Container(
-                                    margin: EdgeInsets.all(5),
+                                    margin: EdgeInsets.fromLTRB(5, 5, 5, 20),
                                     decoration: BoxDecoration(
-                                      color: Color.fromARGB(129, 0, 0, 0),
+                                      color: Color.fromARGB(172, 28, 15, 45),
                                       borderRadius:
-                                          BorderRadius.all(Radius.circular(15)),
+                                          BorderRadius.all(Radius.circular(30)),
                                     ),
                                     child: ListTile(
                                       onTap: () {
@@ -119,16 +119,13 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                                                   .toString(),
                                         );
                                       },
+                                      contentPadding:
+                                          EdgeInsets.fromLTRB(3, 0, 3, 2),
                                       visualDensity: VisualDensity(vertical: 3),
                                       title: Container(
-                                        /*decoration: BoxDecoration(
-                                        color: Color.fromARGB(129, 0, 0, 0),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10)),
-                                      ),*/
                                         child: Padding(
                                           padding:
-                                              EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                              EdgeInsets.fromLTRB(0, 0, 0, 0),
                                           child: Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
@@ -141,111 +138,53 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                                                     flex: 1,
                                                     child: ClipRRect(
                                                       borderRadius:
-                                                          BorderRadius.circular(
-                                                              10.0),
-                                                      child: Image(
-                                                        image: NetworkImage(
-                                                          globals.globalProtocol +
-                                                              globals
-                                                                  .globalURL +
-                                                              '/images/chekrr/folders/' +
-                                                              snapshot
-                                                                  .data![index]
-                                                                  .image_filename,
+                                                          BorderRadius.only(
+                                                        topLeft:
+                                                            Radius.circular(27),
+                                                        topRight:
+                                                            Radius.circular(27),
+                                                      ),
+                                                      child: ShaderMask(
+                                                        shaderCallback: (rect) {
+                                                          return LinearGradient(
+                                                            begin: Alignment
+                                                                .topCenter,
+                                                            end: Alignment
+                                                                .bottomCenter,
+                                                            colors: [
+                                                              Colors.black,
+                                                              Colors.transparent
+                                                            ],
+                                                          ).createShader(
+                                                              Rect.fromLTRB(
+                                                                  0,
+                                                                  rect.height -
+                                                                      100,
+                                                                  rect.width,
+                                                                  rect.height));
+                                                        },
+                                                        blendMode:
+                                                            BlendMode.dstIn,
+                                                        child: Image(
+                                                          image: NetworkImage(
+                                                            globals.globalProtocol +
+                                                                globals
+                                                                    .globalURL +
+                                                                '/images/chekrr/folders/' +
+                                                                snapshot
+                                                                    .data![
+                                                                        index]
+                                                                    .image_filename,
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    child: Column(
-                                                      children: [
-                                                        Padding(
-                                                          padding: EdgeInsets
-                                                              .fromLTRB(
-                                                                  10, 0, 0, 4),
-                                                          child: Icon(
-                                                            Icons.checklist,
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    139,
-                                                                    255,
-                                                                    255,
-                                                                    255),
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding: EdgeInsets
-                                                              .fromLTRB(
-                                                                  10, 0, 0, 10),
-                                                          child: Text(
-                                                            snapshot
-                                                                .data![index]
-                                                                .challenge_count
-                                                                .toString(),
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      139,
-                                                                      255,
-                                                                      255,
-                                                                      255),
-                                                              fontSize: 17,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w900,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding: EdgeInsets
-                                                              .fromLTRB(
-                                                                  10, 12, 0, 4),
-                                                          child: Icon(
-                                                            Icons
-                                                                .calendar_month,
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    139,
-                                                                    255,
-                                                                    255,
-                                                                    255),
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding: EdgeInsets
-                                                              .fromLTRB(
-                                                                  10, 0, 0, 10),
-                                                          child: Text(
-                                                            snapshot
-                                                                .data![index]
-                                                                .day_count
-                                                                .toString(),
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      139,
-                                                                      255,
-                                                                      255,
-                                                                      255),
-                                                              fontSize: 17,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w900,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
                                                     ),
                                                   ),
                                                 ],
                                               ),
                                               Row(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.start,
+                                                    MainAxisAlignment.center,
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
@@ -270,8 +209,74 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                                                             255,
                                                             255,
                                                             255,
-                                                            0.801),
+                                                            0.637),
                                                         fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.w900,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsets.fromLTRB(
+                                                            10, 0, 0, 4),
+                                                    child: Icon(
+                                                      Icons.checklist,
+                                                      color: Color.fromARGB(
+                                                          139, 255, 255, 255),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsets.fromLTRB(
+                                                            5, 2, 0, 4),
+                                                    child: Text(
+                                                      snapshot.data![index]
+                                                          .challenge_count
+                                                          .toString(),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        color: Color.fromARGB(
+                                                            139, 255, 255, 255),
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsets.fromLTRB(
+                                                            20, 0, 0, 4),
+                                                    child: Icon(
+                                                      Icons.calendar_month,
+                                                      color: Color.fromARGB(
+                                                          139, 255, 255, 255),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsets.fromLTRB(
+                                                            5, 2, 0, 4),
+                                                    child: Text(
+                                                      snapshot.data![index]
+                                                          .day_count
+                                                          .toString(),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        color: Color.fromARGB(
+                                                            139, 255, 255, 255),
+                                                        fontSize: 17,
                                                         fontWeight:
                                                             FontWeight.w900,
                                                       ),
@@ -281,13 +286,14 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                                               ),
                                               Padding(
                                                 padding: EdgeInsets.fromLTRB(
-                                                    5, 5, 5, 10),
+                                                    25, 10, 25, 15),
                                                 child: Text(
                                                   snapshot.data![index].perex,
                                                   style: TextStyle(
                                                     color: Color.fromRGBO(
                                                         255, 255, 255, 0.603),
                                                     fontSize: 17,
+                                                    fontWeight: FontWeight.w200,
                                                   ),
                                                 ),
                                               ),

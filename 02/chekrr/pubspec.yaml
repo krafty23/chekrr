@@ -45,6 +45,7 @@ dependencies:
   drop_shadow: ^0.0.2+1
   syncfusion_flutter_charts: ^20.4.48
   syncfusion_flutter_calendar: ^20.4.48
+  intl: ^0.18.0
 
 dev_dependencies:
   flutter_test:
