@@ -11,9 +11,11 @@ import '../controllers/TaskController.dart';
 import 'package:chekrr/drawer.dart';
 import 'package:http/http.dart' as http;
 import '../models/task.dart';
+import '../models/challenge.dart';
 import '../bottomtab.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter/services.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
@@ -24,8 +26,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 //class HomeScreen extends StatelessWidget {
-
   late Future<List<Task>> _future;
+  late Future<List<ProgramInfo>> _future_program;
   Future<List<Task>> getTask() async {
     final box = GetStorage();
     var uid = box.read('uid');
@@ -51,6 +53,34 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     } catch (e) {
       return <Task>[]; // return an empty list on exception/error
+    }
+  }
+
+  Future<List<ProgramInfo>> getProgram() async {
+    final box = GetStorage();
+    var uid = box.read('uid');
+    try {
+      Map<String, dynamic> requestbody = {
+        //'uid': globals.uid.toString(),
+        'uid': uid.toString(),
+      };
+      http.Response response = await http.post(
+          Uri.parse(globals.globalProtocol +
+              globals.globalURL +
+              '/api/index.php/challenge/shortlist'),
+          headers: <String, String>{
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+            //'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: requestbody);
+      if (response.statusCode == 200) {
+        return ProgramInfoFromJson(response.body);
+      } else {
+        return <ProgramInfo>[];
+      }
+    } catch (e) {
+      return <ProgramInfo>[]; // return an empty list on exception/error
     }
   }
 
@@ -315,6 +345,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _scaffoldKey = GlobalKey();
     super.initState();
     _future = getTask();
+    _future_program = getProgram();
     //SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
@@ -394,6 +425,193 @@ class _HomeScreenState extends State<HomeScreen> {
                   return Column(
                     children: <Widget>[
                       Expanded(
+                        flex: 1,
+                        child: FutureBuilder(
+                          future: _future_program,
+                          builder: (context,
+                              AsyncSnapshot<List<ProgramInfo>> snapshot2) {
+                            switch (snapshot2.connectionState) {
+                              case ConnectionState.none:
+                                return Text('none');
+                              case ConnectionState.waiting:
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              case ConnectionState.active:
+                                return Text('');
+                              case ConnectionState.done:
+                                if (snapshot2.hasError) {
+                                  return Text(
+                                    '${snapshot2.error}',
+                                    style: TextStyle(color: Colors.red),
+                                  );
+                                } else {
+                                  return Container(
+                                    child: CarouselSlider(
+                                      options: CarouselOptions(
+                                        height: double.infinity,
+                                        pauseAutoPlayOnManualNavigate: true,
+                                        viewportFraction: 1,
+                                        initialPage: 0,
+                                        enableInfiniteScroll: true,
+                                        reverse: false,
+                                        autoPlay: true,
+                                        autoPlayInterval: Duration(seconds: 10),
+                                        autoPlayAnimationDuration:
+                                            Duration(milliseconds: 400),
+                                        autoPlayCurve: Curves.fastOutSlowIn,
+                                        enlargeCenterPage: true,
+                                        enlargeFactor: 0.3,
+                                      ),
+                                      items:
+                                          snapshot2.data?.toList().map((index) {
+                                        return Builder(
+                                          builder: (BuildContext context) {
+                                            return Container(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              margin: EdgeInsets.fromLTRB(
+                                                  0, 0, 0, 3),
+                                              decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: NetworkImage(
+                                                    globals.globalProtocol +
+                                                        globals.globalURL +
+                                                        '/images/chekrr/folders/' +
+                                                        index.image_filename,
+                                                  ),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                                /*color: Color.fromARGB(
+                                                        62, 0, 0, 0)*/
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  Expanded(
+                                                    flex: 2,
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        Get.toNamed(
+                                                          '/challenge?id=' +
+                                                              index.id
+                                                                  .toString(),
+                                                        );
+                                                      },
+                                                      child: Stack(
+                                                        children: <Widget>[
+                                                          SizedBox(
+                                                            height:
+                                                                double.infinity,
+                                                            child:
+                                                                LinearProgressIndicator(
+                                                              backgroundColor:
+                                                                  Color
+                                                                      .fromARGB(
+                                                                          199,
+                                                                          0,
+                                                                          0,
+                                                                          0),
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      160,
+                                                                      57,
+                                                                      21,
+                                                                      119),
+                                                              value: index
+                                                                      .current_day /
+                                                                  index
+                                                                      .day_count,
+                                                              semanticsLabel:
+                                                                  'Den ' +
+                                                                      ' z ',
+                                                            ),
+                                                          ),
+                                                          Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            children: [
+                                                              Expanded(
+                                                                flex: 6,
+                                                                child: Center(
+                                                                  child: Text(
+                                                                    index.name,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Color.fromARGB(
+                                                                          176,
+                                                                          255,
+                                                                          255,
+                                                                          255),
+                                                                      fontSize:
+                                                                          19,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Expanded(
+                                                                flex: 3,
+                                                                child: Center(
+                                                                  child: Text(
+                                                                    "Den " +
+                                                                        index
+                                                                            .current_day
+                                                                            .toString() +
+                                                                        ' z ' +
+                                                                        index
+                                                                            .day_count
+                                                                            .toString(),
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Color.fromARGB(
+                                                                          213,
+                                                                          244,
+                                                                          157,
+                                                                          55),
+                                                                      fontSize:
+                                                                          15,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      }).toList(),
+                                    ),
+                                  );
+                                }
+                            }
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        flex: 6,
                         child: snapshot.data!.isNotEmpty
                             ? ListView.builder(
                                 padding: EdgeInsets.zero,

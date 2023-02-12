@@ -9,11 +9,70 @@ List<Program> ProgramFromJson(String str) =>
 String ProgramToJson(List<Program> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
+List<ProgramInfo> ProgramInfoFromJson(String str) => List<ProgramInfo>.from(
+    json.decode(str).map((x) => ProgramInfo.fromJson(x)));
+
+String ProgramInfoInfoToJson(List<ProgramInfo> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 List<ProgramFull> ProgramFullFromJson(String str) => List<ProgramFull>.from(
     json.decode(str).map((x) => ProgramFull.fromJson(x)));
 
 String ProgramFullToJson(List<ProgramFull> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class ProgramInfo {
+  String name;
+  String perex;
+  String image_filename;
+  int challenge_count;
+  int day_count;
+  int current_day;
+  int id;
+  Icon icon;
+  List<Program> ProgramFromJson(String str) =>
+      List<Program>.from(json.decode(str).map((x) => Program.fromJson(x)));
+
+  String ProgramToJson(List<Program> data) =>
+      json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+  ProgramInfo({
+    this.name = '',
+    this.perex = '',
+    this.image_filename = '',
+    this.challenge_count = 0,
+    this.day_count = 0,
+    this.current_day = 0,
+    this.id = 0,
+    this.icon = const Icon(Icons.home),
+  });
+  factory ProgramInfo.fromJson(Map<String, dynamic> json) => ProgramInfo(
+        name: json['name'] as String,
+        perex: json['perex'] as String,
+        image_filename: json['image_filename'] as String,
+        challenge_count: int.tryParse(json['challenge_count']) as int,
+        day_count: int.tryParse(json['day_count']) as int,
+        current_day: int.tryParse(json['current_day']) as int,
+        id: int.tryParse(json['id']) as int,
+        icon: Icon(
+          IconData(
+            int.parse(json['icon']),
+            fontFamily: 'MaterialIcons',
+          ),
+          color: Color.fromRGBO(244, 157, 55, 1),
+          size: 25,
+        ),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'perex': perex,
+        'image_filename': image_filename,
+        'challenge_count': challenge_count,
+        'day_count': day_count,
+        'current_day': current_day,
+        'id': id,
+      };
+}
 
 class Program {
   String name;
