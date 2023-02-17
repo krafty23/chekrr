@@ -9,10 +9,17 @@ List<Program> ProgramFromJson(String str) =>
 String ProgramToJson(List<Program> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
+List<ProgramSubinfo> ProgramSubinfoFromJson(String str) =>
+    List<ProgramSubinfo>.from(
+        json.decode(str).map((x) => ProgramSubinfo.fromJson(x)));
+
+String ProgramSubinfoToJson(List<ProgramSubinfo> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 List<ProgramInfo> ProgramInfoFromJson(String str) => List<ProgramInfo>.from(
     json.decode(str).map((x) => ProgramInfo.fromJson(x)));
 
-String ProgramInfoInfoToJson(List<ProgramInfo> data) =>
+String ProgramInfoToJson(List<ProgramInfo> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 List<ProgramFull> ProgramFullFromJson(String str) => List<ProgramFull>.from(
@@ -20,6 +27,22 @@ List<ProgramFull> ProgramFullFromJson(String str) => List<ProgramFull>.from(
 
 String ProgramFullToJson(List<ProgramFull> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class ProgramSubinfo {
+  String accepted_date;
+  List<ProgramSubinfo> ProgramFromJson(String str) => List<ProgramSubinfo>.from(
+      json.decode(str).map((x) => ProgramSubinfo.fromJson(x)));
+  String ProgramSubinfoToJson(List<ProgramSubinfo> data) =>
+      json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+  ProgramSubinfo({
+    this.accepted_date = '',
+  });
+  factory ProgramSubinfo.fromJson(Map<String, dynamic> json) =>
+      ProgramSubinfo(accepted_date: json['accepted_date'] as String);
+  Map<String, dynamic> toJson() => {
+        'accepted_date': accepted_date,
+      };
+}
 
 class ProgramInfo {
   String name;
@@ -135,6 +158,7 @@ class ProgramFull {
   int use_color;
   int category_id;
   int day_count;
+  int is_accepted;
   Icon icon;
   List<ProgramFull> ProgramFullFromJson(String str) => List<ProgramFull>.from(
       json.decode(str).map((x) => ProgramFull.fromJson(x)));
@@ -154,6 +178,7 @@ class ProgramFull {
       this.use_color = 0,
       this.category_id = 0,
       this.day_count = 0,
+      this.is_accepted = 0,
       this.icon = const Icon(Icons.home)});
   factory ProgramFull.fromJson(Map<String, dynamic> json) => ProgramFull(
         name: json['name'] as String,
@@ -167,6 +192,7 @@ class ProgramFull {
         category_id: int.tryParse(json['category_id']) as int,
         category_name: json['category_name'].toString() as String,
         day_count: int.tryParse(json['day_count']) as int,
+        is_accepted: int.tryParse(json['is_accepted']) as int,
         icon: Icon(
           IconData(
             int.parse(json['icon']),
@@ -189,6 +215,7 @@ class ProgramFull {
         'category_id': category_id,
         'category_name': category_name,
         'day_count': day_count,
+        'is_accepted': is_accepted,
       };
 }
 

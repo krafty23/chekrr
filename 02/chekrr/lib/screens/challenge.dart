@@ -22,7 +22,6 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
     var uid = box.read('uid');
     try {
       Map<String, dynamic> requestbody = {
-        //'uid': globals.uid.toString(),
         'uid': uid.toString(),
         'id': Get.parameters['id'].toString(),
       };
@@ -50,6 +49,83 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
     }
   }
 
+  Future<void> _dialogConfirmer(BuildContext context, int data) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Color.fromARGB(213, 131, 1, 1),
+          title: Text(
+            'Opravdu zrušit program?',
+            style: TextStyle(
+              color: Color.fromRGBO(255, 255, 255, 0.692),
+              fontSize: 22,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: Text(
+                  'Opravdu si přejete zrušit program?',
+                  style: TextStyle(
+                    color: Color.fromRGBO(255, 255, 255, 0.459),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(
+                    Color.fromARGB(255, 214, 214, 214)),
+                backgroundColor: MaterialStateProperty.all<Color>(
+                    Color.fromARGB(255, 255, 0, 0)),
+              ),
+              child: const Text('Ano'),
+              onPressed: () {
+                HapticFeedback.heavyImpact();
+                DeleteProgram(data).then((value) => Get.toNamed(
+                      '/home',
+                    ));
+                Get.showSnackbar(
+                  GetSnackBar(
+                    snackPosition: SnackPosition.TOP,
+                    backgroundColor: Color.fromARGB(200, 0, 0, 0),
+                    title: 'Program zrušen',
+                    message: 'Příště to vyjde',
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.red,
+                    ),
+                    duration: const Duration(seconds: 2),
+                  ),
+                );
+              },
+            ),
+            ElevatedButton(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(
+                    Color.fromARGB(255, 255, 255, 255)),
+                backgroundColor: MaterialStateProperty.all<Color>(
+                    Color.fromARGB(126, 0, 0, 0)),
+              ),
+              child: const Text('Ne'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   late GlobalKey<ScaffoldState> _scaffoldKey;
   @override
   void initState() {
@@ -66,6 +142,9 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (Get.parameters['is_accepted'] == null) {
+      Get.parameters['is_accepted'] = '0';
+    }
     final box = GetStorage();
     var uid = box.read('uid');
     return Scaffold(
@@ -363,60 +442,87 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
       persistentFooterButtons: [
         Padding(
           padding: EdgeInsets.fromLTRB(7.0, 6.0, 7.0, 6.0),
-          child: ElevatedButton.icon(
-            onPressed: () {
-              AddProgram(
-                Get.parameters['id'],
-                uid,
-              ).then((value) => Get.offAllNamed('/home'));
-              showDialog(
-                  // The user CANNOT close this dialog  by pressing outsite it
-                  barrierDismissible: false,
-                  context: context,
-                  builder: (_) {
-                    return Dialog(
-                      backgroundColor: Color.fromARGB(20, 0, 0, 0),
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      /*
-            put a CircularProgressIndicator() here
-            */
-                    );
-                  });
-              Get.showSnackbar(
-                GetSnackBar(
-                  snackPosition: SnackPosition.TOP,
-                  backgroundColor: Color.fromARGB(200, 0, 0, 0),
-                  title: 'Výzva přijata',
-                  message: 'Jdi do toho!',
-                  icon: const Icon(
-                    Icons.check,
-                    color: Colors.green,
+          child: int.parse(Get.parameters['is_accepted']!) > 0
+              ? ElevatedButton.icon(
+                  onPressed: () {
+                    HapticFeedback.heavyImpact();
+                    _dialogConfirmer(context, int.parse(Get.parameters['id']!));
+                  },
+                  icon: Icon(
+                    // <-- Icon
+                    Icons.cancel,
+                    size: 25.0,
                   ),
-                  duration: const Duration(seconds: 2),
-                ),
-              );
-            },
-            icon: Icon(
-              // <-- Icon
-              Icons.add,
-              size: 25.0,
-            ),
-            label: Text('Přijmout výzvy'),
-            style: ButtonStyle(
-              /*shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  label: Text('Zrušit program...'),
+                  style: ButtonStyle(
+                    /*shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.zero,
                   ),
                 ),*/
-              padding: MaterialStateProperty.all(const EdgeInsets.all(15)),
-              foregroundColor: MaterialStateProperty.all<Color>(
-                  Color.fromARGB(255, 214, 214, 214)),
-              backgroundColor: MaterialStateProperty.all<Color>(
-                  Color.fromARGB(255, 75, 21, 119)),
-            ),
-          ),
+                    padding:
+                        MaterialStateProperty.all(const EdgeInsets.all(15)),
+                    foregroundColor: MaterialStateProperty.all<Color>(
+                        Color.fromARGB(255, 214, 214, 214)),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Color.fromARGB(255, 119, 21, 21)),
+                  ),
+                )
+              : ElevatedButton.icon(
+                  onPressed: () {
+                    AddProgram(
+                      Get.parameters['id'],
+                      uid,
+                    ).then((value) => Get.offAllNamed('/home'));
+                    showDialog(
+                        // The user CANNOT close this dialog  by pressing outsite it
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (_) {
+                          return Dialog(
+                            backgroundColor: Color.fromARGB(20, 0, 0, 0),
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                            /*
+            put a CircularProgressIndicator() here
+            */
+                          );
+                        });
+                    Get.showSnackbar(
+                      GetSnackBar(
+                        snackPosition: SnackPosition.TOP,
+                        backgroundColor: Color.fromARGB(200, 0, 0, 0),
+                        title: 'Výzva přijata',
+                        message: 'Jdi do toho!',
+                        icon: const Icon(
+                          Icons.check,
+                          color: Colors.green,
+                        ),
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                  },
+                  icon: Icon(
+                    // <-- Icon
+                    Icons.add,
+                    size: 25.0,
+                  ),
+                  label: Text('Přijmout výzvy'),
+                  style: ButtonStyle(
+                    /*shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero,
+                  ),
+                ),*/
+                    padding:
+                        MaterialStateProperty.all(const EdgeInsets.all(15)),
+                    foregroundColor: MaterialStateProperty.all<Color>(
+                        Color.fromARGB(255, 214, 214, 214)),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Color.fromARGB(255, 75, 21, 119)),
+                  ),
+                ),
         ),
       ],
     );
@@ -443,6 +549,36 @@ Future<http.Response> AddProgram(
   if (response.statusCode == 200) {
   } else {
     throw Exception('Failed to create program - ' +
+        response.body +
+        ' / ' +
+        response.statusCode.toString());
+  }
+  return response;
+}
+
+Future<http.Response> DeleteProgram(int id) async {
+  final task = id;
+  final box = GetStorage();
+  var uid = box.read('uid');
+  Map<String, dynamic> body = {
+    'id': id.toString(),
+    'is_accepted': '1',
+    'uid': uid.toString(),
+  };
+  final response = await http.post(
+      Uri.parse(globals.globalProtocol +
+          globals.globalURL +
+          '/api/delete_program.php'),
+      headers: <String, String>{
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
+        //'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: body);
+  if (response.statusCode == 200) {
+    //print(response.body);
+  } else {
+    throw Exception('Chyba: nepodařilo se označit výzvu jako zrušenou - ' +
         response.body +
         ' / ' +
         response.statusCode.toString());

@@ -109,7 +109,7 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                                     decoration: BoxDecoration(
                                       color: Color.fromARGB(172, 28, 15, 45),
                                       borderRadius:
-                                          BorderRadius.all(Radius.circular(30)),
+                                          BorderRadius.all(Radius.circular(15)),
                                     ),
                                     child: ListTile(
                                       onTap: () {
@@ -140,9 +140,9 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                                                       borderRadius:
                                                           BorderRadius.only(
                                                         topLeft:
-                                                            Radius.circular(27),
+                                                            Radius.circular(12),
                                                         topRight:
-                                                            Radius.circular(27),
+                                                            Radius.circular(12),
                                                       ),
                                                       child: ShaderMask(
                                                         shaderCallback: (rect) {

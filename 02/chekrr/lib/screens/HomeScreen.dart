@@ -92,42 +92,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  _showPopupMenu(BuildContext context) async {
-    //double left = offset.dx;
-    //double top = offset.dy;
-    /*final RenderObject? overlay =
-        Overlay.of(context).context.findRenderObject();
-    await showMenu(
-      context: context,
-      color: Color.fromRGBO(15, 5, 31, 0.835),
-      //position: RelativeRect.fromLTRB(0, 0, 0, 0),
-      position: RelativeRect.fromRect(
-          Rect.fromLTWH(_tapPosition.dx, _tapPosition.dy, 30, 30),
-          Rect.fromLTWH(0, 0, overlay!.paintBounds.size.width,
-              overlay.paintBounds.size.height)),
-      //position: RelativeRect.fromLTRB(left, top, 0, 0),
-      items: [
-        PopupMenuItem<String>(
-            child: ElevatedButton.icon(
-              icon: Icon(
-                // <-- Icon
-                Icons.delete,
-                size: 25.0,
-              ),
-              label: Text('Přijmout výzvy'),
-              onPressed: () {},
-            ),
-            value: 'Doge'),
-        PopupMenuItem<String>(child: Text('Lion'), value: 'Lion'),
-      ],
-      elevation: 8.0,
-    );*/
-    return AlertDialog(
-        contentPadding: EdgeInsets.all(20),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-        content: Text('dfdff'));
-  }
-
   Future<void> _dialogConfirmer(BuildContext context, Task data) async {
     return showDialog<void>(
       context: context,
@@ -464,6 +428,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                       items:
                                           snapshot2.data?.toList().map((index) {
+                                        if (index.current_day >
+                                            index.day_count) {
+                                          index.current_day = index.day_count;
+                                        }
                                         return Builder(
                                           builder: (BuildContext context) {
                                             return Container(
@@ -497,7 +465,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     child: GestureDetector(
                                                       onTap: () {
                                                         Get.toNamed(
-                                                          '/challenge?id=' +
+                                                          '/challenge?is_accepted=1&id=' +
                                                               index.id
                                                                   .toString(),
                                                         );
@@ -876,14 +844,16 @@ Future<http.Response> DeleteProgram(var id) async {
   Map<String, dynamic> body = {
     'id': id.toString(),
   };
-  final response =
-      await http.post(Uri.parse('https://chekrr.cz/api/delete_program.php'),
-          headers: <String, String>{
-            "Accept": "application/json",
-            "Content-Type": "application/x-www-form-urlencoded",
-            //'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: body);
+  final response = await http.post(
+      Uri.parse(globals.globalProtocol +
+          globals.globalURL +
+          '/api/delete_program.php'),
+      headers: <String, String>{
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
+        //'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: body);
   if (response.statusCode == 200) {
     //print(response.body);
   } else {
