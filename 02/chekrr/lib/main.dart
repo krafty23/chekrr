@@ -10,6 +10,8 @@ import '/screens/profile.dart';
 import '/screens/edit_profile.dart';
 import '/screens/challenge.dart';
 import '/screens/challenges.dart';
+import '/screens/achievements.dart';
+import '/screens/challenges_done.dart';
 import '/screens/login.dart';
 import '/screens/loading_screen.dart';
 import 'package:flutter/services.dart';
@@ -81,8 +83,18 @@ class MyApp extends StatelessWidget {
           transition: Transition.fade,
         ),
         GetPage(
+          name: '/challenges_done',
+          page: () => ChallengesDoneScreen(),
+          transition: Transition.fade,
+        ),
+        GetPage(
           name: '/history',
           page: () => HistoryScreen(),
+          transition: Transition.downToUp,
+        ),
+        GetPage(
+          name: '/achievements',
+          page: () => AchievementsScreen(),
           transition: Transition.downToUp,
         ),
         GetPage(

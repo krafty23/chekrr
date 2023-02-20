@@ -137,7 +137,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       drawer: DrawerDraw(),
       body: Container(
-        padding: EdgeInsets.fromLTRB(0, 100, 0, 90),
+        padding: EdgeInsets.fromLTRB(0, 100, 0, 65),
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage("images/chekrr_bg.png"),
@@ -305,83 +305,99 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             Expanded(
                               flex: 1,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: Color.fromARGB(24, 255, 255, 255),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Get.toNamed('/challenges_done');
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        color:
+                                            Color.fromARGB(24, 255, 255, 255),
+                                      ),
                                     ),
                                   ),
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.fromLTRB(20, 5, 20, 15),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        snapshot.data![0].finished_folder_count
-                                            .toString(),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.bold,
+                                  child: Padding(
+                                    padding: EdgeInsets.fromLTRB(20, 5, 20, 15),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          snapshot
+                                              .data![0].finished_folder_count
+                                              .toString(),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                      Text(
-                                        'splněné\nprogramy',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Color.fromARGB(
-                                              120, 255, 255, 255),
+                                        Text(
+                                          'splněné\nprogramy',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Color.fromARGB(
+                                                120, 255, 255, 255),
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                             Expanded(
                               flex: 1,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: Color.fromARGB(24, 255, 255, 255),
-                                    ),
-                                    left: BorderSide(
-                                      color: Color.fromARGB(24, 255, 255, 255),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Get.toNamed('/achievements');
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        color:
+                                            Color.fromARGB(24, 255, 255, 255),
+                                      ),
+                                      left: BorderSide(
+                                        color:
+                                            Color.fromARGB(24, 255, 255, 255),
+                                      ),
                                     ),
                                   ),
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsets.fromLTRB(20, 5, 20, 15),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        snapshot.data![0].achievement_count
-                                            .toString(),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.bold,
+                                  child: Padding(
+                                    padding: EdgeInsets.fromLTRB(20, 5, 20, 15),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          snapshot.data![0].achievement_count
+                                              .toString(),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                      Text(
-                                        'získané odznaky',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Color.fromARGB(
-                                              120, 255, 255, 255),
+                                        Text(
+                                          'získané odznaky',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Color.fromARGB(
+                                                120, 255, 255, 255),
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),

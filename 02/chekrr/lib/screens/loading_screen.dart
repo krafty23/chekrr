@@ -2,6 +2,7 @@ import 'dart:convert';
 import '../globals.dart' as globals;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
@@ -13,11 +14,30 @@ class LoadingScreen extends StatefulWidget {
   _LoadingScreenState createState() => _LoadingScreenState();
 }
 
+final box = GetStorage();
+bool LoggedIn = box.read('isloggedin') ?? false;
+
 class _LoadingScreenState extends State<LoadingScreen> {
   @override
+  void initState() {
+    //super.initState();
+    startTime();
+  }
+
+  startTime() async {
+    var duration = new Duration(seconds: 1);
+    return new Timer(duration, route);
+  }
+
+  route() {
+    if (LoggedIn == true) {
+      Get.offAllNamed('/home');
+    } else {
+      Get.offAllNamed('/login');
+    }
+  }
+
   Widget build(BuildContext context) {
-    final box = GetStorage();
-    bool LoggedIn = box.read('isloggedin') ?? false;
     return Container(
       child: Scaffold(
         body: Container(
@@ -28,7 +48,24 @@ class _LoadingScreenState extends State<LoadingScreen> {
             ),
           ),
           child: Center(
-            child: ElevatedButton(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(100, 0, 100, 0),
+              child: GestureDetector(
+                onTap: () {
+                  if (LoggedIn == true) {
+                    Get.offAllNamed('/home');
+                  } else {
+                    Get.offAllNamed('/login');
+                  }
+                },
+                child: Image(
+                  image: AssetImage(
+                    "images/LOGO_vertical2.png",
+                  ),
+                ),
+              ),
+            ),
+            /*ElevatedButton(
               style: ButtonStyle(
                 textStyle: MaterialStateProperty.resolveWith(
                   (states) {
@@ -76,7 +113,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
                 }
               },
               child: Text('Let\'s fucking GO'),
-            ),
+            ),*/
           ),
         ),
       ),

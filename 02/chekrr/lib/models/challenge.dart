@@ -8,6 +8,11 @@ List<Program> ProgramFromJson(String str) =>
 
 String ProgramToJson(List<Program> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+List<ProgramDone> ProgramDoneFromJson(String str) => List<ProgramDone>.from(
+    json.decode(str).map((x) => ProgramDone.fromJson(x)));
+
+String ProgramDoneToJson(List<ProgramDone> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 List<ProgramSubinfo> ProgramSubinfoFromJson(String str) =>
     List<ProgramSubinfo>.from(
@@ -120,6 +125,55 @@ class Program {
     this.icon = const Icon(Icons.home),
   });
   factory Program.fromJson(Map<String, dynamic> json) => Program(
+        name: json['name'] as String,
+        perex: json['perex'] as String,
+        image_filename: json['image_filename'] as String,
+        challenge_count: int.tryParse(json['challenge_count']) as int,
+        day_count: int.tryParse(json['day_count']) as int,
+        id: int.tryParse(json['id']) as int,
+        icon: Icon(
+          IconData(
+            int.parse(json['icon']),
+            fontFamily: 'MaterialIcons',
+          ),
+          color: Color.fromRGBO(244, 157, 55, 1),
+          size: 25,
+        ),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'perex': perex,
+        'image_filename': image_filename,
+        'challenge_count': challenge_count,
+        'day_count': day_count,
+        'id': id,
+      };
+}
+
+class ProgramDone {
+  String name;
+  String perex;
+  String image_filename;
+  int challenge_count;
+  int day_count;
+  int id;
+  Icon icon;
+  List<ProgramDone> ProgramDoneFromJson(String str) => List<ProgramDone>.from(
+      json.decode(str).map((x) => ProgramDone.fromJson(x)));
+
+  String ProgramDoneToJson(List<ProgramDone> data) =>
+      json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+  ProgramDone({
+    this.name = '',
+    this.perex = '',
+    this.image_filename = '',
+    this.challenge_count = 0,
+    this.day_count = 0,
+    this.id = 0,
+    this.icon = const Icon(Icons.home),
+  });
+  factory ProgramDone.fromJson(Map<String, dynamic> json) => ProgramDone(
         name: json['name'] as String,
         perex: json['perex'] as String,
         image_filename: json['image_filename'] as String,

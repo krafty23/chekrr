@@ -47,20 +47,22 @@ class _BottomTabsState extends State<BottomTabs> {
     }
 
     return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      //landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
       showUnselectedLabels: false,
       showSelectedLabels: true,
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(
             Icons.home,
-            size: 45.0,
+            size: 35.0,
           ),
           label: 'Můj Plán',
         ),
         BottomNavigationBarItem(
           icon: Icon(
             Icons.rocket_launch,
-            size: 45.0,
+            size: 35.0,
           ),
           label: 'Programy',
           //label: '$cesta',
@@ -68,7 +70,7 @@ class _BottomTabsState extends State<BottomTabs> {
         BottomNavigationBarItem(
           icon: Icon(
             Icons.person,
-            size: 45.0,
+            size: 35.0,
           ),
           label: 'Profil',
           //label: '$cesta',

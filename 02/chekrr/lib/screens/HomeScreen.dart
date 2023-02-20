@@ -362,7 +362,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       drawer: DrawerDraw(),
       body: Container(
-        padding: EdgeInsets.fromLTRB(0, 100, 0, 80),
+        padding: EdgeInsets.fromLTRB(0, 93, 0, 35),
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage("images/chekrr_bg.png"),
@@ -581,65 +581,85 @@ class _HomeScreenState extends State<HomeScreen> {
                       Expanded(
                         flex: 6,
                         child: snapshot.data!.isNotEmpty
-                            ? ListView.builder(
-                                padding: EdgeInsets.zero,
-                                key: _scaffoldKey,
-                                //separatorBuilder: (_, __) => Divider(),
-                                //itemCount: taskController.tasks.length,
-                                itemCount: snapshot.data?.length,
-                                itemBuilder: (context, index) => Dismissible(
-                                  confirmDismiss: (direction) async {
-                                    bool delete = true;
-                                    if (direction ==
-                                        DismissDirection.startToEnd) {
-                                      /*setState(() {
+                            ? ClipRRect(
+                                child: ShaderMask(
+                                  shaderCallback: (rect) {
+                                    return LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        Colors.black,
+                                        Colors.transparent
+                                      ],
+                                    ).createShader(Rect.fromLTRB(
+                                        0,
+                                        rect.height - 100,
+                                        rect.width,
+                                        rect.height));
+                                  },
+                                  blendMode: BlendMode.dstIn,
+                                  child: ListView.builder(
+                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 100),
+                                    key: _scaffoldKey,
+                                    //separatorBuilder: (_, __) => Divider(),
+                                    //itemCount: taskController.tasks.length,
+                                    itemCount: snapshot.data?.length,
+                                    itemBuilder: (context, index) =>
+                                        Dismissible(
+                                      confirmDismiss: (direction) async {
+                                        bool delete = true;
+                                        if (direction ==
+                                            DismissDirection.startToEnd) {
+                                          /*setState(() {
                     flavors[index] =
                         flavor.copyWith(isFavorite: !flavor.isFavorite);
                   });*/
-                                      FinishTask(
-                                          snapshot.data![index].id.toString());
-                                      Get.showSnackbar(
-                                        GetSnackBar(
-                                          snackPosition: SnackPosition.TOP,
-                                          backgroundColor:
-                                              Color.fromARGB(220, 0, 0, 0),
-                                          title: 'Gratulace!',
-                                          message: 'Výzva ' +
-                                              snapshot.data![index].name +
-                                              ' splněna',
-                                          icon: const Icon(
-                                            Icons.check,
-                                            color: Colors.green,
-                                          ),
-                                          duration: const Duration(seconds: 2),
-                                        ),
-                                      );
-                                      return delete;
-                                    } else {
-                                      bool delete = true;
-                                      RejectTask(
-                                          snapshot.data![index].id.toString());
-                                      Get.showSnackbar(
-                                        GetSnackBar(
-                                          snackPosition: SnackPosition.TOP,
-                                          backgroundColor:
-                                              Color.fromARGB(220, 0, 0, 0),
-                                          title: 'Příště to vyjde!',
-                                          message: 'Výzva ' +
-                                              snapshot.data![index].name +
-                                              ' nesplněna',
-                                          icon: const Icon(
-                                            Icons.close,
-                                            color: Colors.red,
-                                          ),
-                                          duration: const Duration(seconds: 2),
-                                        ),
-                                      );
-                                      return delete;
-                                    }
-                                  },
-                                  onDismissed: (_) {
-                                    /*Get.showSnackbar(
+                                          FinishTask(snapshot.data![index].id
+                                              .toString());
+                                          Get.showSnackbar(
+                                            GetSnackBar(
+                                              snackPosition: SnackPosition.TOP,
+                                              backgroundColor:
+                                                  Color.fromARGB(220, 0, 0, 0),
+                                              title: 'Gratulace!',
+                                              message: 'Výzva ' +
+                                                  snapshot.data![index].name +
+                                                  ' splněna',
+                                              icon: const Icon(
+                                                Icons.check,
+                                                color: Colors.green,
+                                              ),
+                                              duration:
+                                                  const Duration(seconds: 2),
+                                            ),
+                                          );
+                                          return delete;
+                                        } else {
+                                          bool delete = true;
+                                          RejectTask(snapshot.data![index].id
+                                              .toString());
+                                          Get.showSnackbar(
+                                            GetSnackBar(
+                                              snackPosition: SnackPosition.TOP,
+                                              backgroundColor:
+                                                  Color.fromARGB(220, 0, 0, 0),
+                                              title: 'Příště to vyjde!',
+                                              message: 'Výzva ' +
+                                                  snapshot.data![index].name +
+                                                  ' nesplněna',
+                                              icon: const Icon(
+                                                Icons.close,
+                                                color: Colors.red,
+                                              ),
+                                              duration:
+                                                  const Duration(seconds: 2),
+                                            ),
+                                          );
+                                          return delete;
+                                        }
+                                      },
+                                      onDismissed: (_) {
+                                        /*Get.showSnackbar(
                           GetSnackBar(
                             title: 'Hovno!',
                             message: 'Ser na to',
@@ -650,60 +670,64 @@ class _HomeScreenState extends State<HomeScreen> {
                             duration: const Duration(seconds: 2),
                           ),
                         );*/
-                                  },
-                                  background: Container(
-                                    color: Color.fromARGB(100, 76, 175, 79),
-                                    child: Align(
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 16),
-                                        child: Icon(Icons.check),
-                                      ),
-                                      alignment: Alignment.centerLeft,
-                                    ),
-                                  ),
-                                  secondaryBackground: Container(
-                                    color: Color.fromARGB(100, 244, 67, 54),
-                                    child: Align(
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 16),
-                                        child: Icon(Icons.close),
-                                      ),
-                                      alignment: Alignment.centerRight,
-                                    ),
-                                  ),
-                                  key: UniqueKey(),
-                                  child: GestureDetector(
-                                    onLongPressStart: (details) =>
-                                        HapticFeedback.heavyImpact(),
-                                    //onLongPress: () => _showPopupMenu(context),
-                                    onLongPress: () => _dialogBuilder(
-                                        context, snapshot.data![index]),
-                                    child: Container(
-                                      margin: EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                        color: Color.fromARGB(129, 0, 0, 0),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(30)),
-                                      ),
-                                      child: ListTile(
-                                        visualDensity:
-                                            VisualDensity(vertical: 3),
-                                        title: Text(
-                                          //taskController.tasks[index].name,
-                                          snapshot.data![index].name,
-                                          style: TextStyle(
-                                            color: Color.fromRGBO(
-                                                255, 255, 255, 0.801),
+                                      },
+                                      background: Container(
+                                        color: Color.fromARGB(100, 76, 175, 79),
+                                        child: Align(
+                                          child: Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 16),
+                                            child: Icon(Icons.check),
                                           ),
+                                          alignment: Alignment.centerLeft,
                                         ),
-                                        //onTap: () {
-                                        /*Get.to(AddTaskScreen(
+                                      ),
+                                      secondaryBackground: Container(
+                                        color: Color.fromARGB(100, 244, 67, 54),
+                                        child: Align(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 16),
+                                            child: Icon(Icons.close),
+                                          ),
+                                          alignment: Alignment.centerRight,
+                                        ),
+                                      ),
+                                      key: UniqueKey(),
+                                      child: GestureDetector(
+                                        onLongPressStart: (details) =>
+                                            HapticFeedback.heavyImpact(),
+                                        //onLongPress: () => _showPopupMenu(context),
+                                        onLongPress: () => _dialogBuilder(
+                                            context, snapshot.data![index]),
+                                        child: Container(
+                                          margin: EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Color.fromARGB(
+                                                  31, 240, 157, 55),
+                                            ),
+                                            color: Color.fromARGB(129, 0, 0, 0),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(3)),
+                                          ),
+                                          child: ListTile(
+                                            visualDensity:
+                                                VisualDensity(vertical: 3),
+                                            title: Text(
+                                              //taskController.tasks[index].name,
+                                              snapshot.data![index].name,
+                                              style: TextStyle(
+                                                color: Color.fromRGBO(
+                                                    255, 255, 255, 0.801),
+                                              ),
+                                            ),
+                                            //onTap: () {
+                                            /*Get.to(AddTaskScreen(
                     index: index,
                   ));*/
-                                        //},
-                                        /*onLongPress: () {
+                                            //},
+                                            /*onLongPress: () {
                                         Get.showSnackbar(
                                           GetSnackBar(
                                             title: 'Klik!',
@@ -717,26 +741,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                         );
                                       },*/
-                                        leading: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            Icon(
-                                              Icons.close,
-                                              color: Colors.red,
+                                            leading: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Icon(
+                                                  Icons.close,
+                                                  color: Colors.red,
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                        trailing: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            Icon(
-                                              Icons.check,
-                                              //Icons.chevron_right,
-                                              color: Colors.green,
+                                            trailing: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Icon(
+                                                  Icons.check,
+                                                  //Icons.chevron_right,
+                                                  color: Colors.green,
+                                                ),
+                                              ],
                                             ),
-                                          ],
+                                          ),
                                         ),
                                       ),
                                     ),
