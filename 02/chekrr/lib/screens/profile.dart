@@ -599,7 +599,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     color: Colors.red,
                                                     markerSettings:
                                                         MarkerSettings(
-                                                      isVisible: true,
+                                                      isVisible: false,
                                                       shape:
                                                           DataMarkerType.circle,
                                                       width: 6,
@@ -619,7 +619,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         207, 51, 201, 14),
                                                     markerSettings:
                                                         MarkerSettings(
-                                                      isVisible: true,
+                                                      isVisible: false,
                                                       shape:
                                                           DataMarkerType.circle,
                                                       width: 6,

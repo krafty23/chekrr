@@ -288,7 +288,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                           dataSource: snapshot.data!,
                                           color: Colors.red,
                                           markerSettings: MarkerSettings(
-                                            isVisible: true,
+                                            isVisible: false,
                                             shape: DataMarkerType.circle,
                                             width: 6,
                                             height: 6,
@@ -303,7 +303,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                           color:
                                               Color.fromARGB(207, 51, 201, 14),
                                           markerSettings: MarkerSettings(
-                                            isVisible: true,
+                                            isVisible: false,
                                             shape: DataMarkerType.circle,
                                             width: 6,
                                             height: 6,

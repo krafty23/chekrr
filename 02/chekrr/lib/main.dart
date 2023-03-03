@@ -15,6 +15,7 @@ import '/screens/challenges_done.dart';
 import '/screens/login.dart';
 import '/screens/loading_screen.dart';
 import 'package:flutter/services.dart';
+//import 'package:awesome_notifications/awesome_notifications.dart';
 
 void main() async {
   await GetStorage.init();
