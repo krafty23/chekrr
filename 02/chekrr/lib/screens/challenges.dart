@@ -98,7 +98,7 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                           ? Expanded(
                               flex: 9,
                               child: Container(
-                                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                                 child: ClipRRect(
                                   child: ShaderMask(
                                     shaderCallback: (rect) {
@@ -141,13 +141,27 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                                               EdgeInsets.fromLTRB(0, 0, 0, 25),
                                           decoration: BoxDecoration(
                                             border: Border(
+                                              left: BorderSide(
+                                                color: Colors.transparent,
+                                              ),
+                                              right: BorderSide(
+                                                color: Colors.transparent,
+                                              ),
+                                              top: BorderSide(
+                                                color: Colors.transparent,
+                                              ),
                                               bottom: BorderSide(
-                                                color: Color.fromARGB(
-                                                    64, 240, 157, 55),
+                                                color: Colors.transparent,
                                               ),
                                             ),
-                                            color:
-                                                Color.fromARGB(188, 28, 15, 45),
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(30),
+                                              topRight: Radius.circular(30),
+                                              bottomLeft: Radius.circular(30),
+                                              bottomRight: Radius.circular(30),
+                                            ),
+                                            color: Color.fromARGB(
+                                                22, 255, 255, 255),
                                             //borderRadius: BorderRadius.all(
                                             //    Radius.circular(3)),
                                           ),
@@ -182,9 +196,9 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                                                                 BorderRadius
                                                                     .only(
                                                               topLeft: Radius
-                                                                  .circular(0),
+                                                                  .circular(30),
                                                               topRight: Radius
-                                                                  .circular(0),
+                                                                  .circular(30),
                                                             ),
                                                             child: ShaderMask(
                                                               shaderCallback:
@@ -378,6 +392,47 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                                                         ),
                                                       ),
                                                     ),
+                                                    Padding(
+                                                        padding:
+                                                            EdgeInsets.fromLTRB(
+                                                                25, 10, 25, 15),
+                                                        child: ElevatedButton(
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            foregroundColor:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    57,
+                                                                    21,
+                                                                    119),
+                                                            backgroundColor:
+                                                                Color.fromRGBO(
+                                                                    255,
+                                                                    255,
+                                                                    255,
+                                                                    0.562),
+                                                            minimumSize: const Size
+                                                                .fromHeight(40),
+                                                          ),
+                                                          onPressed: () {
+                                                            Get.toNamed(
+                                                              '/challenge?id=' +
+                                                                  snapshot
+                                                                      .data![
+                                                                          index]
+                                                                      .id
+                                                                      .toString(),
+                                                            );
+                                                          },
+                                                          child: Text(
+                                                            'ZJISTIT VÍCE',
+                                                            style: TextStyle(
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                        )),
                                                   ],
                                                 ),
                                               ),

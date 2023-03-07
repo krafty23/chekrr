@@ -157,6 +157,13 @@ class ProgramDone {
   String image_filename;
   int challenge_count;
   int day_count;
+  int instance_id;
+  int accepted_date_day;
+  int accepted_date_month;
+  int accepted_date_year;
+  int finished_date_day;
+  int finished_date_month;
+  int finished_date_year;
   int id;
   Icon icon;
   List<ProgramDone> ProgramDoneFromJson(String str) => List<ProgramDone>.from(
@@ -170,7 +177,14 @@ class ProgramDone {
     this.image_filename = '',
     this.challenge_count = 0,
     this.day_count = 0,
+    this.instance_id = 0,
     this.id = 0,
+    this.accepted_date_day = 0,
+    this.accepted_date_month = 0,
+    this.accepted_date_year = 0,
+    this.finished_date_day = 0,
+    this.finished_date_month = 0,
+    this.finished_date_year = 0,
     this.icon = const Icon(Icons.home),
   });
   factory ProgramDone.fromJson(Map<String, dynamic> json) => ProgramDone(
@@ -179,7 +193,14 @@ class ProgramDone {
         image_filename: json['image_filename'] as String,
         challenge_count: int.tryParse(json['challenge_count']) as int,
         day_count: int.tryParse(json['day_count']) as int,
+        instance_id: int.tryParse(json['instance_id']) as int,
         id: int.tryParse(json['id']) as int,
+        accepted_date_day: int.tryParse(json['accepted_date_day']) as int,
+        accepted_date_month: int.tryParse(json['accepted_date_month']) as int,
+        accepted_date_year: int.tryParse(json['accepted_date_year']) as int,
+        finished_date_day: int.tryParse(json['finished_date_day']) as int,
+        finished_date_month: int.tryParse(json['finished_date_month']) as int,
+        finished_date_year: int.tryParse(json['finished_date_year']) as int,
         icon: Icon(
           IconData(
             int.parse(json['icon']),
@@ -196,7 +217,14 @@ class ProgramDone {
         'image_filename': image_filename,
         'challenge_count': challenge_count,
         'day_count': day_count,
+        'instance_id': instance_id,
         'id': id,
+        'accepted_date_day': accepted_date_day,
+        'accepted_date_month': accepted_date_month,
+        'accepted_date_year': accepted_date_year,
+        'finished_date_day': finished_date_day,
+        'finished_date_month': finished_date_month,
+        'finished_date_year': finished_date_year,
       };
 }
 

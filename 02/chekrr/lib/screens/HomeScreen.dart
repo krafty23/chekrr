@@ -345,7 +345,6 @@ class _HomeScreenState extends State<HomeScreen> {
       extendBodyBehindAppBar: true,
       extendBody: true,
       appBar: AppBar(
-        title: Text("Můj Plán Dne"),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -362,7 +361,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       drawer: DrawerDraw(),
       body: Container(
-        padding: EdgeInsets.fromLTRB(0, 93, 0, 35),
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 35),
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage("images/chekrr_bg.png"),
@@ -389,7 +388,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   return Column(
                     children: <Widget>[
                       Expanded(
-                        flex: 1,
+                        flex: 2,
                         child: FutureBuilder(
                           future: _future_program,
                           builder: (context,
@@ -440,7 +439,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .width,
                                               margin: EdgeInsets.fromLTRB(
                                                   0, 0, 0, 3),
-                                              decoration: BoxDecoration(
+                                              /*decoration: BoxDecoration(
                                                 image: DecorationImage(
                                                   image: NetworkImage(
                                                     globals.globalProtocol +
@@ -452,7 +451,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ),
                                                 /*color: Color.fromARGB(
                                                         62, 0, 0, 0)*/
-                                              ),
+                                              ),*/
                                               child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
@@ -475,28 +474,81 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           SizedBox(
                                                             height:
                                                                 double.infinity,
-                                                            child:
-                                                                LinearProgressIndicator(
-                                                              backgroundColor:
-                                                                  Color
-                                                                      .fromARGB(
-                                                                          199,
+                                                            child: ClipRRect(
+                                                              child: ShaderMask(
+                                                                shaderCallback:
+                                                                    (rect) {
+                                                                  return LinearGradient(
+                                                                    begin: Alignment
+                                                                        .topCenter,
+                                                                    end: Alignment
+                                                                        .bottomCenter,
+                                                                    colors: [
+                                                                      Colors
+                                                                          .transparent,
+                                                                      Colors
+                                                                          .black
+                                                                    ],
+                                                                  ).createShader(
+                                                                      Rect.fromLTRB(
                                                                           0,
                                                                           0,
-                                                                          0),
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      160,
-                                                                      57,
-                                                                      21,
-                                                                      119),
-                                                              value: index
-                                                                      .current_day /
-                                                                  index
-                                                                      .day_count,
-                                                              semanticsLabel:
-                                                                  'Den ' +
-                                                                      ' z ',
+                                                                          rect.width,
+                                                                          150));
+                                                                },
+                                                                blendMode:
+                                                                    BlendMode
+                                                                        .dstIn,
+                                                                child:
+                                                                    ClipRRect(
+                                                                  child:
+                                                                      ShaderMask(
+                                                                    shaderCallback:
+                                                                        (rect) {
+                                                                      return LinearGradient(
+                                                                        begin: Alignment
+                                                                            .topCenter,
+                                                                        end: Alignment
+                                                                            .bottomCenter,
+                                                                        colors: [
+                                                                          Colors
+                                                                              .black,
+                                                                          Colors
+                                                                              .transparent
+                                                                        ],
+                                                                      ).createShader(Rect.fromLTRB(
+                                                                          0,
+                                                                          rect.height -
+                                                                              100,
+                                                                          rect.width,
+                                                                          rect.height));
+                                                                    },
+                                                                    blendMode:
+                                                                        BlendMode
+                                                                            .dstIn,
+                                                                    child:
+                                                                        Container(
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        image:
+                                                                            DecorationImage(
+                                                                          image:
+                                                                              NetworkImage(
+                                                                            globals.globalProtocol +
+                                                                                globals.globalURL +
+                                                                                '/images/chekrr/folders/' +
+                                                                                index.image_filename,
+                                                                          ),
+                                                                          fit: BoxFit
+                                                                              .cover,
+                                                                        ),
+                                                                        /*color: Color.fromARGB(
+                                                        62, 0, 0, 0)*/
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
                                                             ),
                                                           ),
                                                           Column(
@@ -531,31 +583,117 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   ),
                                                                 ),
                                                               ),
+                                                              SizedBox(
+                                                                height: 10,
+                                                                child: Padding(
+                                                                  padding: EdgeInsets
+                                                                      .fromLTRB(
+                                                                          100,
+                                                                          0,
+                                                                          100,
+                                                                          0),
+                                                                  child:
+                                                                      ClipRRect(
+                                                                    borderRadius:
+                                                                        BorderRadius.all(
+                                                                            Radius.circular(10)),
+                                                                    child:
+                                                                        Container(
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius.all(Radius.circular(10)),
+                                                                        border:
+                                                                            Border.all(
+                                                                          color:
+                                                                              Color.fromARGB(
+                                                                            214,
+                                                                            244,
+                                                                            157,
+                                                                            55,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      child:
+                                                                          LinearProgressIndicator(
+                                                                        backgroundColor: Color.fromARGB(
+                                                                            202,
+                                                                            0,
+                                                                            0,
+                                                                            0),
+                                                                        color: Color.fromARGB(
+                                                                            169,
+                                                                            244,
+                                                                            156,
+                                                                            55),
+                                                                        value: index.current_day /
+                                                                            index.day_count,
+                                                                        semanticsLabel:
+                                                                            'Den ' +
+                                                                                ' z ',
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
                                                               Expanded(
                                                                 flex: 3,
                                                                 child: Center(
-                                                                  child: Text(
-                                                                    "Den " +
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    children: [
+                                                                      Text(
                                                                         index
                                                                             .current_day
-                                                                            .toString() +
-                                                                        ' z ' +
-                                                                        index
-                                                                            .day_count
                                                                             .toString(),
-                                                                    style:
-                                                                        TextStyle(
-                                                                      color: Color.fromARGB(
-                                                                          213,
-                                                                          244,
-                                                                          157,
-                                                                          55),
-                                                                      fontSize:
-                                                                          15,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                    ),
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color: Color.fromARGB(
+                                                                              213,
+                                                                              244,
+                                                                              157,
+                                                                              55),
+                                                                          fontSize:
+                                                                              55,
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                        ),
+                                                                      ),
+                                                                      Padding(
+                                                                        padding: EdgeInsets.fromLTRB(
+                                                                            5,
+                                                                            0,
+                                                                            0,
+                                                                            0),
+                                                                        child:
+                                                                            Column(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.center,
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.start,
+                                                                          children: [
+                                                                            Text(
+                                                                              "den",
+                                                                              style: TextStyle(
+                                                                                color: Color.fromARGB(213, 244, 157, 55),
+                                                                                fontSize: 15,
+                                                                                fontWeight: FontWeight.bold,
+                                                                              ),
+                                                                            ),
+                                                                            Text(
+                                                                              "/" + index.day_count.toString(),
+                                                                              style: TextStyle(
+                                                                                color: Color.fromARGB(212, 255, 255, 255),
+                                                                                fontSize: 25,
+                                                                                fontWeight: FontWeight.bold,
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ],
                                                                   ),
                                                                 ),
                                                               ),
@@ -658,19 +796,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           return delete;
                                         }
                                       },
-                                      onDismissed: (_) {
-                                        /*Get.showSnackbar(
-                          GetSnackBar(
-                            title: 'Hovno!',
-                            message: 'Ser na to',
-                            icon: const Icon(
-                              Icons.percent,
-                              color: Colors.green,
-                            ),
-                            duration: const Duration(seconds: 2),
-                          ),
-                        );*/
-                                      },
+                                      onDismissed: (_) {},
                                       background: Container(
                                         color: Color.fromARGB(100, 76, 175, 79),
                                         child: Align(
@@ -705,11 +831,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                           decoration: BoxDecoration(
                                             border: Border.all(
                                               color: Color.fromARGB(
-                                                  31, 240, 157, 55),
+                                                  26, 255, 255, 255),
                                             ),
-                                            color: Color.fromARGB(129, 0, 0, 0),
+                                            color: Color.fromARGB(
+                                                12, 255, 255, 255),
                                             borderRadius: BorderRadius.all(
-                                                Radius.circular(3)),
+                                                Radius.circular(0)),
                                           ),
                                           child: ListTile(
                                             visualDensity:
@@ -722,25 +849,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     255, 255, 255, 0.801),
                                               ),
                                             ),
-                                            //onTap: () {
-                                            /*Get.to(AddTaskScreen(
-                    index: index,
-                  ));*/
-                                            //},
-                                            /*onLongPress: () {
-                                        Get.showSnackbar(
-                                          GetSnackBar(
-                                            title: 'Klik!',
-                                            message: 'jde to',
-                                            icon: const Icon(
-                                              Icons.cancel,
-                                              color: Colors.blueGrey,
-                                            ),
-                                            duration:
-                                                const Duration(seconds: 2),
-                                          ),
-                                        );
-                                      },*/
                                             leading: Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
@@ -770,10 +878,27 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               )
                             : Column(
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Center(
-                                      child: Text('Žádné výzvy nenalezeny'),
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Center(
+                                    child: Column(
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.check,
+                                          //Icons.chevron_right,
+                                          color: Color.fromRGBO(
+                                              255, 255, 255, 0.404),
+                                          size: 55,
+                                        ),
+                                        Text(
+                                          'Pro dnešek splněno!',
+                                          style: TextStyle(
+                                            color: Color.fromRGBO(
+                                                255, 255, 255, 0.541),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],

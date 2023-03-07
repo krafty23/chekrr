@@ -19,6 +19,7 @@ class _ChallengesDoneScreenState extends State<ChallengesDoneScreen> {
       Map<String, dynamic> requestbody = {
         //'uid': globals.uid.toString(),
         'uid': uid.toString(),
+        'done': '1',
       };
       http.Response response = await http.post(
           Uri.parse(globals.globalProtocol +
@@ -124,17 +125,21 @@ class _ChallengesDoneScreenState extends State<ChallengesDoneScreen> {
                                             decoration: BoxDecoration(
                                               border: Border.all(
                                                 color: Color.fromARGB(
-                                                    31, 240, 157, 55),
+                                                    31, 255, 255, 255),
                                               ),
                                               color: Color.fromARGB(
-                                                  188, 28, 15, 45),
+                                                  15, 255, 255, 255),
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(2)),
                                             ),
                                             child: ListTile(
                                               onTap: () {
                                                 Get.toNamed(
-                                                  '/challenge?id=' +
+                                                  '/challenge?done=1&instance_id=' +
+                                                      snapshot.data![index]
+                                                          .instance_id
+                                                          .toString() +
+                                                      '&id=' +
                                                       snapshot.data![index].id
                                                           .toString(),
                                                 );
@@ -201,11 +206,11 @@ class _ChallengesDoneScreenState extends State<ChallengesDoneScreen> {
                                                                   .name,
                                                               style: TextStyle(
                                                                 color: Color
-                                                                    .fromRGBO(
+                                                                    .fromARGB(
+                                                                        197,
                                                                         255,
                                                                         255,
-                                                                        255,
-                                                                        0.692),
+                                                                        255),
                                                                 fontSize: 20,
                                                                 fontWeight:
                                                                     FontWeight
@@ -214,130 +219,176 @@ class _ChallengesDoneScreenState extends State<ChallengesDoneScreen> {
                                                             ),
                                                             Container(
                                                               child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
                                                                 children: [
-                                                                  Expanded(
-                                                                    flex: 1,
-                                                                    child:
-                                                                        Container(
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        border:
-                                                                            Border(
-                                                                          bottom:
-                                                                              BorderSide(
-                                                                            color: Color.fromARGB(
-                                                                                24,
-                                                                                255,
-                                                                                255,
-                                                                                255),
-                                                                          ),
-                                                                          right:
-                                                                              BorderSide(
-                                                                            color: Color.fromARGB(
-                                                                                24,
-                                                                                255,
-                                                                                255,
-                                                                                255),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                      child:
-                                                                          Padding(
-                                                                        padding: EdgeInsets.fromLTRB(
-                                                                            20,
+                                                                  Padding(
+                                                                    padding: EdgeInsets
+                                                                        .fromLTRB(
+                                                                            0,
                                                                             5,
-                                                                            20,
-                                                                            15),
-                                                                        child:
-                                                                            Column(
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.center,
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.center,
-                                                                          children: [
-                                                                            Text(
-                                                                              '12.12.2023',
-                                                                              textAlign: TextAlign.center,
-                                                                              style: TextStyle(
-                                                                                fontSize: 16,
-                                                                                color: Color.fromARGB(120, 255, 255, 255),
-                                                                              ),
-                                                                            ),
-                                                                            Text(
-                                                                              '-',
-                                                                              textAlign: TextAlign.center,
-                                                                              style: TextStyle(
-                                                                                fontSize: 16,
-                                                                                fontWeight: FontWeight.bold,
-                                                                              ),
-                                                                            ),
-                                                                            Text(
-                                                                              '12.12.2023',
-                                                                              textAlign: TextAlign.center,
-                                                                              style: TextStyle(
-                                                                                fontSize: 16,
-                                                                                color: Color.fromARGB(120, 255, 255, 255),
-                                                                              ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
+                                                                            0,
+                                                                            5),
+                                                                    child: Text(
+                                                                      snapshot
+                                                                              .data![
+                                                                                  index]
+                                                                              .accepted_date_day
+                                                                              .toString() +
+                                                                          '. ' +
+                                                                          snapshot
+                                                                              .data![
+                                                                                  index]
+                                                                              .accepted_date_month
+                                                                              .toString() +
+                                                                          '. ' +
+                                                                          snapshot
+                                                                              .data![index]
+                                                                              .accepted_date_year
+                                                                              .toString(),
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            16,
+                                                                        color: Color.fromARGB(
+                                                                            120,
+                                                                            255,
+                                                                            255,
+                                                                            255),
                                                                       ),
                                                                     ),
                                                                   ),
-                                                                  Expanded(
-                                                                    flex: 1,
-                                                                    child:
-                                                                        GestureDetector(
-                                                                      onTap:
-                                                                          () {
-                                                                        Get.toNamed(
-                                                                            '/challenges_done');
-                                                                      },
-                                                                      child:
-                                                                          Container(
-                                                                        decoration:
-                                                                            BoxDecoration(
-                                                                          border:
-                                                                              Border(
-                                                                            bottom:
-                                                                                BorderSide(
-                                                                              color: Color.fromARGB(24, 255, 255, 255),
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                        child:
-                                                                            Padding(
-                                                                          padding: EdgeInsets.fromLTRB(
-                                                                              20,
-                                                                              5,
-                                                                              20,
-                                                                              15),
-                                                                          child:
-                                                                              Column(
-                                                                            crossAxisAlignment:
-                                                                                CrossAxisAlignment.center,
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.center,
-                                                                            children: [
-                                                                              Text(
-                                                                                'Přijato',
-                                                                                textAlign: TextAlign.center,
-                                                                                style: TextStyle(
-                                                                                  fontSize: 15,
-                                                                                  color: Color.fromARGB(120, 255, 255, 255),
-                                                                                ),
-                                                                              ),
-                                                                              Text(
-                                                                                '15.12.2023',
-                                                                                textAlign: TextAlign.center,
-                                                                                style: TextStyle(
-                                                                                  fontSize: 16,
-                                                                                  fontWeight: FontWeight.bold,
-                                                                                ),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        ),
+                                                                  Padding(
+                                                                    padding: EdgeInsets
+                                                                        .fromLTRB(
+                                                                            0,
+                                                                            5,
+                                                                            0,
+                                                                            5),
+                                                                    child: Text(
+                                                                      ' -  ',
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            16,
+                                                                        color: Color.fromARGB(
+                                                                            120,
+                                                                            255,
+                                                                            255,
+                                                                            255),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Padding(
+                                                                    padding: EdgeInsets
+                                                                        .fromLTRB(
+                                                                            0,
+                                                                            5,
+                                                                            0,
+                                                                            5),
+                                                                    child: Text(
+                                                                      snapshot
+                                                                              .data![
+                                                                                  index]
+                                                                              .accepted_date_day
+                                                                              .toString() +
+                                                                          '. ' +
+                                                                          snapshot
+                                                                              .data![
+                                                                                  index]
+                                                                              .accepted_date_month
+                                                                              .toString() +
+                                                                          '. ' +
+                                                                          snapshot
+                                                                              .data![index]
+                                                                              .accepted_date_year
+                                                                              .toString(),
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            16,
+                                                                        color: Color.fromARGB(
+                                                                            120,
+                                                                            255,
+                                                                            255,
+                                                                            255),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Padding(
+                                                                    padding: EdgeInsets
+                                                                        .fromLTRB(
+                                                                            0,
+                                                                            5,
+                                                                            0,
+                                                                            5),
+                                                                    child: Text(
+                                                                      '100%',
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            36,
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                        color: Color.fromARGB(
+                                                                            120,
+                                                                            0,
+                                                                            214,
+                                                                            0),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Padding(
+                                                                    padding: EdgeInsets
+                                                                        .fromLTRB(
+                                                                            2,
+                                                                            5,
+                                                                            0,
+                                                                            5),
+                                                                    child: Text(
+                                                                      ' splněno',
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            16,
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                        color: Color.fromARGB(
+                                                                            120,
+                                                                            255,
+                                                                            255,
+                                                                            255),
                                                                       ),
                                                                     ),
                                                                   ),

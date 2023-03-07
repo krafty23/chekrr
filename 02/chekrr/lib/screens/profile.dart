@@ -206,7 +206,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                     Text(
                                       '' +
-                                          snapshot.data![0].username
+                                          snapshot.data![0].email_personal
                                               .toString() +
                                           '',
                                       style: TextStyle(
