@@ -466,6 +466,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         Get.toNamed(
                                                           '/challenge?is_accepted=1&id=' +
                                                               index.id
+                                                                  .toString() +
+                                                              '&instance_id=' +
+                                                              index.instance_id
                                                                   .toString(),
                                                         );
                                                       },
@@ -557,14 +560,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                     .center,
                                                             crossAxisAlignment:
                                                                 CrossAxisAlignment
-                                                                    .center,
+                                                                    .start,
                                                             mainAxisSize:
                                                                 MainAxisSize
                                                                     .max,
                                                             children: [
                                                               Expanded(
                                                                 flex: 6,
-                                                                child: Center(
+                                                                child: Padding(
+                                                                  padding: EdgeInsets
+                                                                      .fromLTRB(
+                                                                          50,
+                                                                          53,
+                                                                          0,
+                                                                          0),
                                                                   child: Text(
                                                                     index.name,
                                                                     style:
@@ -575,7 +584,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                           255,
                                                                           255),
                                                                       fontSize:
-                                                                          19,
+                                                                          17,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .bold,
@@ -821,20 +830,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                       key: UniqueKey(),
                                       child: GestureDetector(
-                                        onLongPressStart: (details) =>
-                                            HapticFeedback.heavyImpact(),
                                         //onLongPress: () => _showPopupMenu(context),
-                                        onLongPress: () => _dialogBuilder(
-                                            context, snapshot.data![index]),
+                                        onTap: () {
+                                          HapticFeedback.heavyImpact();
+                                          _dialogBuilder(
+                                              context, snapshot.data![index]);
+                                        },
                                         child: Container(
                                           margin: EdgeInsets.all(5),
                                           decoration: BoxDecoration(
                                             border: Border.all(
-                                              color: Color.fromARGB(
-                                                  26, 255, 255, 255),
+                                              color:
+                                                  Color.fromARGB(62, 0, 0, 0),
                                             ),
-                                            color: Color.fromARGB(
-                                                12, 255, 255, 255),
+                                            color: Color.fromARGB(55, 0, 0, 0),
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(0)),
                                           ),

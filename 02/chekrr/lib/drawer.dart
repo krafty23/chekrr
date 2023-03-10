@@ -7,6 +7,7 @@ class DrawerDraw extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final box = GetStorage();
+    print(globals.foto_filename);
     return Drawer(
       backgroundColor: Color.fromRGBO(20, 15, 45, 0.76),
       child: ListView(
@@ -16,8 +17,8 @@ class DrawerDraw extends StatelessWidget {
             decoration: BoxDecoration(
               color: Color.fromRGBO(244, 156, 55, 0.178),
               image: DecorationImage(
-                image: AssetImage("images/abstract_background.jpg"),
-                fit: BoxFit.fill,
+                image: AssetImage("images/chekrr_icon.png"),
+                fit: BoxFit.cover,
               ),
             ),
             /*child: CircleAvatar(
@@ -33,9 +34,7 @@ class DrawerDraw extends StatelessWidget {
                 ),
               ),
             ),*/
-            child: Center(
-              child: Text('Chekrr'),
-            ),
+            child: Container(),
           ),
           ListTile(
             leading: Icon(Icons.home),

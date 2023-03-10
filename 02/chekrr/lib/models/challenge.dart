@@ -8,6 +8,13 @@ List<Program> ProgramFromJson(String str) =>
 
 String ProgramToJson(List<Program> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+List<ProgramTasks> ProgramTasksFromJson(String str) => List<ProgramTasks>.from(
+    json.decode(str).map((x) => ProgramTasks.fromJson(x)));
+
+String ProgramTasksToJson(List<ProgramTasks> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 List<ProgramDone> ProgramDoneFromJson(String str) => List<ProgramDone>.from(
     json.decode(str).map((x) => ProgramDone.fromJson(x)));
 
@@ -34,18 +41,69 @@ String ProgramFullToJson(List<ProgramFull> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ProgramSubinfo {
-  String accepted_date;
-  List<ProgramSubinfo> ProgramFromJson(String str) => List<ProgramSubinfo>.from(
-      json.decode(str).map((x) => ProgramSubinfo.fromJson(x)));
+  String name;
+  String perex;
+  int done_count;
+  int canceled_count;
+  int endday;
+  int id;
+  List<ProgramSubinfo> ProgramSubinfoFromJson(String str) =>
+      List<ProgramSubinfo>.from(
+          json.decode(str).map((x) => ProgramSubinfo.fromJson(x)));
   String ProgramSubinfoToJson(List<ProgramSubinfo> data) =>
       json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
   ProgramSubinfo({
-    this.accepted_date = '',
+    this.name = '',
+    this.perex = '',
+    this.done_count = 0,
+    this.canceled_count = 0,
+    this.endday = 0,
+    this.id = 0,
   });
-  factory ProgramSubinfo.fromJson(Map<String, dynamic> json) =>
-      ProgramSubinfo(accepted_date: json['accepted_date'] as String);
+  factory ProgramSubinfo.fromJson(Map<String, dynamic> json) => ProgramSubinfo(
+        name: json['name'] as String,
+        perex: json['perex'] as String,
+        done_count: int.tryParse(json['done_count']) as int,
+        canceled_count: int.tryParse(json['canceled_count']) as int,
+        endday: int.tryParse(json['endday']) as int,
+        id: int.tryParse(json['id']) as int,
+      );
   Map<String, dynamic> toJson() => {
-        'accepted_date': accepted_date,
+        'name': name,
+        'perex': perex,
+        'done_count': done_count,
+        'canceled_count': canceled_count,
+        'endday': endday,
+        'id': id,
+      };
+}
+
+class ProgramTasks {
+  String name;
+  String perex;
+  int id;
+  List<ProgramTasks> ProgramTasksFromJson(String str) =>
+      List<ProgramTasks>.from(
+          json.decode(str).map((x) => ProgramTasks.fromJson(x)));
+
+  String ProgramTasksToJson(List<ProgramTasks> data) =>
+      json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+  ProgramTasks({
+    this.name = '',
+    this.perex = '',
+    this.id = 0,
+  });
+  factory ProgramTasks.fromJson(Map<String, dynamic> json) => ProgramTasks(
+        name: json['name'] as String,
+        perex: json['perex'] as String,
+        id: int.tryParse(json['id']) as int,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'perex': perex,
+        'id': id,
       };
 }
 
@@ -56,12 +114,13 @@ class ProgramInfo {
   int challenge_count;
   int day_count;
   int current_day;
+  int instance_id;
   int id;
   Icon icon;
-  List<Program> ProgramFromJson(String str) =>
-      List<Program>.from(json.decode(str).map((x) => Program.fromJson(x)));
+  List<ProgramInfo> ProgramInfoFromJson(String str) => List<ProgramInfo>.from(
+      json.decode(str).map((x) => ProgramInfo.fromJson(x)));
 
-  String ProgramToJson(List<Program> data) =>
+  String ProgramInfoToJson(List<ProgramInfo> data) =>
       json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
   ProgramInfo({
     this.name = '',
@@ -70,6 +129,7 @@ class ProgramInfo {
     this.challenge_count = 0,
     this.day_count = 0,
     this.current_day = 0,
+    this.instance_id = 0,
     this.id = 0,
     this.icon = const Icon(Icons.home),
   });
@@ -80,6 +140,7 @@ class ProgramInfo {
         challenge_count: int.tryParse(json['challenge_count']) as int,
         day_count: int.tryParse(json['day_count']) as int,
         current_day: int.tryParse(json['current_day']) as int,
+        instance_id: int.tryParse(json['instance_id']) as int,
         id: int.tryParse(json['id']) as int,
         icon: Icon(
           IconData(
@@ -99,6 +160,7 @@ class ProgramInfo {
         'day_count': day_count,
         'current_day': current_day,
         'id': id,
+        'instance_id': instance_id,
       };
 }
 

@@ -17,6 +17,7 @@ class ChallengeScreen extends StatefulWidget {
 
 class _ChallengeScreenState extends State<ChallengeScreen> {
   late Future<List<ProgramFull>> _future;
+  late Future<List<ProgramSubinfo>> _futurex;
   Future<List<ProgramFull>> getProgramFull() async {
     final box = GetStorage();
     var uid = box.read('uid');
@@ -46,6 +47,35 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
       }
     } catch (e) {
       return <ProgramFull>[]; // return an empty list on exception/error
+    }
+  }
+
+  Future<List<ProgramSubinfo>> getProgramSubinfo() async {
+    final box = GetStorage();
+    var uid = box.read('uid');
+    try {
+      Map<String, dynamic> requestbody = {
+        'uid': uid.toString(),
+        'id': Get.parameters['id'].toString(),
+        'instance_id': Get.parameters['instance_id'].toString(),
+      };
+      http.Response response = await http.post(
+          Uri.parse(globals.globalProtocol +
+              globals.globalURL +
+              '/api/index.php/challenge/subinfo/'),
+          headers: <String, String>{
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+            //'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: requestbody);
+      if (response.statusCode == 200) {
+        return ProgramSubinfoFromJson(response.body);
+      } else {
+        return <ProgramSubinfo>[];
+      }
+    } catch (e) {
+      return <ProgramSubinfo>[]; // return an empty list on exception/error
     }
   }
 
@@ -138,6 +168,11 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
     _scaffoldKey = GlobalKey();
     super.initState();
     _future = getProgramFull();
+    if (Get.parameters['instance_id'] != null) {
+      //getProgramFull().whenComplete(() {
+      _futurex = getProgramSubinfo();
+      //});
+    }
   }
 
   @override
@@ -363,6 +398,90 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                                                   ),
                                                 ],
                                               ),
+                                              if (Get.parameters[
+                                                      'instance_id'] !=
+                                                  null) ...[
+                                                FutureBuilder(
+                                                  future: _futurex,
+                                                  builder: (context,
+                                                      AsyncSnapshot<
+                                                              List<
+                                                                  ProgramSubinfo>>
+                                                          snapshotx) {
+                                                    switch (snapshotx
+                                                        .connectionState) {
+                                                      case ConnectionState.none:
+                                                        return Text('none');
+                                                      case ConnectionState
+                                                          .waiting:
+                                                        return Center();
+                                                      case ConnectionState
+                                                          .active:
+                                                        return Text('');
+                                                      case ConnectionState.done:
+                                                        if (snapshotx
+                                                            .hasError) {
+                                                          return Text(
+                                                            '${snapshotx.error}',
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.red),
+                                                          );
+                                                        } else {
+                                                          print(snapshotx
+                                                              .data?.length);
+                                                          return Padding(
+                                                            padding: EdgeInsets
+                                                                .fromLTRB(10,
+                                                                    10, 10, 0),
+                                                            child: DataTable(
+                                                              headingRowHeight:
+                                                                  0,
+                                                              columns: const <
+                                                                  DataColumn>[
+                                                                DataColumn(
+                                                                  label: Text(
+                                                                      'Výzva'),
+                                                                ),
+                                                                DataColumn(
+                                                                  label: Text(
+                                                                      'Splněno'),
+                                                                ),
+                                                              ],
+                                                              rows: List<
+                                                                  DataRow>.generate(
+                                                                snapshotx.data!
+                                                                    .length,
+                                                                (int index) =>
+                                                                    DataRow(
+                                                                  cells: <
+                                                                      DataCell>[
+                                                                    DataCell(Text(snapshotx
+                                                                        .data![
+                                                                            index]
+                                                                        .name)),
+                                                                    DataCell(Text(snapshotx.data![index].done_count.toString() +
+                                                                        ' / ' +
+                                                                        snapshotx
+                                                                            .data![
+                                                                                index]
+                                                                            .canceled_count
+                                                                            .toString() +
+                                                                        ' / ' +
+                                                                        snapshotx
+                                                                            .data![index]
+                                                                            .endday
+                                                                            .toString())),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          );
+                                                        }
+                                                    }
+                                                  },
+                                                ),
+                                              ],
                                               Padding(
                                                 padding: EdgeInsets.fromLTRB(
                                                     15, 1, 15, 0),
