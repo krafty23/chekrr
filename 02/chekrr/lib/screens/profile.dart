@@ -337,7 +337,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           ),
                                         ),
                                         Text(
-                                          'splněné\nprogramy',
+                                          'dokončené\nprogramy',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontSize: 16,

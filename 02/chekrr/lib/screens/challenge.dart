@@ -3,10 +3,13 @@ import 'package:get/get.dart';
 import '../models/challenge.dart';
 import 'package:get_storage/get_storage.dart';
 import '../globals.dart' as globals;
+import '../models/stats.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_html/flutter_html.dart';
 import 'package:drop_shadow/drop_shadow.dart';
 import 'package:flutter/services.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class ChallengeScreen extends StatefulWidget {
   ChallengeScreen({super.key});
@@ -17,6 +20,7 @@ class ChallengeScreen extends StatefulWidget {
 
 class _ChallengeScreenState extends State<ChallengeScreen> {
   late Future<List<ProgramFull>> _future;
+  late Future<List<yxnType>> _future2;
   late Future<List<ProgramSubinfo>> _futurex;
   Future<List<ProgramFull>> getProgramFull() async {
     final box = GetStorage();
@@ -47,6 +51,34 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
       }
     } catch (e) {
       return <ProgramFull>[]; // return an empty list on exception/error
+    }
+  }
+
+  Future<List<yxnType>> getYxn() async {
+    final box = GetStorage();
+    var uid = box.read('uid');
+    try {
+      Map<String, dynamic> requestbody = {
+        'uid': uid.toString(),
+        'id': Get.parameters['id'].toString(),
+      };
+      var url = Uri.parse(globals.globalProtocol +
+          globals.globalURL +
+          '/api/index.php/stats/challengeyxn');
+      http.Response response = await http.post(url,
+          headers: <String, String>{
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+            //'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: requestbody);
+      if (response.statusCode == 200) {
+        return yxnTypeFromJson(response.body);
+      } else {
+        return <yxnType>[];
+      }
+    } catch (e) {
+      return <yxnType>[]; // return an empty list on exception/error
     }
   }
 
@@ -171,6 +203,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
     if (Get.parameters['instance_id'] != null) {
       //getProgramFull().whenComplete(() {
       _futurex = getProgramSubinfo();
+      _future2 = getYxn();
       //});
     }
   }
@@ -401,6 +434,120 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                                               if (Get.parameters[
                                                       'instance_id'] !=
                                                   null) ...[
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsets.fromLTRB(
+                                                                0, 10, 0, 0),
+                                                        child: Stack(
+                                                          alignment:
+                                                              AlignmentDirectional
+                                                                  .center,
+                                                          children: <Widget>[
+                                                            Center(
+                                                              child:
+                                                                  new CircularPercentIndicator(
+                                                                radius: 85,
+                                                                animation: true,
+                                                                animationDuration:
+                                                                    600,
+                                                                lineWidth: 10.0,
+                                                                percent: 0.4,
+                                                                center:
+                                                                    new Column(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    Text(
+                                                                      "den",
+                                                                      style: new TextStyle(
+                                                                          color: Color.fromARGB(
+                                                                              80,
+                                                                              255,
+                                                                              255,
+                                                                              255),
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          fontSize:
+                                                                              20.0),
+                                                                    ),
+                                                                    Text(
+                                                                      "1 / 15",
+                                                                      style: new TextStyle(
+                                                                          color: Color.fromARGB(
+                                                                              101,
+                                                                              255,
+                                                                              255,
+                                                                              255),
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          fontSize:
+                                                                              27.0),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                circularStrokeCap:
+                                                                    CircularStrokeCap
+                                                                        .butt,
+                                                                backgroundColor:
+                                                                    Color
+                                                                        .fromARGB(
+                                                                            129,
+                                                                            0,
+                                                                            0,
+                                                                            0),
+                                                                progressColor:
+                                                                    Color.fromARGB(
+                                                                        64,
+                                                                        255,
+                                                                        255,
+                                                                        255),
+                                                              ),
+                                                            ),
+                                                            Center(
+                                                              child:
+                                                                  new CircularPercentIndicator(
+                                                                radius: 70,
+                                                                animation: true,
+                                                                animationDuration:
+                                                                    900,
+                                                                lineWidth: 12.0,
+                                                                percent: 0.7,
+                                                                center:
+                                                                    Text(''),
+                                                                circularStrokeCap:
+                                                                    CircularStrokeCap
+                                                                        .butt,
+                                                                backgroundColor:
+                                                                    Color
+                                                                        .fromARGB(
+                                                                            54,
+                                                                            255,
+                                                                            1,
+                                                                            1),
+                                                                progressColor:
+                                                                    Color
+                                                                        .fromARGB(
+                                                                            69,
+                                                                            0,
+                                                                            255,
+                                                                            64),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                                 FutureBuilder(
                                                   future: _futurex,
                                                   builder: (context,
@@ -430,49 +577,76 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                                                         } else {
                                                           print(snapshotx
                                                               .data?.length);
-                                                          return Padding(
-                                                            padding: EdgeInsets
-                                                                .fromLTRB(10,
-                                                                    10, 10, 0),
-                                                            child: DataTable(
-                                                              headingRowHeight:
-                                                                  0,
-                                                              columns: const <
-                                                                  DataColumn>[
-                                                                DataColumn(
-                                                                  label: Text(
-                                                                      'Výzva'),
-                                                                ),
-                                                                DataColumn(
-                                                                  label: Text(
-                                                                      'Splněno'),
-                                                                ),
-                                                              ],
-                                                              rows: List<
-                                                                  DataRow>.generate(
-                                                                snapshotx.data!
-                                                                    .length,
-                                                                (int index) =>
-                                                                    DataRow(
-                                                                  cells: <
-                                                                      DataCell>[
-                                                                    DataCell(Text(snapshotx
-                                                                        .data![
-                                                                            index]
-                                                                        .name)),
-                                                                    DataCell(Text(snapshotx.data![index].done_count.toString() +
-                                                                        ' / ' +
-                                                                        snapshotx
-                                                                            .data![
-                                                                                index]
-                                                                            .canceled_count
-                                                                            .toString() +
-                                                                        ' / ' +
-                                                                        snapshotx
-                                                                            .data![index]
-                                                                            .endday
-                                                                            .toString())),
-                                                                  ],
+                                                          return Center(
+                                                            child: Padding(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .fromLTRB(
+                                                                          10,
+                                                                          10,
+                                                                          10,
+                                                                          0),
+                                                              child: DataTable(
+                                                                //headingRowHeight:
+                                                                // 0,
+                                                                columns: const <
+                                                                    DataColumn>[
+                                                                  DataColumn(
+                                                                    label: Text(
+                                                                        'Výzva'),
+                                                                  ),
+                                                                  DataColumn(
+                                                                    label: Text(
+                                                                        'Splněno'),
+                                                                  ),
+                                                                ],
+                                                                rows: List<
+                                                                    DataRow>.generate(
+                                                                  snapshotx
+                                                                      .data!
+                                                                      .length,
+                                                                  (int index) =>
+                                                                      DataRow(
+                                                                    cells: <
+                                                                        DataCell>[
+                                                                      DataCell(Text(snapshotx
+                                                                          .data![
+                                                                              index]
+                                                                          .name)),
+                                                                      DataCell(
+                                                                        Row(
+                                                                          children: [
+                                                                            Text(
+                                                                              snapshotx.data![index].done_count.toString(),
+                                                                              style: TextStyle(
+                                                                                color: Color.fromRGBO(0, 243, 32, 0.69),
+                                                                                fontSize: 22,
+                                                                                fontWeight: FontWeight.w900,
+                                                                              ),
+                                                                            ),
+                                                                            Text(' / '),
+                                                                            Text(
+                                                                              snapshotx.data![index].canceled_count.toString(),
+                                                                              style: TextStyle(
+                                                                                color: Color.fromRGBO(255, 0, 0, 0.686),
+                                                                                fontSize: 22,
+                                                                                fontWeight: FontWeight.w900,
+                                                                              ),
+                                                                            ),
+                                                                            Text(' / '),
+                                                                            Text(
+                                                                              snapshotx.data![index].endday.toString(),
+                                                                              style: TextStyle(
+                                                                                color: Color.fromRGBO(255, 255, 255, 0.686),
+                                                                                fontSize: 22,
+                                                                                fontWeight: FontWeight.w900,
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
                                                                 ),
                                                               ),
                                                             ),

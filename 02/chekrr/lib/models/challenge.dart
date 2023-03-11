@@ -226,6 +226,7 @@ class ProgramDone {
   int finished_date_day;
   int finished_date_month;
   int finished_date_year;
+  int status;
   int id;
   Icon icon;
   List<ProgramDone> ProgramDoneFromJson(String str) => List<ProgramDone>.from(
@@ -240,6 +241,7 @@ class ProgramDone {
     this.challenge_count = 0,
     this.day_count = 0,
     this.instance_id = 0,
+    this.status = 0,
     this.id = 0,
     this.accepted_date_day = 0,
     this.accepted_date_month = 0,
@@ -256,6 +258,7 @@ class ProgramDone {
         challenge_count: int.tryParse(json['challenge_count']) as int,
         day_count: int.tryParse(json['day_count']) as int,
         instance_id: int.tryParse(json['instance_id']) as int,
+        status: int.tryParse(json['status']) as int,
         id: int.tryParse(json['id']) as int,
         accepted_date_day: int.tryParse(json['accepted_date_day']) as int,
         accepted_date_month: int.tryParse(json['accepted_date_month']) as int,
@@ -280,6 +283,7 @@ class ProgramDone {
         'challenge_count': challenge_count,
         'day_count': day_count,
         'instance_id': instance_id,
+        'status': status,
         'id': id,
         'accepted_date_day': accepted_date_day,
         'accepted_date_month': accepted_date_month,

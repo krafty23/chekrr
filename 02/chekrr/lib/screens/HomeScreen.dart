@@ -269,7 +269,8 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: Color.fromARGB(218, 22, 19, 29),
           actions: <Widget>[
             data.folder_id > 0
-                ? TextButton(
+                ? Container()
+                /*TextButton(
                     style: TextButton.styleFrom(
                       textStyle: Theme.of(context).textTheme.labelLarge,
                       foregroundColor: Color.fromARGB(255, 255, 0, 0),
@@ -280,7 +281,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.of(context).pop();
                       _dialogConfirmer(context, data);
                     },
-                  )
+                  )*/
                 : TextButton(
                     style: TextButton.styleFrom(
                       textStyle: Theme.of(context).textTheme.labelLarge,

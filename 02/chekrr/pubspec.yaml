@@ -50,6 +50,7 @@ dependencies:
   flutter_swiper: ^1.1.6
   flutter_launcher_icons: ^0.11.0
   awesome_notifications: ^0.6.19
+  percent_indicator: ^4.2.3
 
 dev_dependencies:
   flutter_test:

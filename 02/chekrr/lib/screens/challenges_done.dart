@@ -127,8 +127,13 @@ class _ChallengesDoneScreenState extends State<ChallengesDoneScreen> {
                                                 color: Color.fromARGB(
                                                     31, 255, 255, 255),
                                               ),
-                                              color: Color.fromARGB(
-                                                  15, 255, 255, 255),
+                                              color: (snapshot.data![index]
+                                                          .status ==
+                                                      1)
+                                                  ? Color.fromARGB(
+                                                      45, 76, 175, 79)
+                                                  : Color.fromARGB(
+                                                      25, 244, 67, 54),
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(2)),
                                             ),
